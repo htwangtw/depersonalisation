@@ -1,0 +1,77 @@
+{
+    "participant_id": {
+        "Description": "CISC ID"
+    },
+    "age": {
+        "Description": "Age at the scanning time",
+        "Units": "years"
+    },
+    "sex": {
+        "Description": "Subject sex",
+        "Levels":{
+            "F": "female",
+            "M": "male"
+        }
+    },
+    "group": {
+        "Description": "Subject group",
+        "Levels":{
+            "control": "Healthy control",
+            "patient": "FEP patient"
+        }
+    },
+    "PxID": {
+        "Description": "Researcher assigned ID including group info"
+    },
+    "T1w": {
+        "Description": "T1w scan quality accessment",
+        "Levels":{
+            "0": "no",
+            "1": "pass"
+        }
+    },
+    "task-heartbeat":{
+        "Description": "heartbeat detection task scan quality accessment",
+        "Levels":{
+            "0": "no",
+            "1": "pass"
+        }
+    },
+    "task-rest":{
+        "Description": "resting state scan quality accessment",
+        "Levels":{
+            "0": "no",
+            "1": "pass"
+        }
+    },
+    "NODDI":{
+        "Description": "Neurite Orientation Dispersion and Density Imaging (NODDI) scan quality accessment",
+        "Levels":{
+            "0": "no",
+            "1": "pass"
+        }
+    },
+    "task-heartbeat_event":{
+        "Description": "heartbeat detection task pulse oximetry quality accessment",
+        "Levels":{
+            "0": "no",
+            "1": "pass"
+        }
+    },
+    "task_heartbeat-physio":{
+        "Description": "heartbeat detection task scan quality accessment",
+        "Levels":{
+            "0": "no",
+            "1": "pass",
+            "2": "vol trigger incorrect in spike file; align to events onset for TR level HRV measures",
+            "n/a": "low quality scan; spike file not worth checking"
+        }
+    },
+    "exclusion_reason":{
+        "Description": "Reason of exclusion"
+    },
+    "scanning_notes":{
+        "Description": "Data collection related quality notes on source data"
+    }
+
+}

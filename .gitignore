@@ -1,11 +1,14 @@
 # project related
-data/
+data/.heudiconv/
+data/sub-*/
+data/sourcedata/
+data/derivatives/
 references/scripts_Nyguen/
 references/insular_masks/
 scratch/
 scratch
 code/bak/
-results/bak/
+*/bak/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

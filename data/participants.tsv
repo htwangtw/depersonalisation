@@ -1,0 +1,63 @@
+participant_id	PxID	age	sex	group	T1w	task_heartbeat	task_rest	NODDI	task_heartbeat_event	task_heartbeat_physio	task_heartbeat_trialHRV	exclusion_reason	scanning_notes
+sub-10373	HC16	21	M	control	1	1	1	1	1	0	0	Noisy spike data	"Use 2nd run. check spike file to see if heart timeing was correctly identified (noisy input). CONGENT results only ""failedFirstRun"""
+sub-9856	HC06	24	M	control	1	1	1	1	1	0	0	Stim not logged in spike; trigger error	no event triggers in spike file. Also weird double volume triggers. Pulse ox quality looks fine. Consider including all int trials.
+sub-9866	HC07	19	M	control	1	1	1	1	1	0	0	Stim not logged in spike; trigger error	no event triggers in spike file. Also weird TR & double volume triggers. Pulse ox quality looks fine. Consider excluding based on TR
+sub-10317	HC15	28	M	control	1	1	1	1	1	0	0	spike and functional scan potentially mismatch - cannot create TR level regressors	use 2nd run
+sub-10298	PT29	24	M	patient	1	0	1	1	0	0	0	doesn't understand task	exclude. Px not responding to task instructions.
+sub-9510	PT08	18	M	patient	0	0	0	0	0	0	0	Congenital abnormality (See T1w image)	Congenital abnormality. Exclude
+sub-9760	PT13	40	F	patient	1	0	1	1	1	0	0	weird volume number; can't identify usable data	"two spike files, both with weird scan volumes"
+sub-9867	PT16	36	M	patient	1	1	1	1	1	0	0	Stim not logged in spike	n/a
+sub-10048	HC09	26	F	control	1	1	1	1	1	1	1	n/a	use 2nd structural
+sub-10155	HC10	25	M	control	1	1	1	1	1	1	1	n/a	n/a
+sub-10185	HC12	26	M	control	1	1	1	1	1	1	1	n/a	n/a
+sub-10186	HC11	38	M	control	1	1	1	1	1	1	0	n/a	short task version * 2 in one scan
+sub-10218	HC13	23	M	control	1	1	1	1	1	1	1	n/a	n/a
+sub-10434	HC17	29	M	control	1	1	1	1	1	1	1	n/a	n/a
+sub-10593	HC20	18	M	control	1	1	1	1	1	1	1	n/a	rf spikes. Consider excluding volumes or whole px. Tsdiffana
+sub-9539	HC01	37	F	control	1	1	1	1	1	1	1	n/a	n/a
+sub-9634	HC02	24	M	control	1	1	1	1	1	1	1	n/a	use 2nd run. Stim spike triggers failed
+sub-9675	HC04	18	F	control	1	1	1	1	1	1	1	n/a	n/a
+sub-10469	HC18	18	M	control	1	1	1	1	1	1	1	n/a	use 2nd struct. Check spike for pulse ox data quality.
+sub-10620	HC21	20	F	control	1	1	1	1	1	1	1	n/a	rf spikes
+sub-10076	PT20	20	M	patient	1	1	1	1	1	1	1	n/a	n/a
+sub-10086	PT21	34	F	patient	1	1	1	1	1	1	1	n/a	n/a
+sub-10108	PT23	22	F	patient	1	1	1	1	1	1	1	n/a	n/a
+sub-10142	PT24	31	M	patient	1	1	1	1	1	1	1	n/a	n/a
+sub-10188	PT25	27	M	patient	1	1	1	1	1	1	1	n/a	?motion
+sub-10245	PT26	31	M	patient	1	1	1	1	1	1	1	n/a	n/a
+sub-10261	PT27	34	M	patient	1	1	1	1	1	1	1	n/a	n/a
+sub-10284	PT28	22	M	patient	1	1	1	1	1	1	1	n/a	n/a
+sub-10353	PT31	25	M	patient	1	1	1	1	1	1	1	n/a	n/a
+sub-10404	PT32	34	F	patient	1	1	1	1	1	1	1	n/a	n/a
+sub-10449	PT35	21	M	patient	1	1	1	1	1	1	1	n/a	n/a
+sub-10451	PT36	36	F	patient	1	1	1	1	1	1	1	n/a	use 2nd run
+sub-10456	PT37	34	F	patient	1	1	1	1	1	1	1	n/a	"use 2nd structural, 2nd run."
+sub-10471	PT38	25	M	patient	1	1	1	1	1	1	1	n/a	n/a
+sub-10472	PT39	31	M	patient	1	1	1	1	1	1	1	n/a	check spike.
+sub-10473	PT40	19	M	patient	1	1	1	1	1	1	1	n/a	n/a
+sub-10573	PT41	22	M	patient	1	1	1	1	1	1	1	n/a	rf spikes - on dicom review
+sub-8494	PT33	19	F	patient	1	1	1	0	1	1	1	n/a	n/a
+sub-9393	PT02	20	M	patient	1	1	1	1	1	1	0	n/a	"use 2nd run. Stim cut short. Crash save shows 47 trials started, but only 46 ratings given. Cropped last trial off spike."
+sub-9420	PT03	23	F	patient	1	1	1	1	1	1	1	n/a	"use 2nd or 3rd run, whichever have the most volumes."
+sub-9454	PT05	22	M	patient	1	1	1	1	1	1	1	n/a	two structurals. Use second.
+sub-9503	PT07	28	M	patient	1	1	1	1	1	1	1	n/a	n/a
+sub-9734	PT12	31	M	patient	1	1	1	1	1	1	0	n/a	int separated over 2 runs
+sub-10474	HC19	26	M	control	1	1	1	1	1	2	2	n/a	no rf spikes - dicom review
+sub-9097	HC05	26	M	control	1	1	1	0	1	2	2	n/a	bad vol trigger
+sub-9664	HC03	18	M	control	1	1	1	1	1	2	2	n/a	n/a
+sub-9946	HC08	22	F	control	1	1	1	1	1	2	2	n/a	use 2nd run; weird starting volume; bad trigger
+sub-9389	PT01	22	M	patient	1	1	1	1	1	2	2	n/a	n/a
+sub-9431	PT04	23	M	patient	1	1	1	1	1	2	2	n/a	n/a
+sub-9478	PT06	33	F	patient	1	1	1	1	1	2	2	n/a	n/a
+sub-9575	PT09	21	M	patient	1	1	1	1	1	2	2	n/a	n/a
+sub-9676	PT10	20	M	patient	1	1	1	1	1	2	2	n/a	n/a
+sub-9686	PT11	25	M	patient	1	1	1	1	1	2	2	n/a	n/a
+sub-9995	PT19	24	M	patient	1	1	1	1	1	2	2	n/a	bad vol trigger
+sub-9790	PT14	21	M	patient	1	1	1	1	1	2	2	n/a	bad vol trigger
+sub-9933	PT17	26	M	patient	1	1	1	1	1	2	2	n/a	bad vol trigger
+sub-9934	PT18	22	M	patient	1	1	1	1	1	2	2	n/a	Only using first run (clear start point) data collected over 2 runs (magnet stopped during break).bad vol trigger.
+sub-10268	HC14	28	F	control	1	0	1	1	1	n/a	n/a	motion (24% volumes with FD > 0.5mm)	n/a
+sub-10107	PT22	27	M	patient	1	0	1	1	1	n/a	n/a	motion (mriqc carpit plot); reference TR error	motion. No response to early blocks. looks like spike file might be incomplete (e.g. no DTI) and task starts on 7th volume; exclude as potential TR error
+sub-10318	PT30	28	M	patient	1	0	1	1	1	n/a	n/a	motion (67% volumes with FD > 0.5mm)	use 2nd struct
+sub-10437	PT34	21	M	patient	1	0	1	1	1	n/a	n/a	motion (mriqc carpit plot)	motion
+sub-9806	PT15	20	M	patient	1	0	1	0	1	n/a	n/a	motion (mriqc carpit plot); task started on weird vol	predict lots of motion. Task not started on 6th volume and not complete before all vols acquired

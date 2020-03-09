@@ -1,0 +1,19 @@
+{
+    "Acknowledgements": "BSMS, Sackler",
+    "Authors": [
+        "First1 Last1",
+        "First2 Last2",
+        "..."
+    ],
+    "BIDSVersion": "1.0.1",
+    "DatasetDOI": "",
+    "Funding": [
+        "Sackler Centre for Consciousness Science"
+    ],
+    "HowToAcknowledge": "",
+    "License": "PDDL (http://opendatacommons.org/licenses/pddl/)",
+    "Name": "Interoception in First Episod Psychosis",
+    "ReferencesAndLinks": [
+        ""
+    ]
+}
