@@ -16,8 +16,8 @@ frequency_bands = {'vlf': ['Very low frequency', (0.003, 0.04), 'b'],
                    'hf': ['High frequency', (0.15, 0.4), 'r']}
                    
 class ProcessIBI:
-    def __init__(self, peaks, freqency):
-        self.peaks, self.frequency = peaks, freqency
+    def __init__(self, peaks, frequency):
+        self.peaks, self.frequency = peaks, frequency
 
     def calculate_ibi(self):
         '''
@@ -28,7 +28,7 @@ class ProcessIBI:
         p_time = t[self.peaks==1]
         self.raw_ibi = np.diff(p_time)
 
-    def outlier_ibi(self, sd=2.5, n=2, plot=False):
+    def outlier_ibi(self, sd=2.5, n=2):
         '''
         remove outlier
         detect outlier (>2.5 sd) and interpolate the signal
@@ -46,12 +46,7 @@ class ProcessIBI:
                                      "cubic", fill_value="extrapolate")
             self.ibi = f(self.time)  # update
 
-        if plot:
-            fig_ibi = self.plot_ibi()
-            fig_ibi.show()
-            return fig_ibi
-
-    def plot_ibi():
+    def plot_ibi(self):
         fig = plt.figure(figsize=(10, 4))
         ax = fig.add_subplot(1, 1, 1)
         ax.plot(self.time, self.raw_ibi, label="Original")
@@ -63,10 +58,8 @@ class ProcessIBI:
         return fig
 
 class ContinuousHRV(ProcessIBI):
-    def __init__(self, peaks, freqency):
-        super(ContinuousHRV, self).__init__(peaks, freqency)
-        self.raw_ibi = super().calculate_ibi()
-        self.ibi = super().outlier_ibi()
+    def __init__(self, peaks, frequency):
+        super(ContinuousHRV, self).__init__(peaks, frequency)
 
     def resample(self, fs=4):
         '''
@@ -122,7 +115,7 @@ class ContinuousHRV(ProcessIBI):
         fwindow = signal.hamming(self.fwin_sample)
 
         # power spectrum density spwvd
-        self.trf = spwvd(self.resample_rr, self.resample_time, 
+        self.trf = spwvd(self.ibi_resampled, self.resample_time, 
                          nfreqbin, twindow, fwindow) 
         self.psd = self.trf ** 2   
 
@@ -131,18 +124,22 @@ class ContinuousHRV(ProcessIBI):
         group signal by frequency band along time
         """
         # extract power amptitude in high and low frequency band
-        self.vlf, self.lf, self.hf = np.nan, np.nan, np.nan
-        for f, output in zip(frequency_bands.keys(), 
-                             [self.vlf, self.lf, self.hf]):
+        power = []
+        for f in frequency_bands.keys():
             lb = frequency_bands[f][1][0]
             ub = frequency_bands[f][1][1]
             idx_freq = np.logical_and(self.freq >= lb, self.freq < ub)
+            print(idx_freq.shape)
+            print(self.psd[idx_freq, :].shape)
             dx = np.diff(self.freq)[0]
             amptitude = np.trapz(y=self.psd[idx_freq, :], 
-                                 dx=dx, axis=0) 
-            output = amptitude
+                                 dx=dx, axis=0)
+            power.append(amptitude)
+        self.vlf = power[0]
+        self.lf = power[1]
+        self.hf = power[2]
 
-    def plot_spectrum():
+    def plot_spectrum(self):
         # plot power specturm density
         fig_psd = plt.figure(figsize=(10, 4))
         ax = fig_psd.add_subplot(1, 1, 1)
@@ -158,7 +155,7 @@ class ContinuousHRV(ProcessIBI):
         fig_psd.colorbar(i)
         return fig_psd
 
-    def plot_HRV():
+    def plot_HRV(self):
         # continuous HRV
         fig_hrv = plt.figure(figsize=(10, 4))
         ax = fig_hrv.add_subplot(1, 1, 1)

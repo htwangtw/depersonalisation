@@ -31,18 +31,18 @@ for n_sub, subject in enumerate(pass_qa):
 
     # chop to the length of the experiment
     beats = df_physio[start:end].cardiac_event.values
-
+    
     if subject == 'sub-9575':  #big drift after task ended; detrend
         cut = int(df_physio.index[df_physio['stim']==1][-1] + 35 / spike_fs)
         beats[cut - start:] = 0
 
-    calculate_hrv = ContinuousHRV(peaks=beats, freqency=spike_fs)
+    calculate_hrv = ContinuousHRV(peaks=beats, frequency=spike_fs)
     calculate_hrv.calculate_ibi()
     calculate_hrv.outlier_ibi(sd=3, n=2)
     if sum(calculate_hrv.ibi > 1.5) + sum(calculate_hrv.ibi < 0.3) > 0:
         # use more agressive cut off for people with too many out of normal range
         calculate_hrvoutlier_ibi(ibi, sd=2.5, n=2) # run again
-    fig_ibi = calculate_hrv.plot_HRV()
+    fig_ibi = calculate_hrv.plot_ibi()
     calculate_hrv.resample()
     calculate_hrv.spwvd_power()
     fig_psd = calculate_hrv.plot_spectrum()
@@ -52,7 +52,7 @@ for n_sub, subject in enumerate(pass_qa):
     lf, hf = calculate_hrv.lf, calculate_hrv.hf
     ibi = calculate_hrv.ibi
     t = calculate_hrv.resample_time
-
+    print(lf)
     # save files
     if not os.path.isdir(target_path):
         os.makedirs(target_path)
