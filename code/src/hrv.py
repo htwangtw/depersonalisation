@@ -63,9 +63,11 @@ class ProcessIBI:
         return fig
 
 class ContinuousHRV(ProcessIBI):
-    def __init__(self, *args):
-        super(ContinuousHRV, self).__init__(*args)
-    
+    def __init__(self, peaks, freqency):
+        super(ContinuousHRV, self).__init__(peaks, freqency)
+        self.raw_ibi = super().calculate_ibi()
+        self.ibi = super().outlier_ibi()
+
     def resample(self, fs=4):
         '''
         resample ibi to certain frequency with 
