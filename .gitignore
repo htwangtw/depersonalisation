@@ -1,5 +1,11 @@
 # project related
 data/
+references/scripts_Nyguen/
+references/insular_masks/
+scratch/
+scratch
+code/bak/
+results/bak/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
