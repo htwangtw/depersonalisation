@@ -10,6 +10,9 @@ scratch
 code/bak/
 */bak/
 
+#various editors
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
