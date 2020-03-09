@@ -6,7 +6,7 @@ import numpy as np
 
 import nibabel as nb
 
-from src.hrv import prepro_rr
+from src.hrv import ContinuousHRV
 
 
 home = str(Path.home())
@@ -36,7 +36,22 @@ for n_sub, subject in enumerate(pass_qa):
         cut = int(df_physio.index[df_physio['stim']==1][-1] + 35 / spike_fs)
         beats[cut - start:] = 0
 
-    ibi, lf, hf, t, (fig_ibi, fig_psd, fig_hrv) = prepro_rr(beats, spike_fs, graphs=True)
+    calculate_hrv = ContinuousHRV(peaks=beats, freqency=spike_fs)
+    calculate_hrv.calculate_ibi()
+    calculate_hrv.outlier_ibi(sd=3, n=2)
+    if sum(calculate_hrv.ibi > 1.5) + sum(calculate_hrv.ibi < 0.3) > 0:
+        # use more agressive cut off for people with too many out of normal range
+        calculate_hrvoutlier_ibi(ibi, sd=2.5, n=2) # run again
+    fig_ibi = calculate_hrv.plot_HRV()
+    calculate_hrv.resample()
+    calculate_hrv.spwvd_power()
+    fig_psd = calculate_hrv.plot_spectrum()
+    calculate_hrv.power_ampt()
+    fig_hrv = calculate_hrv.plot_HRV()
+
+    lf, hf = calculate_hrv.lf, calculate_hrv.hf
+    ibi = calculate_hrv.ibi
+    t = calculate_hrv.resample_time
 
     # save files
     if not os.path.isdir(target_path):

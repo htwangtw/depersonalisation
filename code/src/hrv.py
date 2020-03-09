@@ -66,7 +66,7 @@ class ContinuousHRV(ProcessIBI):
     def __init__(self, *args):
         super(ContinuousHRV, self).__init__(*args)
     
-    def resample_rr(self, fs=4):
+    def resample(self, fs=4):
         '''
         resample ibi to certain frequency with 
         spline, 3rd order interpolation function
