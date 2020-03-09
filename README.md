@@ -18,17 +18,9 @@ The current version in this folder is curated and analysed by Hao-Ting Wang.
 │   ├── README.md
 │   ├── task-heartbeat_bold.json
 │   └── task-rest_bold.json
-├── analysis
-│   ├── fmri
-│   │   ├── code
-│   │   │   ├── src
-│   │   │   ├── clusterSubmit.sh
-│   │   │   └── fmri_level-first_model-full.py
-│   │   └── reports
-│   │       └── model-modelname
-│   └── behaviour
-│       ├── code
-│       └── reports
+├── code
+│   ├── tests
+│   └── src
 ├── references
 ├── results
 ├── scratch
@@ -39,9 +31,9 @@ The current version in this folder is curated and analysed by Hao-Ting Wang.
 
 This is a BIDS directory containing the raw data (`sourcedata`), BIDS compiled Nifti, and minimally preprocessed dataset for statistical modeling (`derivatives`).
 
-## `analysis`
+## `code`
 
-Containing GLM model, code for the analysis and the final reports with.
+My analysis
 
 ## `references`
 
