@@ -1,11 +1,11 @@
 import os
 from pathlib import Path
+import json
 
 import pandas as pd
 import numpy as np
-from scipy import signal
-
-from src.hrv import window_hrv
+from scipy import signal, interpolate
+import nibabel as nb
 
 
 # load file
@@ -14,73 +14,99 @@ from src.hrv import window_hrv
 # method: linear
 home = str(Path.home())
 p = Path(home + "/projects/critchley_depersonalisation")
-print(p / "data" /"participants.tsv")
-participants = pd.read_csv(p / "analysis" /"participants.tsv", sep='\t')
-
-# check partcipant.json for participant.tsv codes
-pass_qa = participants.query("task_heartbeat_physio > 0").participant_id.tolist()
-# pass_qa = participants.query("task_heartbeat_physio == 3").participant_id.tolist()
+participants = pd.read_csv(p / "code" /"participants.tsv", sep='\t')
+pass_qa = participants.participant_id.tolist()
 
 for subject in pass_qa:
     print(subject)
     path = list(p.glob(f"data/{subject}/func/{subject}_task-heartbeat_run-1_physio.tsv.gz"))
     path = path[0]
-    vol_path = (p / "data" / "derivatives" /
-                "fmriprep-1.5.1rc2" / subject / "func" /
-                f"{subject}_task-heartbeat_run-1_space-MNI152NLin2009cAsym_desc-preproc_bold.nii.gz")
+    vol_path = (p / "data" / subject / "func" /
+                f"{subject}_task-heartbeat_run-1_bold.json")
     confounds_path = (p / "data" / "derivatives" /
             "fmriprep-1.5.1rc2" / subject / "func" /
             f"{subject}_task-heartbeat_run-1_desc-confounds_regressors.tsv")
     event_path = (p / "data" / subject / "func" /
                   f"{subject}_task-heartbeat_run-1_events.tsv")
-    target_path = p / "data" / "derivatives" / "func_smooth-6mm" / subject / "func"
+    hrv_path = p / "results" / "physio_measures" / subject / f"{subject}_task-heartbeat_run-1_desc-continuousHRV_physio.tsv"
+    ibi_path = p / "results" / "physio_measures" / subject / f"{subject}_task-heartbeat_run-1_desc-ibi_physio.tsv"
+    target_path = p / "results" / "fsl_regressors" / subject
 
     if not os.path.isdir(target_path):
         os.makedirs(target_path)
     out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-hrv_timeseries.tsv"
 
+    with open(vol_path) as f:
+        data = json.load(f)
+
+    tr = data['RepetitionTime']
+
+    try:
+        n_vol = data['dcmmeta_shape'][-1]
+    except KeyError:
+        vol_path = (p / "data" / subject / "func" /
+                    f"{subject}_task-heartbeat_run-1_bold.nii.gz")
+        n_vol = nb.load(str(vol_path)).shape[-1]
+
     # HRV regressors (low and high frequency HRV)
-    hrv_stats, _ = window_hrv(path, vol_path, tr=2.52, spike_fs=1010.1)
-    hrv_stats.to_csv(out_file,
-                    sep='\t', index=False, float_format='%.5f')
+    hrv = pd.read_csv(hrv_path, sep='\t', index_col=0)
+    x = hrv.index.to_numpy()
+    y = hrv.values.T
+    # interpolate to TR
+    f = interpolate.interp1d(x, y, kind='cubic', fill_value='extrapolate')
+    new_time = np.arange(0, n_vol, 1) * tr
+    hrv_tr_match = f(new_time)
+    for i, name in enumerate(hrv.columns):
+        power = hrv_tr_match[i, 5:]  # trim off the first five volumes
+        np.savetxt(target_path / f"{subject}_task-heartbeat_run-1_desc-{name}_regressors.tsv",
+                   power)
 
     # BPM regressors
+    ibi = np.loadtxt(ibi_path)
+    t_beats = np.cumsum(ibi)
+    window = 20
+    bpm = []
+    for t in new_time[5:]: # trim off 5 vol
+        start = t - window / 2
+        if start < 0:
+            start = 0
+        end = t + window / 2
+        if end > new_time[-1]:
+            end = new_time[-1]
+        idx = np.logical_and(t_beats >= start, t_beats <= end)
+        bpm.append(sum(idx) / ((end - start) / 60))
+    np.savetxt(target_path / f"{subject}_task-heartbeat_run-1_desc-bpm_regressors.tsv",
+               bpm)
 
-    # save an fsl ready version
-    for measure in ['lf_power', 'hf_power', 'bpm']:
-        out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-{measure}_regressors.tsv"
-        fsl_ver = hrv_stats.loc[5:, measure]
-        fsl_ver.to_csv(out_file, sep='\t', header=False, index=False, float_format='%.5f')
+    # FSL task regressors
+    events = pd.read_csv(event_path, sep='\t')
+    for c, name in zip([1, 2], ['heart', 'notes']):
+        condition = events.query(f"condition == {c}")[['onset', 'duration']]
+        condition['col'] = 1
+        condition['onset'] -= 2.52 * 5  # input epi volume was chopped
+        out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-{name}_regressors.tsv"
+        condition.to_csv(out_file, sep='\t', header=False, index=False, float_format='%.5f')
 
-    # # FSL task regressors
-    # events = pd.read_csv(event_path, sep='\t')
-    # for c, name in zip([1, 2], ['heart', 'notes']):
-    #     condition = events.query(f"condition == {c}")[['onset', 'duration']]
-    #     condition['col'] = 1
-    #     condition['onset'] -= 2.52 * 5  # input epi volume was chopped
-    #     out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-{name}_regressors.tsv"
-    #     condition.to_csv(out_file, sep='\t', header=False, index=False, float_format='%.5f')
-
-    # # confounds regressors
-    # confounds = pd.read_csv(confounds_path, sep='\t')
-    # var = ["framewise_displacement",
-    #         "a_comp_cor_00",
-    #         "a_comp_cor_01",
-    #         "a_comp_cor_02",
-    #         "a_comp_cor_03",
-    #         "a_comp_cor_04",
-    #         "a_comp_cor_05",
-    #         "cosine00",
-    #         "cosine01",
-    #         "cosine02",
-    #         "cosine03",
-    #         "trans_x",
-    #         "trans_y",
-    #         "trans_z",
-    #         "rot_x",
-    #         "rot_y",
-    #         "rot_z"]
-    # fsl_ver = confounds.loc[5:, var]
-    # out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-FSLconfounds_regressors.tsv"
-    # fsl_ver.to_csv(out_file, sep='\t', header=False, index=False, float_format='%.5f')
+    # confounds regressors
+    confounds = pd.read_csv(confounds_path, sep='\t')
+    var = ["framewise_displacement",
+            "a_comp_cor_00",
+            "a_comp_cor_01",
+            "a_comp_cor_02",
+            "a_comp_cor_03",
+            "a_comp_cor_04",
+            "a_comp_cor_05",
+            "cosine00",
+            "cosine01",
+            "cosine02",
+            "cosine03",
+            "trans_x",
+            "trans_y",
+            "trans_z",
+            "rot_x",
+            "rot_y",
+            "rot_z"]
+    fsl_ver = confounds.loc[5:, var]
+    out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-FSLconfounds_regressors.tsv"
+    fsl_ver.to_csv(out_file, sep='\t', header=False, index=False, float_format='%.5f')
     print("done")

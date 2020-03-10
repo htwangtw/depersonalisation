@@ -1,7 +1,7 @@
 import os, glob
 import pandas as pd
 
-os.chdir('/its/home/bsms9gxx/research/depersonalise-psychosis/data')
+os.chdir('/its/home/bsms9gxx/projects/critchley_depersonalisation/data')
 beh_csv = 'sourcedata/behaviour/*.csv'
 path_beh = glob.glob(beh_csv)
 
@@ -11,7 +11,7 @@ for i in path_beh:
     df['onset'] = df.loc[:, 'startHeartBeatMonitoring'] - df.loc[:, 'sixth_vol'] + 2.52 * 5
     df['duration'] = df.loc[:, 'endHeartBeatMonitoring'] - df.loc[:, 'startHeartBeatMonitoring']
     bids_id = i.split('_')[-1].split('.csv')[0]
-    tsv_path = glob.glob('sub-{}/func/*task-heartbeat*events.tsv'.format(bids_id))
+    tsv_path = glob.glob(f'sub-{bids_id}/func/sub-{bids_id}_task-heartbeat_run-?_events.tsv')
     if len(tsv_path) > 1:
         print(bids_id, 'two runs')  # only for sub-9734
         df_run1, df_run2 = df.iloc[:27, :], df.iloc[27:, :]
