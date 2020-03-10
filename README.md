@@ -4,6 +4,8 @@ Depersonalisation projects links to manuscript WIP by Sarah Garfinkel.
 Data originally collected and analysed by Geoff Davies, Charlotte Rae, and Cassandra Gould van Praag.  
 The current version in this folder is curated and analysed by Hao-Ting Wang.  
 
+Last update: 10 March 2020
+
 ```
 ./
 ├── data
