@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # copy feat/reg folder to first level stats output
 # performed on fMRIprep output
@@ -7,11 +7,12 @@
 # loaction of the fake registration results and all the first level stats
 # reg_feat="/research/cisc1/projects/critchley_depersonalisation/fake_reg.feat"
 reg_feat=${1?Error: no fake registreation feat dir give}
+reg_feat=$(readlink -f $reg_feat)
 
 # parental dir of all the first level feat directory
 feat_parents=${2?Error: no path given}
+feat_parents=$(readlink -f $feat_parents)
 FEAT_DIRS=$feat_parents/*/*.feat
-# FSLDIR=$FSLDIR
 
 # update the transformation matrix
 # only need to perform on the fake registeration once

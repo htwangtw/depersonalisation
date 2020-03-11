@@ -2,9 +2,12 @@
 
 SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
              ~/projects/critchley_depersonalisation/code/participants.tsv )
-TEMPLATE=~/projects/critchley_depersonalisation/code/templates/hrv_with_task_level1.fsf
-OUTPUT=~/projects/critchley_depersonalisation/scratch/FSL_hrv
+TEMPLATE=$1
+OUTPUT=$2
+# TEMPLATE=~/projects/critchley_depersonalisation/code/templates/hrv_with_task_n_contrasts_level1.fsf
+# OUTPUT=~/projects/critchley_depersonalisation/scratch/FSL_hrv_w_task_contrasts
 
+mkdir -p ${OUTPUT}/logs
 cd $OUTPUT
 for SUBJ in ${SUBJ_LIST}; do
   # create fsf template
