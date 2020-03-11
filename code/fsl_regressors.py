@@ -53,7 +53,7 @@ for subject in pass_qa:
     x = hrv.index.to_numpy()
     y = hrv.values.T
     # interpolate to TR
-    f = interpolate.interp1d(x, y, kind='cubic', fill_value='extrapolate')
+    f = interpolate.interp1d(x, y, kind='slinear', fill_value='extrapolate')
     new_time = np.arange(0, n_vol, 1) * tr
     hrv_tr_match = f(new_time)
     for i, name in enumerate(hrv.columns):
@@ -86,7 +86,7 @@ for subject in pass_qa:
         condition['col'] = 1
         condition['onset'] -= 2.52 * 5  # input epi volume was chopped
         out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-{name}_regressors.tsv"
-        condition.to_csv(out_file, sep='\t', header=False, index=False, float_format='%.5f')
+        condition.to_csv(out_file, sep='\t', header=False, index=False)
 
     # confounds regressors
     confounds = pd.read_csv(confounds_path, sep='\t')
@@ -109,5 +109,5 @@ for subject in pass_qa:
             "rot_z"]
     fsl_ver = confounds.loc[5:, var]
     out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-FSLconfounds_regressors.tsv"
-    fsl_ver.to_csv(out_file, sep='\t', header=False, index=False, float_format='%.5f')
+    fsl_ver.to_csv(out_file, sep='\t', header=False, index=False)
     print("done")
