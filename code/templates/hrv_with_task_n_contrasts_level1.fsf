@@ -30,7 +30,7 @@ set fmri(featwatcher_yn) 1
 set fmri(sscleanup_yn) 0
 
 # Output directory
-set fmri(outputdir) "/research/cisc1/projects/critchley_depersonalisation/FSL_hrv_w_task_contrasts/sub-SUBJECT/sub-SUBJECT.feat"
+set fmri(outputdir) "OUTPUT/sub-SUBJECT/sub-SUBJECT.feat"
 
 # TR(s)
 set fmri(tr) TR

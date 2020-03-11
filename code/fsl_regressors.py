@@ -58,6 +58,7 @@ for subject in pass_qa:
     hrv_tr_match = f(new_time)
     for i, name in enumerate(hrv.columns):
         power = hrv_tr_match[i, 5:]  # trim off the first five volumes
+        power = np.log10(power)  # take log
         np.savetxt(target_path / f"{subject}_task-heartbeat_run-1_desc-{name}_regressors.tsv",
                    power)
 

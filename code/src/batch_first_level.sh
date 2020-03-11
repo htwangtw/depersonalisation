@@ -1,11 +1,12 @@
 #!/bin/sh
 
+# need to refector this code!!!!
+
 SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
              ~/projects/critchley_depersonalisation/code/participants.tsv )
-TEMPLATE=$1
-OUTPUT=$2
-# TEMPLATE=~/projects/critchley_depersonalisation/code/templates/hrv_with_task_n_contrasts_level1.fsf
-# OUTPUT=~/projects/critchley_depersonalisation/scratch/FSL_hrv_w_task_contrasts
+
+TEMPLATE=/research/cisc2/projects/critchley_depersonalisation/code/templates/$1
+OUTPUT=/research/cisc1/projects/critchley_depersonalisation/$2
 
 mkdir -p ${OUTPUT}/logs
 cd $OUTPUT
@@ -21,10 +22,11 @@ for SUBJ in ${SUBJ_LIST}; do
     sed -e 's@SUBJECT@'$SUBJ'@g' \
         -e 's@VOLUMENUMBER@'$N_VOL'@g' \
         -e 's@TR@'$TR'@g' \
+        -e 's@OUTPUT@'$OUTPUT'@g' \
         <$i> ${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
   done
   cd ${OUTPUT}/logs
   # send the preprocess job to cluster
-  fsl_sub -N sub-${SUBJ}\
+  fsl_sub -N sub-${SUBJ} -l ${OUTPUT}/logs \
           feat ${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
 done
