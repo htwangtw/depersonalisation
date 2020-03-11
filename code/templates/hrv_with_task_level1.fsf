@@ -273,7 +273,7 @@ set fmri(totalVoxels) 123598475
 set fmri(ncopeinputs) 0
 
 # 4D AVW data or FEAT directory (1)
-set feat_files(1) "/research/cisc2/projects/critchley_depersonalisation/data/derivatives/func_smooth-6mm/sub-SUBJECT/func/sub-SUBJECT_task-heartbeat_run-RUN_space-MNI152NLin2009cAsym_desc-preproc-fwhm6mm_bold"
+set feat_files(1) "/research/cisc2/projects/critchley_depersonalisation/data/derivatives/func_smooth-6mm/sub-SUBJECT/func/sub-SUBJECT_task-heartbeat_run-1_space-MNI152NLin2009cAsym_desc-preproc-fwhm6mm_bold.nii.gz"
 
 # Add confound EVs text file
 set fmri(confoundevs) 1

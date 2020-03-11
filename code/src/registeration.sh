@@ -6,11 +6,11 @@
 
 # loaction of the fake registration results and all the first level stats
 # reg_feat="/research/cisc1/projects/critchley_depersonalisation/fake_reg.feat"
-ref_feat=${1?Error: no fake registreation feat dir give}
+reg_feat=${1?Error: no fake registreation feat dir give}
 
 # parental dir of all the first level feat directory
 feat_parents=${2?Error: no path given}
-FEAT_DIRS=$feat_parents/*.feat
+FEAT_DIRS=$feat_parents/*/*.feat
 # FSLDIR=$FSLDIR
 
 # update the transformation matrix
