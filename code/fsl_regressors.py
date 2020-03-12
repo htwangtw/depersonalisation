@@ -5,6 +5,8 @@ import json
 import pandas as pd
 import numpy as np
 from scipy import signal, interpolate
+from scipy.stats import zscore
+
 import nibabel as nb
 
 
@@ -58,7 +60,7 @@ for subject in pass_qa:
     hrv_tr_match = f(new_time)
     for i, name in enumerate(hrv.columns):
         power = hrv_tr_match[i, 5:]  # trim off the first five volumes
-        power = np.log10(power)  # take log
+        power = zscore(np.log10(power))  # take log and normalise
         out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-{name}_regressors.tsv"
         np.savetxt(str(out_file), power, fmt='%10.5f')
 
@@ -110,5 +112,6 @@ for subject in pass_qa:
             "rot_z"]
     fsl_ver = confounds.loc[5:, var]
     fsl_ver = fsl_ver.to_numpy()
+    out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-FSLconfounds_regressors.tsv"
     np.savetxt(str(out_file), fsl_ver, fmt='%10.5f')
     print("done")
