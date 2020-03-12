@@ -59,8 +59,8 @@ for subject in pass_qa:
     for i, name in enumerate(hrv.columns):
         power = hrv_tr_match[i, 5:]  # trim off the first five volumes
         power = np.log10(power)  # take log
-        out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-{name}_regressors.tsv",
-        np.savetxt(out_file, power, fmt='%10.5f')
+        out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-{name}_regressors.tsv"
+        np.savetxt(str(out_file), power, fmt='%10.5f')
 
     # BPM regressors
     ibi = np.loadtxt(ibi_path)
@@ -76,8 +76,8 @@ for subject in pass_qa:
             end = new_time[-1]
         idx = np.logical_and(t_beats >= start, t_beats <= end)
         bpm.append(sum(idx) / ((end - start) / 60))
-    out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-bpm_regressors.tsv",
-    np.savetxt(out_file, np.array(bpm), fmt='%10.5f')
+    out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-bpm_regressors.tsv"
+    np.savetxt(str(out_file), np.array(bpm), fmt='%10.5f')
 
     # FSL task regressors
     events = pd.read_csv(event_path, sep='\t')
@@ -87,7 +87,7 @@ for subject in pass_qa:
         condition['onset'] -= 2.52 * 5  # input epi volume was chopped
         out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-{name}_regressors.tsv"
         condition = condition.to_numpy()
-        np.savetxt(out_file, condition, fmt='%10.5f')
+        np.savetxt(str(out_file), condition, fmt='%10.5f')
 
     # confounds regressors
     confounds = pd.read_csv(confounds_path, sep='\t')
@@ -110,5 +110,5 @@ for subject in pass_qa:
             "rot_z"]
     fsl_ver = confounds.loc[5:, var]
     fsl_ver = fsl_ver.to_numpy()
-    np.savetxt(out_file, fsl_ver, fmt='%10.5f')
+    np.savetxt(str(out_file), fsl_ver, fmt='%10.5f')
     print("done")
