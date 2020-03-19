@@ -1,5 +1,10 @@
 """
-Doctring
+Convert list of peaks into
+1. inter beat interval
+2. time-frequecny spectrumgram
+3. continuous HRV in different frequency band
+4. export figures of IBI, time-frequency representation
+   and HRV for visual inspection
 """
 import os
 from pathlib import Path
@@ -16,13 +21,13 @@ home = str(Path.home())
 p = Path(home + "/projects/critchley_depersonalisation")
 participants = pd.read_csv(p / "code" / "participants.tsv", sep='\t')
 
-pass_qa = participants.participant_id.tolist()[:4]
+pass_qa = participants.participant_id.tolist()
 spike_fs = 1010.10
 tr_ref = 5  # stim channel marks the onset of the 6th volume
 
 for n_sub, subject in enumerate(pass_qa):
     print(f"{subject} : {n_sub + 1} / {len(pass_qa)}")
-    target_path = p / "results" / "test" / subject
+    target_path = p / "scratch" / "physio_qa" / subject
     physio_path = list(p.glob(f"data/{subject}/func/*_task-heartbeat_run-1_physio.tsv.gz"))[0]
     vol_path = (p / "data" / "derivatives" /
             "fmriprep-1.5.1rc2" / subject / "func" /

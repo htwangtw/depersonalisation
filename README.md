@@ -4,7 +4,7 @@ Depersonalisation projects links to manuscript WIP by Sarah Garfinkel.
 Data originally collected and analysed by Geoff Davies, Charlotte Rae, and Cassandra Gould van Praag.  
 The current version in this folder is curated and analysed by Hao-Ting Wang.  
 
-Last update: 10 March 2020
+Last update: 16 March 2020
 
 ```
 ./
@@ -35,24 +35,24 @@ This is a BIDS directory containing the raw data (`sourcedata`), BIDS compiled N
 
 ## `code`
 
-My analysis
+Analysis and visualisation code, including FSL design files
 
 ## `references`
 
 Code from referenced study, MNI space seed/gray matter masks
 
 ## `results`
-
-Code and metadata to produce the final figures. And, of course the figures.
+Outputs from `code`, includes figures, important interim data, manuscripts.
+Includes copy of metadata to produce the final figures.
 
 ## `scratch`
 
 Scratch folder. Delete after a project is complete.
 
-## Difference between `./data/derivatives` in and `analysis`
+## Difference between `./data/derivatives` in and `results`
 
 Prerpocessed first level data in `./data/derivatives`
-Summary, second level data and metadat derived `analysis`
+Summary, second level data and meta data are in `results`.
 Rule of thumb: data that might need permission to share, or too large for GitHub goes to `./data/derivatives`; otherwise `analysis`
 
 ## Framewise displacement threshold for quality assessments
