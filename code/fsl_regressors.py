@@ -36,7 +36,7 @@ for subject in pass_qa:
                   f"{subject}_task-heartbeat_run-1_events.tsv")
     hrv_path = p / "results" / "physio_measures" / subject / f"{subject}_task-heartbeat_run-1_desc-continuousHRV_physio.tsv"
     ibi_path = p / "results" / "physio_measures" / subject / f"{subject}_task-heartbeat_run-1_desc-ibi_physio.tsv"
-    target_path = p / "results" / "fsl_regressors" / subject
+    target_path = p / "scratch" / "fsl_regressors" / subject
 
     if not os.path.isdir(target_path):
         os.makedirs(target_path)
