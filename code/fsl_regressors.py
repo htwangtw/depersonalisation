@@ -1,8 +1,9 @@
 """
-
+usage:
+    python fsl_regressors.py $subject
 """
-
 import os
+import sys
 from pathlib import Path
 import json
 
@@ -13,109 +14,98 @@ from scipy.stats import zscore
 
 import nibabel as nb
 
-
+subject = sys.argv[1]
 # load file
 # File created through spike export to spreadsheet function
 # resample to frequecny = 100 hz
 # method: linear
 home = str(Path.home())
 p = Path(home + "/projects/critchley_depersonalisation")
-participants = pd.read_csv(p / "code" /"participants.tsv", sep='\t')
-pass_qa = participants.participant_id.tolist()
 
-for subject in pass_qa:
-    print(subject)
-    path = list(p.glob(f"data/{subject}/func/{subject}_task-heartbeat_run-1_physio.tsv.gz"))
-    path = path[0]
+path = list(p.glob(f"data/{subject}/func/{subject}_task-heartbeat_run-1_physio.tsv.gz"))
+path = path[0]
+vol_path = (p / "data" / subject / "func" /
+            f"{subject}_task-heartbeat_run-1_bold.json")
+confounds_path = (p / "data" / "derivatives" /
+                  "fmriprep-1.5.1rc2" / subject / "func" /
+                  f"{subject}_task-heartbeat_run-1_desc-confounds_regressors.tsv")
+event_path = (p / "data" / subject / "func" /
+              f"{subject}_task-heartbeat_run-1_events.tsv")
+hrv_path = (p / "results" / "physio_measures" / subject / 
+            f"{subject}_task-heartbeat_run-1_desc-continuousHRV_physio.tsv")
+ibi_path = (p / "results" / "physio_measures" / subject / 
+            f"{subject}_task-heartbeat_run-1_desc-ibi_physio.tsv")
+target_path = (p / "scratch" / "fsl_regressors" / subject)
+
+# predefined var
+n_dummy = 5
+confound_vars = (p / "code" / "confound_regressors.txt")
+confound_vars = [line.rstrip('\n') for line in open(confound_vars)]
+
+# create dir
+if not os.path.isdir(target_path):
+    os.makedirs(target_path)
+out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-hrv_timeseries.tsv"
+
+# load TR and dimension info
+with open(vol_path) as f:
+    data = json.load(f)
+
+tr = data['RepetitionTime']
+
+try:
+    n_vol = data['dcmmeta_shape'][-1]
+except KeyError:
     vol_path = (p / "data" / subject / "func" /
-                f"{subject}_task-heartbeat_run-1_bold.json")
-    confounds_path = (p / "data" / "derivatives" /
-            "fmriprep-1.5.1rc2" / subject / "func" /
-            f"{subject}_task-heartbeat_run-1_desc-confounds_regressors.tsv")
-    event_path = (p / "data" / subject / "func" /
-                  f"{subject}_task-heartbeat_run-1_events.tsv")
-    hrv_path = p / "results" / "physio_measures" / subject / f"{subject}_task-heartbeat_run-1_desc-continuousHRV_physio.tsv"
-    ibi_path = p / "results" / "physio_measures" / subject / f"{subject}_task-heartbeat_run-1_desc-ibi_physio.tsv"
-    target_path = p / "scratch" / "fsl_regressors" / subject
+                f"{subject}_task-heartbeat_run-1_bold.nii.gz")
+    n_vol = nb.load(str(vol_path)).shape[-1]
 
-    if not os.path.isdir(target_path):
-        os.makedirs(target_path)
-    out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-hrv_timeseries.tsv"
+# HRV regressors (low and high frequency HRV)
+hrv = pd.read_csv(hrv_path, sep='\t', index_col=0)
+x = hrv.index.to_numpy()
+y = hrv.values.T
+# interpolate to TR
+f = interpolate.interp1d(x, y, kind='slinear', fill_value='extrapolate')
+new_time = np.arange(0, n_vol, 1) * tr
+hrv_tr_match = f(new_time)
+for i, name in enumerate(hrv.columns):
+    power = hrv_tr_match[i, 5:]  # trim off the first five volumes
+    power = zscore(np.log10(power))  # take log and normalise
+    out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-{name}_regressors.tsv"
+    np.savetxt(str(out_file), power, fmt='%10.5f')
 
-    with open(vol_path) as f:
-        data = json.load(f)
+# BPM regressors
+ibi = np.loadtxt(ibi_path)
+t_beats = np.cumsum(ibi)
+window = 20
+bpm = []
+for t in new_time[5:]: # trim off 5 vol
+    start = t - window / 2
+    if start < 0:
+        start = 0
+    end = t + window / 2
+    if end > new_time[-1]:
+        end = new_time[-1]
+    idx = np.logical_and(t_beats >= start, t_beats <= end)
+    bpm.append(sum(idx) / ((end - start) / 60))
+out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-bpm_regressors.tsv"
+np.savetxt(str(out_file), np.array(bpm), fmt='%10.5f')
 
-    tr = data['RepetitionTime']
+# FSL task regressors
+events = pd.read_csv(event_path, sep='\t')
+for c, name in zip([1, 2], ['heart', 'notes']):
+    condition = events.query(f"condition == {c}")[['onset', 'duration']]
+    condition['col'] = 1
+    condition['onset'] -= tr * n_dummy  # input epi volume was chopped
+    out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-{name}_regressors.tsv"
+    condition = condition.to_numpy()
+    np.savetxt(str(out_file), condition, fmt='%10.5f')
 
-    try:
-        n_vol = data['dcmmeta_shape'][-1]
-    except KeyError:
-        vol_path = (p / "data" / subject / "func" /
-                    f"{subject}_task-heartbeat_run-1_bold.nii.gz")
-        n_vol = nb.load(str(vol_path)).shape[-1]
+# confounds regressors
+confounds = pd.read_csv(confounds_path, sep='\t')
+fsl_ver = confounds.loc[n_dummy:, confound_vars]
+fsl_ver = fsl_ver.to_numpy()
 
-    # HRV regressors (low and high frequency HRV)
-    hrv = pd.read_csv(hrv_path, sep='\t', index_col=0)
-    x = hrv.index.to_numpy()
-    y = hrv.values.T
-    # interpolate to TR
-    f = interpolate.interp1d(x, y, kind='slinear', fill_value='extrapolate')
-    new_time = np.arange(0, n_vol, 1) * tr
-    hrv_tr_match = f(new_time)
-    for i, name in enumerate(hrv.columns):
-        power = hrv_tr_match[i, 5:]  # trim off the first five volumes
-        power = zscore(np.log10(power))  # take log and normalise
-        out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-{name}_regressors.tsv"
-        np.savetxt(str(out_file), power, fmt='%10.5f')
-
-    # BPM regressors
-    ibi = np.loadtxt(ibi_path)
-    t_beats = np.cumsum(ibi)
-    window = 20
-    bpm = []
-    for t in new_time[5:]: # trim off 5 vol
-        start = t - window / 2
-        if start < 0:
-            start = 0
-        end = t + window / 2
-        if end > new_time[-1]:
-            end = new_time[-1]
-        idx = np.logical_and(t_beats >= start, t_beats <= end)
-        bpm.append(sum(idx) / ((end - start) / 60))
-    out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-bpm_regressors.tsv"
-    np.savetxt(str(out_file), np.array(bpm), fmt='%10.5f')
-
-    # FSL task regressors
-    events = pd.read_csv(event_path, sep='\t')
-    for c, name in zip([1, 2], ['heart', 'notes']):
-        condition = events.query(f"condition == {c}")[['onset', 'duration']]
-        condition['col'] = 1
-        condition['onset'] -= 2.52 * 5  # input epi volume was chopped
-        out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-{name}_regressors.tsv"
-        condition = condition.to_numpy()
-        np.savetxt(str(out_file), condition, fmt='%10.5f')
-
-    # confounds regressors
-    confounds = pd.read_csv(confounds_path, sep='\t')
-    var = ["framewise_displacement",
-            "a_comp_cor_00",
-            "a_comp_cor_01",
-            "a_comp_cor_02",
-            "a_comp_cor_03",
-            "a_comp_cor_04",
-            "a_comp_cor_05",
-            "cosine00",
-            "cosine01",
-            "cosine02",
-            "cosine03",
-            "trans_x",
-            "trans_y",
-            "trans_z",
-            "rot_x",
-            "rot_y",
-            "rot_z"]
-    fsl_ver = confounds.loc[5:, var]
-    fsl_ver = fsl_ver.to_numpy()
-    out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-FSLconfounds_regressors.tsv"
-    np.savetxt(str(out_file), fsl_ver, fmt='%10.5f')
-    print("done")
+out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-FSLconfounds_regressors.tsv"
+np.savetxt(str(out_file), fsl_ver, fmt='%10.5f')
+print("done")
