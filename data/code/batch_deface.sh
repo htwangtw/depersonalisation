@@ -1,4 +1,5 @@
-t1w=$(ls /home/hw1012/datasets/sussex/data/sub-*/ses-*/anat/sub-*_T1w.nii.gz)
+#!/bin/sh
+t1w=$(ls data/sub-*/ses-*/anat/sub-*_T1w.nii.gz)
 
 for f in $t1w; do
     chmod +w $f
