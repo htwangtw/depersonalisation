@@ -31,9 +31,9 @@ confounds_path = (p / "data" / "derivatives" /
                   f"{subject}_task-heartbeat_run-1_desc-confounds_regressors.tsv")
 event_path = (p / "data" / subject / "func" /
               f"{subject}_task-heartbeat_run-1_events.tsv")
-hrv_path = (p / "results" / "physio_measures" / subject / 
+hrv_path = (p / "scratch" / "physio_measures" / subject / 
             f"{subject}_task-heartbeat_run-1_desc-continuousHRV_physio.tsv")
-ibi_path = (p / "results" / "physio_measures" / subject / 
+ibi_path = (p / "scratch" / "physio_measures" / subject / 
             f"{subject}_task-heartbeat_run-1_desc-ibi_physio.tsv")
 target_path = (p / "scratch" / "fsl_regressors" / subject)
 
