@@ -16,18 +16,21 @@ for subj in $SUBJ_LIST; do
   # ./registration.sh FSL_HRV ${subj}
 
   # simple task contrast
-  ./first_level.sh hrv_level1.fsf FSL_HRV ${subj}
-  ./registration.sh FSL_tasks ${subj}
+  # ./first_level.sh hrv_level1.fsf FSL_HRV ${subj}
+  # ./registration.sh FSL_tasks ${subj}
 done
 
+
+PATH_REGRESSORS=$(readlink -f ~/projects/critchley_depersonalisation/results/group_confounds.tsv)
 # group level nuisance regressors
-if [[ ! -d ~/projects/critchley_depersonalisation/results/group_confounds.tsv ]]
+if [[ ! -f $PATH_REGRESSORS ]]
   then
   python ./fsl_group_regressors.py
 fi
 
 # ROI based analysis
-python group_level_FSL.py FSL_HRV ../reference/mask.nii.gz
+PATH_ANALYSIS=$(readlink -f ~/projects/critchley_depersonalisation/scratch/FSL_HRV)
+python ./group_level_FSL.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS 
 
 # whole brain analysis
-python group_level_FSL.py FSL_task ../reference/gray_matter_mask.nii.gz
+# python group_level_FSL.py FSL_task ../reference/gray_matter_mask.nii.gz
