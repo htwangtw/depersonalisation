@@ -30,7 +30,7 @@ fi
 
 # ROI based analysis
 PATH_ANALYSIS=$(readlink -f ~/projects/critchley_depersonalisation/scratch/FSL_HRV)
-python ./group_level_FSL.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS 
+python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS 
 
 # whole brain analysis
-# python group_level_FSL.py FSL_task ../reference/gray_matter_mask.nii.gz
+# python fsl_group_nonpara.py FSL_task ../reference/gray_matter_mask.nii.gz

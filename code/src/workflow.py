@@ -165,10 +165,6 @@ def group_randomise_wf(input_dir, subject_list, regressors_path, roi=None):
     roi:
         mask or coordinate (default: whole brain)
     """
-    roi_dir = input_dir + os.sep + "group_level" + os.sep + "roi_masks"
-    if not os.path.exists(roi_dir):
-        os.makedirs(roi_dir)
-
     def wf_prep_files():
         prep_files = pe.Workflow(name="prep_files")
         prep_files.base_dir = input_dir + os.sep + "group_level"
@@ -182,16 +178,10 @@ def group_randomise_wf(input_dir, subject_list, regressors_path, roi=None):
 
         gen_groupmask = pe.Node(Function(function=create_group_mask,
                                          input_names=["brain_masks", "base_dir"],
-                                         output_names=["group_mask"]),
+                                         output_names=["groupmask_path"]),
                                 name="gen_groupmask")
         gen_groupmask.inputs.base_dir = input_dir + os.sep + "group_level" + os.sep
 
-        gen_inputmask = pe.Node(Function(function=roi_mask,
-                                         input_names=["roi", "group_mask", "base_dir"],
-                                         output_names=["mask"]),
-                                name='gen_inputmask')
-        gen_inputmask.inputs.roi = roi_dir
-        gen_inputmask.inputs.base_dir = roi_dir + os.sep
 
         designs = pe.Node(Function(function=groupmean_contrast,
                                     input_names=["subject_list", "regressors_path"],
@@ -208,13 +198,13 @@ def group_randomise_wf(input_dir, subject_list, regressors_path, roi=None):
 
         prep_files.connect([
             (whole_brain_mask, gen_groupmask, [("mask", "brain_masks")]),
-            (gen_groupmask, gen_inputmask, [("group_mask", "group_mask")]),
             (designs, model, [("groups", "groups"),
                             ("regressors", "regressors"),
                             ("contrasts", "contrasts")]),
-            (gen_inputmask, outputnode, [("mask", "mask")]),
-            (model, outputnode, [("design_mat", "regressors"),
-                                ("design_con","contrasts")])
+            (gen_groupmask, outputnode, [("groupmask_path", "mask")]),
+            (model, outputnode, [("design_grp", "group"),
+                                 ("design_mat", "regressors"),
+                                 ("design_con","contrasts")])
         ])
         return prep_files
 
@@ -246,19 +236,21 @@ def group_randomise_wf(input_dir, subject_list, regressors_path, roi=None):
         randomise = pe.Node(fsl.Randomise(), name="randomise")
         randomise.inputs.num_perm = 1000
         randomise.inputs.vox_p_values = True
-        randomise.inputs.tfce=True
+        randomise.inputs.tfce = True
+        # randomise.inputs.demean = True
 
         onesampleT_randomise = pe.Node(fsl.Randomise(), name="onesampleT_randomise")
-        onesampleT_randomise.inputs.one_sample_group_mean=True
         onesampleT_randomise.inputs.num_perm = 1000
         onesampleT_randomise.inputs.vox_p_values = True
-        onesampleT_randomise.inputs.tfce=True
+        onesampleT_randomise.inputs.tfce = True
+        # onesampleT_randomise.inputs.demean = True
+        onesampleT_randomise.inputs.one_sample_group_mean=True
 
         wk.connect([
             (file_grabber, concat_copes, [("cope_file", "cope_file")]),
             (concat_copes, randomise, [("output_dir", "in_file")]),
-            (prep_files, randomise, [("outputnode.mask", "mask")]),
-            (prep_files, randomise, [("outputnode.contrasts", "tcon"),
+            (prep_files, randomise, [("outputnode.mask", "mask"),
+                                     ("outputnode.contrasts", "tcon"),
                                      ("outputnode.regressors", "design_mat")]),
             (concat_copes, onesampleT_randomise, [("output_dir", "in_file")]),
             (prep_files, onesampleT_randomise, [("outputnode.mask", "mask")]),
