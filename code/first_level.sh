@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 TEMPLATE=$(readlink -f ${HOME}/projects/critchley_depersonalisation/code/templates/${1})
 OUTPUT=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/${2})
@@ -30,7 +30,8 @@ fi
 
 # run feat
 FEAT_DIR=${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}.feat
-if [[ ! -d "$FEAT_DIR" ]]; then
+if [[ ! -d "$FEAT_DIR" ]]
+then
   feat ${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
   echo "run feat"
 else

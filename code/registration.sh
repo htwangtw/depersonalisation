@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 OUTPUT=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/${1})
 SUBJ=${2}

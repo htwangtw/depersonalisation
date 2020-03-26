@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 cd ~/projects/critchley_depersonalisation/code
 
@@ -15,9 +15,9 @@ for subj in $SUBJ_LIST; do
   # ./first_level.sh hrv_level1.fsf FSL_HRV ${subj}
   # ./registration.sh FSL_HRV ${subj}
 
-  # simple task contrast
-  # ./first_level.sh hrv_level1.fsf FSL_HRV ${subj}
-  # ./registration.sh FSL_tasks ${subj}
+  # HRV and task interaction
+  ./first_level.sh hrv_with_task_level1.fsf FSL_full_HRV_PPI ${subj}
+  ./registration.sh FSL_full_HRV_PPI ${subj}
 done
 
 
@@ -28,9 +28,8 @@ if [[ ! -f $PATH_REGRESSORS ]]
   python ./fsl_group_regressors.py
 fi
 
-# ROI based analysis
 PATH_ANALYSIS=$(readlink -f ~/projects/critchley_depersonalisation/scratch/FSL_HRV)
 python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS 
 
-# whole brain analysis
-# python fsl_group_nonpara.py FSL_task ../reference/gray_matter_mask.nii.gz
+PATH_ANALYSIS=$(readlink -f ~/projects/critchley_depersonalisation/scratch/FSL_full_HRV_PPI)
+python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS 
