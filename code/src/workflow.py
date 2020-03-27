@@ -27,6 +27,7 @@ def cope_names(input_dir):
     first_level = Path(input_dir)
     feat_dir = first_level.glob("sub-*/sub-*[0-9].feat/")
     con = list(feat_dir)[0] / "design.con"
+    print(con)
     with open(con) as f:
         contrast_names = [line.split()[-1] for line in f.readlines() if "ContrastName" in line]
     return contrast_names
@@ -35,7 +36,8 @@ def smooth_concat(cope_file, mm, output_dir):
     from nilearn.image import concat_imgs, smooth_img
     copes = []
     for i in cope_file:
-        copes.append(smooth_img(i, mm))
+        # i = smooth_img(i, mm)
+        copes.append(i)
     copes_concat = concat_imgs(copes, auto_resample=True)
     copes_concat.to_filename(output_dir)
     return output_dir
@@ -56,10 +58,10 @@ def create_group_mask(brain_masks, base_dir):
         group_mask.to_filename(groupmask_path)
 
     # plot report
-    plot_stat_map(mean_mask, 
+    plot_stat_map(mean_mask,
                   output_file=base_dir + "coverage_group_mask.png")
-    plot_roi(group_mask, 
-             output_file=base_dir + "bninary_group_mask.png") 
+    plot_roi(group_mask,
+             output_file=base_dir + "bninary_group_mask.png")
     return groupmask_path
 
 def create_sphere_mask(seed, group_mask, radius):
@@ -136,14 +138,16 @@ def groupmean_contrast(subject_list, regressors_path):
     regressors['patient'] = np.abs(regressors['control'] - 1)
 
     # generate basic contrasts
-    contrast_names = ['sample_mean', 'control', 'patient', 'patient > control']
+    contrast_names = ['control', 'patient',
+                      'patient > control', 'control > patient']
     df_con = pd.DataFrame(0, columns=regressors.columns,
                           index=contrast_names)
-    df_con.loc['sample_mean', ['control', 'patient']] = 1
     df_con.loc['control', ['control']] = 1
     df_con.loc['patient', ['patient']] = 1
     df_con.loc['patient > control', ['patient']] = 1
     df_con.loc['patient > control', ['control']] = -1
+    df_con.loc['control > patient', ['patient']] = -1
+    df_con.loc['control > patient', ['control']] = 1
 
     contrasts = []
     for index, row in df_con.iterrows():
@@ -152,6 +156,8 @@ def groupmean_contrast(subject_list, regressors_path):
 
     # group
     group = np.ones(len(subject_list)).astype(int).tolist()
+
+    # save out the design matrix with subject number for seninty check
 
     return group, regressors.to_dict('list'), (contrasts)
 

@@ -130,7 +130,7 @@ set fmri(melodic_yn) 0
 set fmri(stats_yn) 1
 
 # Carry out prewhitening?
-set fmri(prewhiten_yn) 1
+set fmri(prewhiten_yn) 0
 
 # Add motion parameters to model
 # 0 : No
@@ -154,7 +154,7 @@ set fmri(randomisePermutations) 5000
 
 # Number of EVs
 set fmri(evs_orig) 3
-set fmri(evs_real) 6
+set fmri(evs_real) 3
 set fmri(evs_vox) 0
 
 # Number of contrasts
@@ -311,7 +311,7 @@ set fmri(convolve_phase1) 0
 set fmri(tempfilt_yn1) 1
 
 # Add temporal derivative (EV 1)
-set fmri(deriv_yn1) 1
+set fmri(deriv_yn1) 0
 
 # Custom EV file (EV 1)
 set fmri(custom1) "/home/hw1012/projects/critchley_depersonalisation/scratch/fsl_regressors/sub-SUBJECT/sub-SUBJECT_task-heartbeat_run-1_desc-lf_HRV_regressors.tsv"
@@ -358,7 +358,7 @@ set fmri(convolve_phase2) 0
 set fmri(tempfilt_yn2) 1
 
 # Add temporal derivative (EV 2)
-set fmri(deriv_yn2) 1
+set fmri(deriv_yn2) 0
 
 # Custom EV file (EV 2)
 set fmri(custom2) "/home/hw1012/projects/critchley_depersonalisation/scratch/fsl_regressors/sub-SUBJECT/sub-SUBJECT_task-heartbeat_run-1_desc-hf_HRV_regressors.tsv"
@@ -405,7 +405,7 @@ set fmri(convolve_phase3) 0
 set fmri(tempfilt_yn3) 1
 
 # Add temporal derivative (EV 3)
-set fmri(deriv_yn3) 1
+set fmri(deriv_yn3) 0
 
 # Custom EV file (EV 3)
 set fmri(custom3) "/home/hw1012/projects/critchley_depersonalisation/scratch/fsl_regressors/sub-SUBJECT/sub-SUBJECT_task-heartbeat_run-1_desc-bpm_regressors.tsv"
@@ -443,15 +443,6 @@ set fmri(con_real1.2) 0
 # Real contrast_real vector 1 element 3
 set fmri(con_real1.3) 0
 
-# Real contrast_real vector 1 element 4
-set fmri(con_real1.4) 0
-
-# Real contrast_real vector 1 element 5
-set fmri(con_real1.5) 0
-
-# Real contrast_real vector 1 element 6
-set fmri(con_real1.6) 0
-
 # Display images for contrast_real 2
 set fmri(conpic_real.2) 1
 
@@ -462,19 +453,10 @@ set fmri(conname_real.2) "HF"
 set fmri(con_real2.1) 0
 
 # Real contrast_real vector 2 element 2
-set fmri(con_real2.2) 0
+set fmri(con_real2.2) 1.0
 
 # Real contrast_real vector 2 element 3
-set fmri(con_real2.3) 1.0
-
-# Real contrast_real vector 2 element 4
-set fmri(con_real2.4) 0
-
-# Real contrast_real vector 2 element 5
-set fmri(con_real2.5) 0
-
-# Real contrast_real vector 2 element 6
-set fmri(con_real2.6) 0
+set fmri(con_real2.3) 0
 
 # Display images for contrast_real 3
 set fmri(conpic_real.3) 1
@@ -489,16 +471,7 @@ set fmri(con_real3.1) 0
 set fmri(con_real3.2) 0
 
 # Real contrast_real vector 3 element 3
-set fmri(con_real3.3) 0
-
-# Real contrast_real vector 3 element 4
-set fmri(con_real3.4) 0
-
-# Real contrast_real vector 3 element 5
-set fmri(con_real3.5) 1.0
-
-# Real contrast_real vector 3 element 6
-set fmri(con_real3.6) 0
+set fmri(con_real3.3) 1.0
 
 # Display images for contrast_orig 1
 set fmri(conpic_orig.1) 1
