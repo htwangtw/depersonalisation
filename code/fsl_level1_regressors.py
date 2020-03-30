@@ -14,6 +14,7 @@ from scipy.stats import zscore
 
 import nibabel as nb
 
+print("create regressors")
 subject = sys.argv[1]
 # load file
 # File created through spike export to spreadsheet function

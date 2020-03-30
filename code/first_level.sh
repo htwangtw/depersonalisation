@@ -38,6 +38,7 @@ else
         -e 's@VOLUMENUMBER@'$N_VOL'@g' \
         -e 's@TR@'$TR'@g' \
         -e 's@OUTPUT@'$OUTPUT'@g' \
+        -e 's@HOME@'$HOME'@g'
         <$i> $fsf
   done
 fi
