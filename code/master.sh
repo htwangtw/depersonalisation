@@ -7,7 +7,7 @@ cd ~/projects/critchley_depersonalisation/code
 
 SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
              participants.tsv )
-
+SUBJ_LIST="10048 10076"
 for subj in $SUBJ_LIST; do
   # generate regressors
   # qsub ./create_regressors.sh ${subj}
@@ -30,7 +30,8 @@ for subj in $SUBJ_LIST; do
     if [[ "x$SGE_ROOT" = "x" ]] ; then
       ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
     else
-      qsub -j y -l ~/logs -N $subj_$seed ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
+      qsub -j y -o ${HOME}/logs -N ${subj}_${seed} \
+           ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
     fi  
   done
 
