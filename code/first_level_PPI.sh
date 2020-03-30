@@ -13,21 +13,6 @@ SEED=${4}
 
 cd ${HOME}/projects/critchley_depersonalisation/code
 
-# generate regressors if not exist
-if [[ ! -d "$OUTPUT/physio_measures/sub-${SUBJ}" ]]
-then
-  python ./process_hrv.py sub-${SUBJ}
-else
-  echo "file exist"
-fi
-
-if [[ ! -d "$OUTPUT/regressors/sub-${SUBJ}" ]]
-then
-  python ./fsl_level1_regressors.py sub-${SUBJ}
-else
-  echo "file exist"
-fi
-
 fsf=${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
 mkdir -p ${OUTPUT}/logs
 cd $OUTPUT
