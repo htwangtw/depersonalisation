@@ -13,6 +13,7 @@ for subj in $SUBJ_LIST; do
   # qsub ./create_regressors.sh ${subj}
 
   echo $subj
+
   # HRV analysis
   # ./first_level.sh hrv_level1.fsf FSL_HRV_no_td ${subj}
   # ./registration.sh FSL_HRV_no_td ${subj}
@@ -30,7 +31,7 @@ for subj in $SUBJ_LIST; do
     if [[ "x$SGE_ROOT" = "x" ]] ; then
       ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
     else
-      qsub -j y -l ~/logs -N $subj_$seed ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
+      qsub -j y -o ~/logs/ -N $subj_$seed ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
     fi  
   done
 
