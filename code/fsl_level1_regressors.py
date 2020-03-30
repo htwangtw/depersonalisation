@@ -126,7 +126,7 @@ for m in nii_masks:
     m = str(m)
     seed_masker = input_data.NiftiMasker(m, t_r=tr, detrend=True)
     seed_time_series = seed_masker.fit_transform(func_filename, confounds=fsl_ver)
-    seed_time_series = seed_time_series.mean(axis=0)
+    seed_time_series = seed_time_series.mean(axis=1)
     out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-insular{hemi}_regressors.tsv"
     np.savetxt(str(out_file), seed_time_series, fmt='%10.5f')       
 
