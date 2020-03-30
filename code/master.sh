@@ -39,27 +39,3 @@ for subj in $SUBJ_LIST; do
   done
 
 done
-
-PATH_REGRESSORS=$(readlink -f ~/projects/critchley_depersonalisation/results/group_confounds.tsv)
-# group level nuisance regressors
-if [[ ! -f $PATH_REGRESSORS ]]
-  then
-  python ./fsl_group_regressors.py
-fi
-
-# group level
-
-# PATH_ANALYSIS=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/FSL_HRV_no_td)
-# python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS 
-
-# PATH_ANALYSIS=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/FSL_task_HRV)
-# python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS 
-
-# PATH_ANALYSIS=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/FSL_task)
-# python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS 
-
-# PPI
-# for seed in lf_HRV hf_HRV bpm; do
-#   PATH_ANALYSIS=$(readlink -f "${HOME}/projects/critchley_depersonalisation/scratch/FSL_PPI-$seed")
-#   python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS
-# done
