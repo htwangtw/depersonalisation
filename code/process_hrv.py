@@ -26,7 +26,7 @@ spike_fs = 1010.10
 # set paths
 home = str(Path.home())
 p = Path(home + "/projects/critchley_depersonalisation")
-target_path = p / "scratch" / "physio_qa" / subject
+target_path = p / "scratch" / "physio_measures" / subject
 physio_path = list(p.glob(f"data/{subject}/func/*_task-heartbeat_run-1_physio.tsv.gz"))[0]
 vol_path = (p / "data" / "derivatives" /
         "fmriprep-1.5.1rc2" / subject / "func" /
