@@ -32,9 +32,11 @@ fi
 FEAT_DIR=${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}.feat
 if [[ ! -d "$FEAT_DIR" ]]
 then
-  # fsl_sub -N {SUBJ} -l ${OUTPUT}/logs \
-  #   feat ${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
-  feat ${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
+  if [[ "x$SGE_ROOT" = "x" ]] ; then
+    feat ${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
+  else
+    clusterFeat.sh ${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
+  fi
   echo "run feat"
 else
   echo "Feat directory exist"
