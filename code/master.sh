@@ -22,8 +22,7 @@ for subj in $SUBJ_LIST; do
   # ./first_level.sh heart_wrt_note_level_1.fsf FSL_task ${subj}
   # ./registration.sh FSL_task ${subj}
   # generate regressors if not exist
-  qsub python ./process_hrv.py sub-${SUBJ}
-  qsub python ./fsl_level1_regressors.py sub-${SUBJ}
+  qsub ./create_regressors.sh ${subj}
 
   #PPI
   # for seed in pag insularL insularR; do
@@ -40,7 +39,7 @@ PATH_REGRESSORS=$(readlink -f ~/projects/critchley_depersonalisation/results/gro
 # group level nuisance regressors
 if [[ ! -f $PATH_REGRESSORS ]]
   then
-  qsub python ./fsl_group_regressors.py
+  python ./fsl_group_regressors.py
 fi
 
 # PATH_ANALYSIS=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/FSL_HRV_no_td)
