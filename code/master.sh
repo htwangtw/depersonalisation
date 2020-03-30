@@ -27,10 +27,10 @@ for subj in $SUBJ_LIST; do
   # ./registration.sh FSL_task ${subj}
   
   #PPI
-  for seed in lf_HRV hf_HRV bpm; do
-    # ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
-    ./registration.sh "FSL_PPI-$seed" ${subj}
-  done
+  # for seed in lf_HRV hf_HRV bpm; do
+  #   # ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
+  #   # ./registration.sh "FSL_PPI-$seed" ${subj}
+  # done
 done
 
 
@@ -51,7 +51,10 @@ fi
 # python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS 
 
 # PPI
-for seed in lh_HRV hf_HRV bpm; do
-  PATH_ANALYSIS=$(readlink -f "${HOME}/projects/critchley_depersonalisation/scratch/FSL_PPI-$seed")
-  python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS
-done
+# for seed in lf_HRV hf_HRV bpm; do
+#   PATH_ANALYSIS=$(readlink -f "${HOME}/projects/critchley_depersonalisation/scratch/FSL_PPI-$seed")
+#   python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS
+# done
+seed=lf_HRV
+PATH_ANALYSIS=$(readlink -f "${HOME}/projects/critchley_depersonalisation/scratch/FSL_PPI-$seed")
+python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS

@@ -35,7 +35,7 @@ hrv_path = (p / "scratch" / "physio_measures" / subject /
             f"{subject}_task-heartbeat_run-1_desc-continuousHRV_physio.tsv")
 ibi_path = (p / "scratch" / "physio_measures" / subject / 
             f"{subject}_task-heartbeat_run-1_desc-ibi_physio.tsv")
-target_path = (p / "scratch" / "fsl_regressors" / subject)
+target_path = (p / "scratch" / "regressors" / subject)
 
 # predefined var
 n_dummy = 5
