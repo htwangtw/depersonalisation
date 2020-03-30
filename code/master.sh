@@ -23,16 +23,14 @@ for subj in $SUBJ_LIST; do
   # ./registration.sh FSL_task ${subj}
   
   #PPI
-  # for seed in lf_HRV hf_HRV bpm; do
-  #   # ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
-  #   # ./registration.sh "FSL_PPI-$seed" ${subj}
-  # done
-  if [[ "x$SGE_ROOT" = "x" ]] ; then
-    # task only
-    ./first_level.sh heart_wrt_note_level_1.fsf FSL_task ${subj}
-  else
-    qsub ./first_level.sh heart_wrt_note_level_1.fsf FSL_task ${subj}
-  fi  
+  for seed in pag insularL insularR; do
+    if [[ "x$SGE_ROOT" = "x" ]] ; then
+      # task only
+      ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
+    else
+      qsub ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
+    fi  
+  done
 done
 
 PATH_REGRESSORS=$(readlink -f ~/projects/critchley_depersonalisation/results/group_confounds.tsv)
