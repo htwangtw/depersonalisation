@@ -7,11 +7,13 @@ cd ~/projects/critchley_depersonalisation/code
 
 SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
              participants.tsv )
-for subj in $SUBJ_LIST; do
-  # generate regressors
-  # qsub ./create_regressors.sh ${subj}
-done
 
+# generate regressors
+# for subj in $SUBJ_LIST; do
+#   qsub ./create_regressors.sh ${subj}
+# done
+
+# first level 
 for subj in $SUBJ_LIST; do
   echo sub-$subj
   # HRV analysis
@@ -31,7 +33,7 @@ for subj in $SUBJ_LIST; do
     if [[ "x$SGE_ROOT" = "x" ]] ; then
       ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
     else
-      qsub -j y -o ${HOME}/logs -N sub-${subj}_${seed} \
+      qsub -o ${HOME}/logs -N sub-${subj}_${seed} \
            ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
     fi  
   done
@@ -44,6 +46,8 @@ if [[ ! -f $PATH_REGRESSORS ]]
   then
   python ./fsl_group_regressors.py
 fi
+
+# group level
 
 # PATH_ANALYSIS=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/FSL_HRV_no_td)
 # python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS 
