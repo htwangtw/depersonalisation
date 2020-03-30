@@ -108,17 +108,14 @@ np.savetxt(str(out_file), fsl_ver, fmt='%10.5f')
 
 # ppi seeds
 from nilearn import input_data
-coords = [(-2, -14, -32)]
-seed_masker = input_data.NiftiSpheresMasker(
-    coords, radius=8, t_r=2.5,
-    memory='nilearn_cache', memory_level=1, verbose=0)
 
 func_filename = str(p / "data" / "derivatives" / 
                  "func_smooth-6mm" / subject / "func" /
-                 f"{subject}_task-heartbeat_run-1_space-MNI152NLin2009cAsym_desc-preproc-fwhm6mm_bold.nii.gz ")
+                 f"{subject}_task-heartbeat_run-1_space-MNI152NLin2009cAsym_desc-preproc-fwhm6mm_bold.nii.gz")
 confound_filename = str(target_path / f"{subject}_task-heartbeat_run-1_desc-{name}_regressors.tsv")
-seed_time_series = seed_masker.fit_transform(func_filename,
-                                             confounds=[confound_filename])
+coords = [(-2, -14, -32)]
+seed_masker = input_data.NiftiSpheresMasker(coords, radius=8, t_r=tr)
+seed_time_series = seed_masker.fit_transform(func_filename, confounds=[confound_filename])
 out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-pag_regressors.tsv"
 np.savetxt(str(out_file), seed_time_series, fmt='%10.5f')                                        
 
