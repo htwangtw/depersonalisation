@@ -11,6 +11,8 @@ OUTPUT=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/${2})
 SUBJ=${3}
 SEED=${4}
 
+cd ${HOME}/projects/critchley_depersonalisation/code
+
 # generate regressors if not exist
 if [[ ! -d "$OUTPUT/physio_measures/sub-${SUBJ}" ]]
 then
