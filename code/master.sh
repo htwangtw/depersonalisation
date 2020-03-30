@@ -9,6 +9,9 @@ SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
              participants.tsv )
 
 for subj in $SUBJ_LIST; do
+  # generate regressors
+  # qsub ./create_regressors.sh ${subj}
+
   echo $subj
   # HRV analysis
   # ./first_level.sh hrv_level1.fsf FSL_HRV_no_td ${subj}
@@ -21,18 +24,16 @@ for subj in $SUBJ_LIST; do
   # task only
   # ./first_level.sh heart_wrt_note_level_1.fsf FSL_task ${subj}
   # ./registration.sh FSL_task ${subj}
-  # generate regressors if not exist
-  qsub ./create_regressors.sh ${subj}
 
   #PPI
-  # for seed in pag insularL insularR; do
-  #   if [[ "x$SGE_ROOT" = "x" ]] ; then
-  #     # task only
-  #     ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
-  #   else
-  #     qsub ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
-  #   fi  
-  # done
+  for seed in pag insularL insularR; do
+    if [[ "x$SGE_ROOT" = "x" ]] ; then
+      ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
+    else
+      qsub -j y -l ~/logs -N $subj_$seed ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
+    fi  
+  done
+
 done
 
 PATH_REGRESSORS=$(readlink -f ~/projects/critchley_depersonalisation/results/group_confounds.tsv)
