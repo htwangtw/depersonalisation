@@ -1,9 +1,23 @@
 #!/bin/bash
 
+if [[ "x$SGE_ROOT" = "x" ]] ; then
+  echo "not on the cluster"
+else
+  . ~/.bash_profile
+fi  
+
+
 TEMPLATE=$(readlink -f ${HOME}/projects/critchley_depersonalisation/code/templates/${1})
 OUTPUT=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/${2})
 SUBJ=${3}
 
+cd ${HOME}/projects/critchley_depersonalisation/code
+
+# generate regressors
+python ./process_hrv.py sub-${SUBJ}
+python ./fsl_regressors.py sub-${SUBJ}
+
+# generate fsf
 fsf=${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
 mkdir -p ${OUTPUT}/logs
 cd $OUTPUT
@@ -32,12 +46,12 @@ fi
 FEAT_DIR=${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}.feat
 if [[ ! -d "$FEAT_DIR" ]]
 then
-  if [[ "x$SGE_ROOT" = "x" ]] ; then
-    feat ${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
-  else
-    clusterFeat.sh ${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
-  fi
+  export SGE_ROOT=""
+  feat ${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
   echo "run feat"
 else
   echo "Feat directory exist"
 fi
+
+# fake reg
+./registration.sh FSL_task ${subj}

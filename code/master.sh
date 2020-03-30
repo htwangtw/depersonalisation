@@ -31,6 +31,12 @@ for subj in $SUBJ_LIST; do
   #   # ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
   #   # ./registration.sh "FSL_PPI-$seed" ${subj}
   # done
+  if [[ "x$SGE_ROOT" = "x" ]] ; then
+    ./first_level.sh heart_wrt_note_level_1.fsf FSL_task ${subj}
+  else
+    qsub ./first_level.sh heart_wrt_note_level_1.fsf FSL_task ${subj}
+  fi  
+
 done
 
 
