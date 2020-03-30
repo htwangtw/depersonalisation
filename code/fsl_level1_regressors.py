@@ -117,6 +117,16 @@ seed_masker = input_data.NiftiSpheresMasker(coords, radius=8, t_r=tr,
                                             detrend=True, standardize=True)
 seed_time_series = seed_masker.fit_transform(func_filename, confounds=fsl_ver)
 out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-pag_regressors.tsv"
-np.savetxt(str(out_file), seed_time_series, fmt='%10.5f')                                        
+np.savetxt(str(out_file), seed_time_series, fmt='%10.5f')
+
+nii_masks = p / "references" / "insular_masks" / 
+nii_masks = list(nii_masks.glob("juelich_GM_insular_prob90_[LR].nii.gz"))
+for m in nii_masks:
+    hemi = m.name.split("_")[-1].split('.')[0]
+    m = str(m)
+    seed_masker = input_data.NiftiMasker(m, t_r=tr,detrend=True, standardize=True)
+    seed_time_series = seed_masker.fit_transform(func_filename, confounds=fsl_ver)
+    out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-insular{hemi}_regressors.tsv"
+    np.savetxt(str(out_file), seed_time_series, fmt='%10.5f')       
 
 print("done")
