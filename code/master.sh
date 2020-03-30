@@ -13,6 +13,7 @@ for subj in $SUBJ_LIST; do
   # qsub ./create_regressors.sh ${subj}
 
   echo $subj
+
   # HRV analysis
   # ./first_level.sh hrv_level1.fsf FSL_HRV_no_td ${subj}
   # ./registration.sh FSL_HRV_no_td ${subj}

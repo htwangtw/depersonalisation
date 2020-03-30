@@ -11,11 +11,8 @@ OUTPUT=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/${2})
 SUBJ=${3}
 SEED=${4}
 
-cd ${HOME}/projects/critchley_depersonalisation/code
 
 fsf=${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
-mkdir -p ${OUTPUT}/logs
-cd $OUTPUT
 # create fsf template
 if [[ -f $fsf ]]
 then
@@ -46,9 +43,10 @@ then
   export SGE_ROOT=""
   feat ${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
   echo "run feat"
+
+  cd ${HOME}/projects/critchley_depersonalisation/code
+  # fake reg
+  ./registration.sh FSL_task ${subj}
 else
   echo "Feat directory exist"
 fi
-
-# fake reg
-./registration.sh FSL_task ${subj}
