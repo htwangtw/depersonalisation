@@ -10,10 +10,6 @@ SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
 SUBJ_LIST="10048 10076"
 for subj in $SUBJ_LIST; do
   echo $subj
-  # generate regressors
-  # python ./process_hrv.py sub-${subj}
-  # python ./fsl_level1_regressors.py sub-${subj}
-
   # HRV analysis
   # ./first_level.sh hrv_level1.fsf FSL_HRV_no_td ${subj}
   # ./registration.sh FSL_HRV_no_td ${subj}
@@ -32,11 +28,11 @@ for subj in $SUBJ_LIST; do
   #   # ./registration.sh "FSL_PPI-$seed" ${subj}
   # done
   if [[ "x$SGE_ROOT" = "x" ]] ; then
+    # task only
     ./first_level.sh heart_wrt_note_level_1.fsf FSL_task ${subj}
   else
     qsub ./first_level.sh heart_wrt_note_level_1.fsf FSL_task ${subj}
   fi  
-
 done
 
 PATH_REGRESSORS=$(readlink -f ~/projects/critchley_depersonalisation/results/group_confounds.tsv)

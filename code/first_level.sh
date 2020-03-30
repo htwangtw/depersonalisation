@@ -13,15 +13,25 @@ SUBJ=${3}
 
 cd ${HOME}/projects/critchley_depersonalisation/code
 
-# generate regressors
-python ./process_hrv.py sub-${SUBJ}
-python ./fsl_level1_regressors.py sub-${SUBJ}
+# generate regressors if not exist
+if [[ ! -d "$OUTPUT/physio_measures/sub-${SUBJ}" ]]
+then
+  python ./process_hrv.py sub-${SUBJ}
+else
+fi
 
-# generate fsf
-fsf=${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
+if [[ ! -d "$OUTPUT/regressors/sub-${SUBJ}" ]]
+then
+  python ./fsl_level1_regressors.py sub-${SUBJ}
+else
+fi
+
+# make output dir
 mkdir -p ${OUTPUT}/logs
 cd $OUTPUT
+
 # create fsf template
+fsf=${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
 if [[ -f $fsf ]]
 then
   echo "fsf file exist!"
@@ -38,7 +48,7 @@ else
         -e 's@VOLUMENUMBER@'$N_VOL'@g' \
         -e 's@TR@'$TR'@g' \
         -e 's@OUTPUT@'$OUTPUT'@g' \
-        -e 's@HOME@'$HOME'@g'
+        -e 's@HOME@'$HOME'@g' \
         <$i> $fsf
   done
 fi
