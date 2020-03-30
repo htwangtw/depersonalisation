@@ -10,12 +10,10 @@ SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
 for subj in $SUBJ_LIST; do
   # generate regressors
   # qsub ./create_regressors.sh ${subj}
-
-  echo $subj
 done
 
 for subj in $SUBJ_LIST; do
-
+  echo sub-$subj
   # HRV analysis
   # ./first_level.sh hrv_level1.fsf FSL_HRV_no_td ${subj}
   # ./registration.sh FSL_HRV_no_td ${subj}
