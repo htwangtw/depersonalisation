@@ -1,18 +1,18 @@
 #!/bin/bash
 
 cd ~/projects/critchley_depersonalisation
-. env/bin/activate
+# . env/bin/activate
 
 cd ~/projects/critchley_depersonalisation/code
 
 SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
              participants.tsv )
-
+SUBJ_LIST="10048 10076"
 for subj in $SUBJ_LIST; do
   echo $subj
   # generate regressors
   # python ./process_hrv.py sub-${subj}
-  # python ./fsl_regressors.py sub-${subj}
+  # python ./fsl_level1_regressors.py sub-${subj}
 
   # HRV analysis
   # ./first_level.sh hrv_level1.fsf FSL_HRV_no_td ${subj}
