@@ -21,6 +21,7 @@ from src.hrv import ContinuousHRV
 
 # load subject
 subject = sys.argv[1]
+spike_fs = 1010.10
 
 # set paths
 home = str(Path.home())
