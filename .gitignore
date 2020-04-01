@@ -9,7 +9,7 @@ scratch/
 scratch
 code/bak/
 */bak/
-results/fsl_result_nifti/
+results/glm_niftis/
 
 #various editors
 .vscode/
