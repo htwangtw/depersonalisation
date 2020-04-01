@@ -29,9 +29,9 @@ confounds_path = (p / "data" / "derivatives" /
                   f"{subject}_task-heartbeat_run-1_desc-confounds_regressors.tsv")
 event_path = (p / "data" / subject / "func" /
               f"{subject}_task-heartbeat_run-1_events.tsv")
-hrv_path = (p / "scratch" / "physio_measures" / subject / 
+hrv_path = (p / "scratch" / "physio_measures" / subject /
             f"{subject}_task-heartbeat_run-1_desc-continuousHRV_physio.tsv")
-ibi_path = (p / "scratch" / "physio_measures" / subject / 
+ibi_path = (p / "scratch" / "physio_measures" / subject /
             f"{subject}_task-heartbeat_run-1_desc-ibi_physio.tsv")
 target_path = (p / "scratch" / "regressors" / subject)
 
@@ -106,29 +106,30 @@ except KeyError:
 # out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-FSLconfounds_regressors.tsv"
 # np.savetxt(str(out_file), fsl_ver, fmt='%10.5f')
 
-# # ppi seeds
-# from nilearn import input_data
+# ppi seeds
+from nilearn import input_data
 
-# func_filename = str(p / "data" / "derivatives" / 
-#                  "func_smooth-6mm" / subject / "func" /
-#                  f"{subject}_task-heartbeat_run-1_space-MNI152NLin2009cAsym_desc-preproc-fwhm6mm_bold.nii.gz")
+func_filename = str(p / "data" / "derivatives" /
+                 "func_smooth-6mm" / subject / "func" /
+                 f"{subject}_task-heartbeat_run-1_space-MNI152NLin2009cAsym_desc-preproc-fwhm6mm_bold.nii.gz")
 # coords = [(-2, -14, -32)]
-# seed_masker = input_data.NiftiSpheresMasker(coords, radius=8, t_r=tr, 
+# seed_masker = input_data.NiftiSpheresMasker(coords, radius=8, t_r=tr,
 #                                             detrend=True, standardize=True)
 # seed_time_series = seed_masker.fit_transform(func_filename, confounds=fsl_ver)
 # out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-pag_regressors.tsv"
 # np.savetxt(str(out_file), seed_time_series, fmt='%10.5f')
 
-nii_masks = p / "references" / "insular_masks" 
+nii_masks = p / "references" / "insular_masks"
 nii_masks = list(nii_masks.glob("hammersmith_prob50_bin_probmap-gm-r??-insula_*_[LR].nii.gz"))
 for m in nii_masks:
     label = m.name.split("insula_")[-1].split('.')[0]
+    print(label)
     m = str(m)
     seed_masker = input_data.NiftiMasker(m, t_r=tr, detrend=True, standardize=True)
     seed_time_series = seed_masker.fit_transform(func_filename, confounds=fsl_ver)
     seed_time_series = seed_time_series.mean(axis=1)
     seed_time_series -= seed_time_series.mean()  # mean centre
     out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-{label}_regressors.tsv"
-    np.savetxt(str(out_file), seed_time_series, fmt='%10.5f')       
+    np.savetxt(str(out_file), seed_time_series, fmt='%10.5f')
 
 print("done")
