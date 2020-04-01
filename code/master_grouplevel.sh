@@ -6,6 +6,8 @@ else
   . ~/.bash_profile
 fi  
 
+seed=${1}
+
 cd ~/projects/critchley_depersonalisation/code
 
 SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
@@ -19,8 +21,6 @@ if [[ ! -f $PATH_REGRESSORS ]]
 fi
 
 # group level
-for seed in pag insularL insularR; do
-  echo $seed
-  PATH_ANALYSIS=$(readlink -f "${HOME}/projects/critchley_depersonalisation/scratch/FSL_PPI-$seed")
-  python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS
-done
+echo $seed
+PATH_ANALYSIS=$(readlink -f "${HOME}/projects/critchley_depersonalisation/scratch/FSL_PPI-$seed")
+python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS

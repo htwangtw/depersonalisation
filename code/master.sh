@@ -13,6 +13,10 @@ for subj in $SUBJ_LIST; do
   qsub ./create_regressors.sh ${subj}
 done
 
+for subj in $SUBJ_LIST; do
+  ls -l ~/sub-$subj*
+  qstat | grep sub-$subj | wc -l
+done
 # first level 
 for subj in $SUBJ_LIST; do
   echo sub-$subj
@@ -29,13 +33,23 @@ for subj in $SUBJ_LIST; do
   # ./registration.sh FSL_task ${subj}
 
   #PPI
-  for seed in anterior_short_gyrus_L anterior_short_gyrus_R middle_short_gyrus_L middle_short_gyrus_R anterior_inferior_cortex_L anterior_inferior_cortex_R; do
-    if [[ "x$SGE_ROOT" = "x" ]] ; then
-      ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
-    else
-      qsub -o ${HOME}/logs -N sub-${subj}_${seed} \
-           ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
-    fi  
+  for hemi in L R; do
+    for seed in anterior_short_gyrus middle_short_gyrus anterior_inferior_cortex; do
+      if [[ "x$SGE_ROOT" = "x" ]] ; then
+        ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-${seed}_${hemi} ${subj} ${seed}_${hemi}
+      else
+        qsub -o ${HOME}/logs -j y -N sub-${subj}_${seed}_${hemi} \
+            ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-${seed}_${hemi} ${subj} ${seed}_${hemi}
+      fi  
+    done
   done
 
+done
+
+for hemi in L R; do
+  for seed in anterior_short_gyrus middle_short_gyrus anterior_inferior_cortex; do
+    qsub -o ${HOME}/logs -j y -N ${seed}_${hemi} \
+          ./master_grouplevel.sh ${seed}_${hemi}
+    
+  done
 done
