@@ -9,9 +9,9 @@ SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
              participants.tsv )
 
 # generate regressors
-# for subj in $SUBJ_LIST; do
-#   qsub ./create_regressors.sh ${subj}
-# done
+for subj in $SUBJ_LIST; do
+  qsub ./create_regressors.sh ${subj}
+done
 
 # first level 
 for subj in $SUBJ_LIST; do
@@ -29,7 +29,7 @@ for subj in $SUBJ_LIST; do
   # ./registration.sh FSL_task ${subj}
 
   #PPI
-  for seed in pag insularL insularR; do
+  for seed in anterior_short_gyrus_L anterior_short_gyrus_R middle_short_gyrus_L middle_short_gyrus_R anterior_inferior_cortex_L anterior_inferior_cortex_R; do
     if [[ "x$SGE_ROOT" = "x" ]] ; then
       ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-$seed ${subj} $seed
     else

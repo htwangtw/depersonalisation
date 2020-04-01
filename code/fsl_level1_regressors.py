@@ -13,6 +13,7 @@ from scipy import signal, interpolate
 from scipy.stats import zscore
 
 import nibabel as nb
+from nilearn import input_data
 
 print("create regressors")
 subject = sys.argv[1]
@@ -34,7 +35,10 @@ hrv_path = (p / "scratch" / "physio_measures" / subject /
 ibi_path = (p / "scratch" / "physio_measures" / subject / 
             f"{subject}_task-heartbeat_run-1_desc-ibi_physio.tsv")
 target_path = (p / "scratch" / "regressors" / subject)
-
+func_filename = str(p / "data" / "derivatives" / 
+                 "func_smooth-6mm" / subject / "func" /
+                 f"{subject}_task-heartbeat_run-1_space-MNI152NLin2009cAsym_desc-preproc-fwhm6mm_bold.nii.gz")
+                 
 # predefined var
 n_dummy = 5
 confound_vars = (p / "code" / "confound_regressors.txt")
@@ -100,18 +104,14 @@ except KeyError:
 #     np.savetxt(str(out_file), condition, fmt='%10.5f')
 
 # # confounds regressors
-# confounds = pd.read_csv(confounds_path, sep='\t')
-# fsl_ver = confounds.loc[n_dummy:, confound_vars]
-# fsl_ver = fsl_ver.to_numpy()
+confounds = pd.read_csv(confounds_path, sep='\t')
+fsl_ver = confounds.loc[n_dummy:, confound_vars]
+fsl_ver = fsl_ver.to_numpy()
 # out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-FSLconfounds_regressors.tsv"
 # np.savetxt(str(out_file), fsl_ver, fmt='%10.5f')
 
-# # ppi seeds
-# from nilearn import input_data
+# ppi seeds
 
-# func_filename = str(p / "data" / "derivatives" / 
-#                  "func_smooth-6mm" / subject / "func" /
-#                  f"{subject}_task-heartbeat_run-1_space-MNI152NLin2009cAsym_desc-preproc-fwhm6mm_bold.nii.gz")
 # coords = [(-2, -14, -32)]
 # seed_masker = input_data.NiftiSpheresMasker(coords, radius=8, t_r=tr, 
 #                                             detrend=True, standardize=True)
