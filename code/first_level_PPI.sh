@@ -46,10 +46,6 @@ then
   export SGE_ROOT=""
   feat ${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
   echo "run feat"
-
-  # cd ${HOME}/projects/critchley_depersonalisation/code
-  # # fake reg
-  # ./registration.sh ${OUTPUT} ${subj}
 else
   echo "Feat directory exist"
 fi
