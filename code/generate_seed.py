@@ -31,20 +31,12 @@ func_filename = str(p / "data" / "derivatives" /
 label = mask.name.split(os.sep)[-1].split('.')[0]
 mask = str(mask)
 
-# # load TR and dimension info
-# with open(vol_path) as f:
-#     data = json.load(f)
+# load TR and dimension info
+with open(vol_path) as f:
+    data = json.load(f)
 
-# tr = data['RepetitionTime']
+tr = data['RepetitionTime']
 
-# try:
-#     n_vol = data['dcmmeta_shape'][-1]
-# except KeyError:
-#     vol_path = (p / "data" / subject / "func" /
-#                 f"{subject}_task-heartbeat_run-1_bold.nii.gz")
-#     n_vol = nb.load(str(vol_path)).shape[-1]
-
-tr = 2.52
 # resample the mask to MNI
 seed_masker = input_data.NiftiMasker(mask, t_r=tr, detrend=True, standardize=True)
 seed_time_series = seed_masker.fit_transform(func_filename, confounds=str(confounds_path))

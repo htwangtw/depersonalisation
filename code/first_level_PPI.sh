@@ -9,7 +9,10 @@ fi
 TEMPLATE=$(readlink -f ${HOME}/projects/critchley_depersonalisation/code/templates/${1})
 OUTPUT=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/${2})
 SUBJ=${3}
-SEEDPATH=$(readlink -f ${4})
+SEED=$(readlink -f ${4})
+
+# generate seed
+SEEDPATH=$(python ./generate_seed.py sub-$SUBJ ${SEED})
 
 fsf=${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
 # create fsf template
