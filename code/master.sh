@@ -5,7 +5,7 @@
 #$-t 1-49 
 #$-tc 10
 
-. ~/.bash_profile
+. .bash_profile
 
 cd ~/projects/critchley_depersonalisation/code
 
