@@ -33,23 +33,21 @@ for subj in $SUBJ_LIST; do
   # ./registration.sh FSL_task ${subj}
 
   #PPI
-  for hemi in L R; do
-    for seed in anterior_short_gyrus middle_short_gyrus anterior_inferior_cortex; do
-      if [[ "x$SGE_ROOT" = "x" ]] ; then
-        ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-${seed}_${hemi} ${subj} ${seed}_${hemi}
-      else
-        qsub -o ${HOME}/logs -j y -N sub-${subj}_${seed}_${hemi} \
-            ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-${seed}_${hemi} ${subj} ${seed}_${hemi}
-      fi  
-    done
-  done
-
-done
-
-for hemi in L R; do
-  for seed in anterior_short_gyrus middle_short_gyrus anterior_inferior_cortex; do
-    qsub -o ${HOME}/logs -j y -N ${seed}_${hemi} \
-          ./master_grouplevel.sh ${seed}_${hemi}
-    
+  SEED_DIR=${HOME}/projects/critchley_depersonalisation/references/insular_masks
+  for seed in $(ls ${SEED_DIR}/probmap-gm-*-insula*); do
+    SEEDPATH=$(python ./generate_seed.py sub-$subj ${seed})
+    SEED_NAME=$(basename $seed)
+    if [[ "x$SGE_ROOT" = "x" ]] ; then
+      ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-${SEED_NAME} ${subj} ${SEEDPATH}
+    else
+      qsub -o ${HOME}/logs -j y -N sub-${subj}_${SEED_NAME} \
+          ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-${SEED_NAME} ${subj} ${SEEDPATH}
+    fi  
   done
 done
+
+
+# for seed in lf_HRV hf_HRV bpm; do
+#   qsub -o ${HOME}/logs -j y -N ${seed} \
+#         ./master_grouplevel.sh ${seed}
+# done

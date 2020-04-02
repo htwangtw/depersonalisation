@@ -282,7 +282,7 @@ set fmri(confoundevs) 1
 set confoundev_files(1) "HOME/projects/critchley_depersonalisation/scratch/regressors/sub-SUBJECT/sub-SUBJECT_task-heartbeat_run-1_desc-FSLconfounds_regressors.tsv"
 
 # EV 1 title
-set fmri(evtitle1) "SEED"
+set fmri(evtitle1) "seed"
 
 # Basic waveform shape (EV 1)
 # 0 : Square
@@ -314,7 +314,7 @@ set fmri(tempfilt_yn1) 1
 set fmri(deriv_yn1) 0
 
 # Custom EV file (EV 1)
-set fmri(custom1) "HOME/projects/critchley_depersonalisation/scratch/regressors/sub-SUBJECT/sub-SUBJECT_task-heartbeat_run-1_desc-SEED_regressors.tsv"
+set fmri(custom1) "SEEDPATH"
 
 # Orthogonalise EV 1 wrt EV 0
 set fmri(ortho1.0) 0
@@ -441,7 +441,7 @@ set fmri(ortho3.4) 0
 set fmri(ortho3.5) 0
 
 # EV 4 title
-set fmri(evtitle4) "SEED_int_Heart"
+set fmri(evtitle4) "seed_int_Heart"
 
 # Basic waveform shape (EV 4)
 # 0 : Square
@@ -509,7 +509,7 @@ set fmri(ortho4.4) 0
 set fmri(ortho4.5) 0
 
 # EV 5 title
-set fmri(evtitle5) "SEED_int_Note"
+set fmri(evtitle5) "seed_int_Note"
 
 # Basic waveform shape (EV 5)
 # 0 : Square
@@ -592,7 +592,7 @@ set fmri(con_mode) orig
 set fmri(conpic_real.1) 1
 
 # Title for contrast_real 1
-set fmri(conname_real.1) "SEED"
+set fmri(conname_real.1) "seed"
 
 # Real contrast_real vector 1 element 1
 set fmri(con_real1.1) 1
@@ -673,7 +673,7 @@ set fmri(con_real3.7) 0
 set fmri(conpic_real.4) 1
 
 # Title for contrast_real 4
-set fmri(conname_real.4) "SEED_int_Heart"
+set fmri(conname_real.4) "seed_int_Heart"
 
 # Real contrast_real vector 4 element 1
 set fmri(con_real4.1) 0
@@ -700,7 +700,7 @@ set fmri(con_real4.7) 0
 set fmri(conpic_real.5) 1
 
 # Title for contrast_real 5
-set fmri(conname_real.5) "SEED_int_Note"
+set fmri(conname_real.5) "seed_int_Note"
 
 # Real contrast_real vector 5 element 1
 set fmri(con_real5.1) 0
@@ -754,7 +754,7 @@ set fmri(con_real6.7) 0
 set fmri(conpic_real.7) 1
 
 # Title for contrast_real 7
-set fmri(conname_real.7) "Heart_wrt_Note_int_LF"
+set fmri(conname_real.7) "seed_int_Heart_wrt_Note"
 
 # Real contrast_real vector 7 element 1
 set fmri(con_real7.1) 0
@@ -844,7 +844,7 @@ set fmri(con_orig3.5) 0
 set fmri(conpic_orig.4) 1
 
 # Title for contrast_orig 4
-set fmri(conname_orig.4) "SEED_int_Heart"
+set fmri(conname_orig.4) "seed_int_Heart"
 
 # Real contrast_orig vector 4 element 1
 set fmri(con_orig4.1) 0
@@ -865,7 +865,7 @@ set fmri(con_orig4.5) 0
 set fmri(conpic_orig.5) 1
 
 # Title for contrast_orig 5
-set fmri(conname_orig.5) "SEED_int_Note"
+set fmri(conname_orig.5) "seed_int_Note"
 
 # Real contrast_orig vector 5 element 1
 set fmri(con_orig5.1) 0
@@ -907,7 +907,7 @@ set fmri(con_orig6.5) 0
 set fmri(conpic_orig.7) 1
 
 # Title for contrast_orig 7
-set fmri(conname_orig.7) "Heart_wrt_Note_int_SEED"
+set fmri(conname_orig.7) "Heart_wrt_Note_int_seed"
 
 # Real contrast_orig vector 7 element 1
 set fmri(con_orig7.1) 0

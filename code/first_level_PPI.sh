@@ -9,8 +9,7 @@ fi
 TEMPLATE=$(readlink -f ${HOME}/projects/critchley_depersonalisation/code/templates/${1})
 OUTPUT=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/${2})
 SUBJ=${3}
-SEED=${4}
-
+SEEDPATH=$(readlink -f ${4})
 
 fsf=${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
 # create fsf template
@@ -30,7 +29,7 @@ else
         -e 's@VOLUMENUMBER@'$N_VOL'@g' \
         -e 's@TR@'$TR'@g' \
         -e 's@OUTPUT@'$OUTPUT'@g' \
-        -e 's@SEED@'$SEED'@g' \
+        -e 's@SEEDPATH@'$SEEDPATH'@g' \
         -e 's@HOME@'$HOME'@g' \
         <$i> $fsf
   done
