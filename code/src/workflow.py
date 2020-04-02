@@ -139,15 +139,15 @@ def groupmean_contrast(subject_list, regressors_path):
 
     # generate basic contrasts
     contrast_names = ['control', 'patient',
-                      'patient > control', 'control > patient']
+                      'patient_wrt_control', 'control_wrt_patient']
     df_con = pd.DataFrame(0, columns=regressors.columns,
                           index=contrast_names)
     df_con.loc['control', ['control']] = 1
     df_con.loc['patient', ['patient']] = 1
-    df_con.loc['patient > control', ['patient']] = 1
-    df_con.loc['patient > control', ['control']] = -1
-    df_con.loc['control > patient', ['patient']] = -1
-    df_con.loc['control > patient', ['control']] = 1
+    df_con.loc['patient_wrt_control', ['patient']] = 1
+    df_con.loc['patient_wrt_control', ['control']] = -1
+    df_con.loc['control_wrt_patient', ['patient']] = -1
+    df_con.loc['control_wrt_patient', ['control']] = 1
 
     contrasts = []
     for index, row in df_con.iterrows():
@@ -239,7 +239,7 @@ def group_randomise_wf(input_dir, subject_list, regressors_path, roi=None):
                                           os.sep + f"cope_{contrast}.nii.gz")
         prep_files = wf_prep_files()
         # generate design matri
-        randomise = pe.Node(fsl.Randomise(), name="randomise")
+        randomise = pe.Node(fsl.Randomise(), name="unpairedT_randomise")
         randomise.inputs.num_perm = 1000
         randomise.inputs.vox_p_values = True
         randomise.inputs.tfce = True
@@ -251,6 +251,9 @@ def group_randomise_wf(input_dir, subject_list, regressors_path, roi=None):
         onesampleT_randomise.inputs.tfce = True
         # onesampleT_randomise.inputs.demean = True
         onesampleT_randomise.inputs.one_sample_group_mean=True
+        # Create DataSink object
+        sinker = pe.Node(DataSink(), name='sinker')
+        sinker.inputs.base_directory = output_dir
 
         wk.connect([
             (file_grabber, concat_copes, [("cope_file", "cope_file")]),
@@ -260,6 +263,12 @@ def group_randomise_wf(input_dir, subject_list, regressors_path, roi=None):
                                      ("outputnode.regressors", "design_mat")]),
             (concat_copes, onesampleT_randomise, [("output_dir", "in_file")]),
             (prep_files, onesampleT_randomise, [("outputnode.mask", "mask")]),
+            (randomise, sinker,[('tstat_files', 'out_file'),
+                                ('t_corrected_p_files', 'out_file'),
+                                ('t_p_files', 'out_file')]),
+            (onesampleT_randomise, sinker,[('tstat_files', 'out_file'),
+                                           ('t_corrected_p_files', 'out_file'),
+                                           ('t_p_files', 'out_file')]),
             ])
         meta_workflow.add_nodes([wk])
     return meta_workflow

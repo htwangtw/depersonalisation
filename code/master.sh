@@ -30,10 +30,9 @@ for subj in $SUBJ_LIST; do
     SEED_NAME=$(echo $(basename $seed) | cut -d - -f4 | cut -d . -f1)
     echo sub-${subj}_${SEED_NAME}
     qsub -o ${HOME}/logs -j y -N sub-${subj}_${SEED_NAME} \
-        ./first_level_PPI.sh PPI_level1.fsf PPI-${SEED_NAME} ${subj} ${seed}  
+        ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-${SEED_NAME} ${subj} ${seed}  
   done
 done
-
 
 # for seed in lf_HRV hf_HRV bpm; do
 #   qsub -o ${HOME}/logs -j y -N ${seed} \
