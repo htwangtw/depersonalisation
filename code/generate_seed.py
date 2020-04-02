@@ -26,6 +26,7 @@ func_filename = str(p / "data" / "derivatives" /
                  "func_smooth-6mm" / subject / "func" /
                  f"{subject}_task-heartbeat_run-1_space-MNI152NLin2009cAsym_desc-preproc-fwhm6mm_bold.nii.gz")
 
+label = mask.name.split(os.sep)[-1].split('.')[0]
 out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-{label}_regressors.tsv"
 
 if out_file.is_file():
