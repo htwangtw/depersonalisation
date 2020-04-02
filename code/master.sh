@@ -4,6 +4,9 @@
 #$ -j y
 #$-t 1-49 
 #$-tc 10
+
+. ~/.bash_profile
+
 cd ~/projects/critchley_depersonalisation/code
 
 SUBJ_LIST=($( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \

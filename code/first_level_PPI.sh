@@ -1,11 +1,4 @@
 #!/bin/bash
-
-if [[ "x$SGE_ROOT" = "x" ]] ; then
-  echo "not on the cluster"
-else
-  . ~/.bash_profile
-fi  
-
 TEMPLATE=$(readlink -f ${HOME}/projects/critchley_depersonalisation/code/templates/${1})
 OUTPUT=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/${2})
 SUBJ=${3}
