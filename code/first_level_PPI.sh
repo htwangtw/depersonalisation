@@ -12,6 +12,7 @@ SUBJ=${3}
 SEED=$(readlink -f ${4})
 
 # generate seed
+cd ${HOME}/projects/critchley_depersonalisation/code
 SEEDPATH=$(python ./generate_seed.py sub-$SUBJ ${SEED})
 
 fsf=${OUTPUT}/sub-${SUBJ}/sub-${SUBJ}_level_1.fsf
