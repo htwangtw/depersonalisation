@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-OUTPUT=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/${1})
+OUTPUT=$(readlink -f ${1})
 SUBJ=${2}
 
 REG_FEAT=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/fake_reg.feat)

@@ -24,7 +24,7 @@ set fmri(relative_yn) 0
 set fmri(help_yn) 1
 
 # Run Featwatcher
-set fmri(featwatcher_yn) 1
+set fmri(featwatcher_yn) 0
 
 # Cleanup first-level standard-space images
 set fmri(sscleanup_yn) 0
@@ -33,7 +33,7 @@ set fmri(sscleanup_yn) 0
 set fmri(outputdir) "/home/hw1012/projects/critchley_depersonalisation/scratch/FSL_HRV_no_BPM/sub-10048.feat"
 
 # TR(s)
-set fmri(tr) 2.520000 
+set fmri(tr) 2.520000
 
 # Total volumes
 set fmri(npts) 449
@@ -130,7 +130,7 @@ set fmri(melodic_yn) 0
 set fmri(stats_yn) 1
 
 # Carry out prewhitening?
-set fmri(prewhiten_yn) 1
+set fmri(prewhiten_yn) 0
 
 # Add motion parameters to model
 # 0 : No
@@ -153,13 +153,13 @@ set fmri(mixed_yn) 2
 set fmri(randomisePermutations) 5000
 
 # Number of EVs
-set fmri(evs_orig) 2
-set fmri(evs_real) 4
+set fmri(evs_orig) 3
+set fmri(evs_real) 3
 set fmri(evs_vox) 0
 
 # Number of contrasts
-set fmri(ncon_orig) 2
-set fmri(ncon_real) 2
+set fmri(ncon_orig) 3
+set fmri(ncon_real) 3
 
 # Number of F-tests
 set fmri(nftests_orig) 0
@@ -311,7 +311,7 @@ set fmri(convolve_phase1) 0
 set fmri(tempfilt_yn1) 1
 
 # Add temporal derivative (EV 1)
-set fmri(deriv_yn1) 1
+set fmri(deriv_yn1) 0
 
 # Custom EV file (EV 1)
 set fmri(custom1) "/home/hw1012/projects/critchley_depersonalisation/scratch/fsl_regressors/sub-10048/sub-10048_task-heartbeat_run-1_desc-lf_HRV_regressors.tsv"
@@ -324,6 +324,9 @@ set fmri(ortho1.1) 0
 
 # Orthogonalise EV 1 wrt EV 2
 set fmri(ortho1.2) 0
+
+# Orthogonalise EV 1 wrt EV 3
+set fmri(ortho1.3) 0
 
 # EV 2 title
 set fmri(evtitle2) "HF_HRV"
@@ -355,7 +358,7 @@ set fmri(convolve_phase2) 0
 set fmri(tempfilt_yn2) 1
 
 # Add temporal derivative (EV 2)
-set fmri(deriv_yn2) 1
+set fmri(deriv_yn2) 0
 
 # Custom EV file (EV 2)
 set fmri(custom2) "/home/hw1012/projects/critchley_depersonalisation/scratch/fsl_regressors/sub-10048/sub-10048_task-heartbeat_run-1_desc-hf_HRV_regressors.tsv"
@@ -368,6 +371,56 @@ set fmri(ortho2.1) 0
 
 # Orthogonalise EV 2 wrt EV 2
 set fmri(ortho2.2) 0
+
+# Orthogonalise EV 2 wrt EV 3
+set fmri(ortho2.3) 0
+
+# EV 3 title
+set fmri(evtitle3) "BPM"
+
+# Basic waveform shape (EV 3)
+# 0 : Square
+# 1 : Sinusoid
+# 2 : Custom (1 entry per volume)
+# 3 : Custom (3 column format)
+# 4 : Interaction
+# 10 : Empty (all zeros)
+set fmri(shape3) 2
+
+# Convolution (EV 3)
+# 0 : None
+# 1 : Gaussian
+# 2 : Gamma
+# 3 : Double-Gamma HRF
+# 4 : Gamma basis functions
+# 5 : Sine basis functions
+# 6 : FIR basis functions
+# 8 : Alternate Double-Gamma
+set fmri(convolve3) 3
+
+# Convolve phase (EV 3)
+set fmri(convolve_phase3) 0
+
+# Apply temporal filtering (EV 3)
+set fmri(tempfilt_yn3) 1
+
+# Add temporal derivative (EV 3)
+set fmri(deriv_yn3) 0
+
+# Custom EV file (EV 3)
+set fmri(custom3) "/home/hw1012/projects/critchley_depersonalisation/scratch/fsl_regressors/sub-10048/sub-10048_task-heartbeat_run-1_desc-bpm_regressors.tsv"
+
+# Orthogonalise EV 3 wrt EV 0
+set fmri(ortho3.0) 0
+
+# Orthogonalise EV 3 wrt EV 1
+set fmri(ortho3.1) 0
+
+# Orthogonalise EV 3 wrt EV 2
+set fmri(ortho3.2) 0
+
+# Orthogonalise EV 3 wrt EV 3
+set fmri(ortho3.3) 0
 
 # Contrast & F-tests mode
 # real : control real EVs
@@ -390,9 +443,6 @@ set fmri(con_real1.2) 0
 # Real contrast_real vector 1 element 3
 set fmri(con_real1.3) 0
 
-# Real contrast_real vector 1 element 4
-set fmri(con_real1.4) 0
-
 # Display images for contrast_real 2
 set fmri(conpic_real.2) 1
 
@@ -403,13 +453,25 @@ set fmri(conname_real.2) "HF"
 set fmri(con_real2.1) 0
 
 # Real contrast_real vector 2 element 2
-set fmri(con_real2.2) 0
+set fmri(con_real2.2) 1.0
 
 # Real contrast_real vector 2 element 3
-set fmri(con_real2.3) 1.0
+set fmri(con_real2.3) 0
 
-# Real contrast_real vector 2 element 4
-set fmri(con_real2.4) 0
+# Display images for contrast_real 3
+set fmri(conpic_real.3) 1
+
+# Title for contrast_real 3
+set fmri(conname_real.3) "BPM"
+
+# Real contrast_real vector 3 element 1
+set fmri(con_real3.1) 0
+
+# Real contrast_real vector 3 element 2
+set fmri(con_real3.2) 0
+
+# Real contrast_real vector 3 element 3
+set fmri(con_real3.3) 1.0
 
 # Display images for contrast_orig 1
 set fmri(conpic_orig.1) 1
@@ -423,6 +485,9 @@ set fmri(con_orig1.1) 1
 # Real contrast_orig vector 1 element 2
 set fmri(con_orig1.2) 0
 
+# Real contrast_orig vector 1 element 3
+set fmri(con_orig1.3) 0
+
 # Display images for contrast_orig 2
 set fmri(conpic_orig.2) 1
 
@@ -435,14 +500,44 @@ set fmri(con_orig2.1) 0
 # Real contrast_orig vector 2 element 2
 set fmri(con_orig2.2) 1.0
 
+# Real contrast_orig vector 2 element 3
+set fmri(con_orig2.3) 0
+
+# Display images for contrast_orig 3
+set fmri(conpic_orig.3) 1
+
+# Title for contrast_orig 3
+set fmri(conname_orig.3) "BPM"
+
+# Real contrast_orig vector 3 element 1
+set fmri(con_orig3.1) 0
+
+# Real contrast_orig vector 3 element 2
+set fmri(con_orig3.2) 0
+
+# Real contrast_orig vector 3 element 3
+set fmri(con_orig3.3) 1.0
+
 # Contrast masking - use >0 instead of thresholding?
 set fmri(conmask_zerothresh_yn) 0
 
 # Mask real contrast/F-test 1 with real contrast/F-test 2?
 set fmri(conmask1_2) 0
 
+# Mask real contrast/F-test 1 with real contrast/F-test 3?
+set fmri(conmask1_3) 0
+
 # Mask real contrast/F-test 2 with real contrast/F-test 1?
 set fmri(conmask2_1) 0
+
+# Mask real contrast/F-test 2 with real contrast/F-test 3?
+set fmri(conmask2_3) 0
+
+# Mask real contrast/F-test 3 with real contrast/F-test 1?
+set fmri(conmask3_1) 0
+
+# Mask real contrast/F-test 3 with real contrast/F-test 2?
+set fmri(conmask3_2) 0
 
 # Do contrast masking at all?
 set fmri(conmask1_1) 0

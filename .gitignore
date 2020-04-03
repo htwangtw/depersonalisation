@@ -3,12 +3,11 @@ data/.heudiconv/
 data/sub-*/
 data/sourcedata/
 data/derivatives/
-references/scripts_Nyguen/
-references/insular_masks/
+references/*/
 scratch/
-scratch
 code/bak/
 */bak/
+results/glm_niftis/
 
 #various editors
 .vscode/

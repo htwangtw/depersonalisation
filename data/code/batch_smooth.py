@@ -150,19 +150,20 @@ def getusans(x):
     return [[tuple([val[0], 0.75 * val[1]])] for val in x]
 
 # First level analysis
-def smoothing_skullstrip(bids_dir, output_dir, work_dir, subject_list, run, fwhm=6.0, name='smoothing_skullstrip'):
+def smoothing_skullstrip(fmriprep_dir, output_dir, work_dir, 
+                         subject_list, task, run, fwhm=6.0, name='smoothing_skullstrip'):
     '''
     FSL smooth fMRIprep output
-
     '''
     workflow = pe.Workflow(name=name)
     workflow.base_dir = work_dir
 
-    template = {'bolds': 'derivatives/fmriprep-1.5.1rc2/sub-{subject}/func/sub-{subject}_task-heartbeat_run-{run}_space-MNI152NLin2009cAsym_desc-preproc_bold.nii.gz',
-                'mask': 'derivatives/fmriprep-1.5.1rc2/sub-{subject}/func/sub-{subject}_task-heartbeat_run-{run}_space-MNI152NLin2009cAsym_desc-brain_mask.nii.gz'}
+    template = {'bolds': 'sub-{subject}/func/sub-{subject}_task-{task}_run-{run}_space-MNI152NLin2009cAsym_desc-preproc_bold.nii.gz',
+                'mask': 'sub-{subject}/func/sub-{subject}_task-{task}_run-{run}_space-MNI152NLin2009cAsym_desc-brain_mask.nii.gz'}
 
-    bg = pe.Node(SelectFiles(template, base_directory=bids_dir), name='datagrabber')
+    bg = pe.Node(SelectFiles(template, base_directory=fmriprep_dir), name='datagrabber')
     bg.iterables = [('subject', subject_list),
+                    ('task', task),
                     ('run', run)]
 
     # Create DataSink object
@@ -196,10 +197,10 @@ def smoothing_skullstrip(bids_dir, output_dir, work_dir, subject_list, run, fwhm
     ])
     return workflow
 
-bids_dir = "/its/home/bsms9gxx/projects/critchley_depersonalisation/data"
+bids_dir = "/its/home/bsms9gxx/projects/critchley_depersonalisation/data/derivatives/fmriprep-1.5.1rc2"
 output_dir = "/its/home/bsms9gxx/projects/critchley_depersonalisation/data/derivatives"
 work_dir = "/its/home/bsms9gxx/projects/critchley_depersonalisation/scratch"
-subjects = [9539,
+subjects = [9539, 
 9634,
 9664,
 9675,
@@ -250,5 +251,6 @@ subjects = [9539,
 10473,
 10573
 ]
-workflow = smoothing_skullstrip(bids_dir, output_dir, work_dir, subject_list=subjects, run=[1])
+workflow = smoothing_skullstrip(bids_dir, output_dir, work_dir, 
+                                subject_list=subjects, task=["heartbeat"], run=[1])
 workflow.run()

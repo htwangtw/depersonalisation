@@ -6,7 +6,6 @@ import numpy as np
 
 home = str(Path.home())
 p = Path(home + "/projects/critchley_depersonalisation")
-print(p / "data" /"participants.tsv")
 participants = pd.read_csv(p / "code" /"participants.tsv", sep='\t')
 participants = participants.iloc[:, :4]
 participants["mean_fd"] = np.nan

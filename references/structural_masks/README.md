@@ -11,7 +11,3 @@ SPM gray matter probability mask thresholded at 50% and binarised, remove cerebe
 ## gm_prob50_mask_no_cerebellum_brainstem_cleaned.nii.gz
 SPM gray matter probability mask thresholded at 50% and binarised, remove cerebellum and subcortical mask
 hand cleaned by H-T Wang
-## gm_no_cerebellum_brainstem_fmriprep.nii.gz
-gm_prob50_mask_no_cerebellum_brainstem_cleaned.nii.gz in the same coordinate system as data in this project.
-## avg152T1_gray_prob50_bin_fmriprep
-avg152T1_gray_prob50_bin.nii.gz in the same coordinate system as data in this project.
