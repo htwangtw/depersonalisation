@@ -10,6 +10,7 @@ def run_group_randomised(args):
     from src.workflow import group_randomise_wf
     print(type(args.subject_list))
     workflow = group_randomise_wf(input_dir=args.input,
+                                  output_dir=args.output,
                                   subject_list=args.subject_list,
                                   regressors_path=args.regressors,
                                   roi=args.roi
@@ -26,6 +27,8 @@ def main():
                         dest="input", type=str, required=True)
     parser.add_argument("-r", help="noise regressors and group membership",
                         dest="regressors", type=str, required=True)
+    parser.add_argument("-o", help="Output dir",
+                        dest="output", type=str , required=True)
     parser.add_argument("-m", help="ROI mask (default: full brain)",
                         dest="roi", required=False)
 

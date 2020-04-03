@@ -6,7 +6,7 @@ else
   . ~/.bash_profile
 fi  
 
-seed=${1}
+SEED_NAME=${1}
 
 cd ~/projects/critchley_depersonalisation/code
 
@@ -20,7 +20,6 @@ if [[ ! -f $PATH_REGRESSORS ]]
   python ./fsl_group_regressors.py
 fi
 
-# group level
-echo $seed
-PATH_ANALYSIS=$(readlink -f "${HOME}/projects/critchley_depersonalisation/scratch/FSL_PPI-$seed")
-python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -r $PATH_REGRESSORS
+PATH_ANALYSIS=$(readlink -f "${HOME}/projects/critchley_depersonalisation/scratch/FSL_PPI-$SEED_NAME")
+PATH_OUTPUT=$(readlink -f "${HOME}/projects/critchley_depersonalisation/results/FSL_PPI-$SEED_NAME")
+python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -o $PATH_OUTPUT -r $PATH_REGRESSORS

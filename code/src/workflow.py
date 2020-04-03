@@ -162,7 +162,7 @@ def groupmean_contrast(subject_list, regressors_path):
     return group, regressors.to_dict('list'), (contrasts)
 
 
-def group_randomise_wf(input_dir, subject_list, regressors_path, roi=None):
+def group_randomise_wf(input_dir, output_dir, subject_list, regressors_path, roi=None):
     """
     input_dir:
         BIDS derivative
@@ -252,9 +252,29 @@ def group_randomise_wf(input_dir, subject_list, regressors_path, roi=None):
         # onesampleT_randomise.inputs.demean = True
         onesampleT_randomise.inputs.one_sample_group_mean=True
         # Create DataSink object
-        sinker = pe.Node(DataSink(), name='sinker')
+        gsinker = pe.Node(DataSink(), name=f'sinker_{contrast}_group')
+        gsinker.inputs.base_directory = output_dir
+        gsinker.inputs.substitutions = [('tstat1', 'tstat'),
+                                        ('randomise', 'fullsample')]
+        # Create DataSink object
+        sinker = pe.Node(DataSink(), name=f'sinker_{contrast}')
         sinker.inputs.base_directory = output_dir
-
+        sinker.inputs.substitutions = [('randomise_tfce_corrp_tstat1', 
+                                        'control_tfce_corrp_tstat'),
+                                       ('randomise_tfce_corrp_tstat2', 
+                                       'patient_tfce_corrp_tstat'),
+                                       ('randomise_tfce_corrp_tstat3', 
+                                       'patient_wrt_control_tfce_corrp_tstat'),
+                                       ('randomise_tfce_corrp_tstat4', 
+                                       'control_wrt_patients_tfce_corrp_tstat'),
+                                       ('randomise_tstat1', 
+                                        'control_tstat'),
+                                       ('randomise_tstat2', 
+                                       'patient_tstat'),
+                                       ('randomise_tstat3', 
+                                       'patient_wrt_control_tstat'),
+                                       ('randomise_tstat4', 
+                                       'control_wrt_patients_tstat'),]
         wk.connect([
             (file_grabber, concat_copes, [("cope_file", "cope_file")]),
             (concat_copes, randomise, [("output_dir", "in_file")]),
@@ -263,12 +283,14 @@ def group_randomise_wf(input_dir, subject_list, regressors_path, roi=None):
                                      ("outputnode.regressors", "design_mat")]),
             (concat_copes, onesampleT_randomise, [("output_dir", "in_file")]),
             (prep_files, onesampleT_randomise, [("outputnode.mask", "mask")]),
-            (randomise, sinker,[('tstat_files', 'out_file'),
-                                ('t_corrected_p_files', 'out_file'),
-                                ('t_p_files', 'out_file')]),
-            (onesampleT_randomise, sinker,[('tstat_files', 'out_file'),
-                                           ('t_corrected_p_files', 'out_file'),
-                                           ('t_p_files', 'out_file')]),
+            (randomise, sinker,[('tstat_files', 
+                                 f'contrast_{contrast}.@tstat_files'),
+                                ('t_corrected_p_files', 
+                                 f'contrast_{contrast}.@t_corrected_p_files')]),
+            (onesampleT_randomise, gsinker,[('tstat_files', 
+                                             f'contrast_{contrast}.@group_tstat_files'),
+                                            ('t_corrected_p_files', 
+                                             f'contrast_{contrast}.@group_t_corrected_p_files')]),
             ])
         meta_workflow.add_nodes([wk])
     return meta_workflow
