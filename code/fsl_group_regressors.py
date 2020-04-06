@@ -19,13 +19,13 @@ for idx, row in regressors.iterrows():
     mean_fd = confounds.loc[5:, "framewise_displacement"].mean()
     regressors.loc[idx, "mean_fd"] = mean_fd
 
-stats = pd.read_csv(p / "result" / "full_sample_stats.tsv", sep="\t", index_col=0)
+stats = pd.read_csv(p / "results" / "full_sample_stats.tsv", sep="\t", index_col=0)
 cds = stats.CDS_State
 
 # concatenate cds and the rest
 regressors = pd.concat([regressors, cds], axis=1, join="inner")
 
-# create t test var
+# create z test var
 for c in ["control", "patient"]:
     regressors[c] = 0
     regressors[c][regressors.group == c] = 1
