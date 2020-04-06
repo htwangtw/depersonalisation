@@ -14,7 +14,7 @@ SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
              participants.tsv )
 
 # group level nuisance regressors
-PATH_REGRESSORS=$(readlink -f $HOME/projects/critchley_depersonalisation/results/group_confounds.tsv)
+PATH_REGRESSORS=$(readlink -f $HOME/projects/critchley_depersonalisation/results/mri_regressors.tsv.tsv)
 if [[ ! -f $PATH_REGRESSORS ]]
   then
   python ./fsl_group_regressors.py
