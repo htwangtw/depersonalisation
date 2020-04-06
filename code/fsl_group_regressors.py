@@ -38,4 +38,4 @@ regressors[z_convert] /= regressors[z_convert] .std(ddof=0)
 
 # save file
 out_file = p / "results" / "mri_regressors.tsv"
-full.to_csv(out_file, sep='\t', index=False, float_format='%.5f')
+regressors.to_csv(out_file, sep='\t', index=False, float_format='%.5f')
