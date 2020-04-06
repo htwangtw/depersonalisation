@@ -6,12 +6,12 @@ import numpy as np
 
 home = str(Path.home())
 p = Path(home + "/projects/critchley_depersonalisation")
-participants = pd.read_csv(p / "code" /"participants.tsv", sep='\t')
+participants = pd.read_csv(p / "code" /"participants.tsv", sep='\t', index_col=0)
 regressors = participants.iloc[:, :4]
 regressors["mean_fd"] = np.nan
 
 for idx, row in regressors.iterrows():
-    subject = row.participant_id
+    subject = idx
     print(subject)
     path = list(p.glob(f"data/derivatives/fmriprep-1.5.1rc2/{subject}/func/{subject}_task-heartbeat_run-1_desc-confounds_regressors.tsv"))
     confounds_path = path[0]
