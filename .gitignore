@@ -5,6 +5,7 @@ data/sourcedata/
 data/derivatives/
 references/*/
 scratch/
+scratch
 code/bak/
 */bak/
 results/glm_niftis/
