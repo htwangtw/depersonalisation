@@ -7,7 +7,7 @@ import numpy as np
 home = str(Path.home())
 p = Path(home + "/projects/critchley_depersonalisation")
 participants = pd.read_csv(p / "code" /"participants.tsv", sep='\t', index_col=0)
-regressors = participants.iloc[:, :4]
+regressors = participants.iloc[:, :3]
 regressors["mean_fd"] = np.nan
 
 for idx, row in regressors.iterrows():
@@ -38,4 +38,4 @@ regressors[z_convert] /= regressors[z_convert] .std(ddof=0)
 
 # save file
 out_file = p / "results" / "mri_regressors.tsv"
-regressors.to_csv(out_file, sep='\t', index=False, float_format='%.5f')
+regressors.to_csv(out_file, sep='\t', float_format='%.5f')
