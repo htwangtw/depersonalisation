@@ -7,26 +7,35 @@ import numpy as np
 home = str(Path.home())
 p = Path(home + "/projects/critchley_depersonalisation")
 participants = pd.read_csv(p / "code" /"participants.tsv", sep='\t')
-participants = participants.iloc[:, :4]
-participants["mean_fd"] = np.nan
+regressors = participants.iloc[:, :4]
+regressors["mean_fd"] = np.nan
 
-for idx, row in participants.iterrows():
+for idx, row in regressors.iterrows():
     subject = row.participant_id
     print(subject)
     path = list(p.glob(f"data/derivatives/fmriprep-1.5.1rc2/{subject}/func/{subject}_task-heartbeat_run-1_desc-confounds_regressors.tsv"))
     confounds_path = path[0]
     confounds = pd.read_csv(confounds_path, sep='\t')
     mean_fd = confounds.loc[5:, "framewise_displacement"].mean()
-    participants.loc[idx, "mean_fd"] = mean_fd
+    regressors.loc[idx, "mean_fd"] = mean_fd
 
+stats = pd.read_csv(p / "result" / "full_sample_stats.tsv", sep="\t", index_col=0)
+cds = stats.CDS_State
 
-# add zscores for FSL group analysis
-mean = participants.loc[:, ['age', 'mean_fd']].mean()
-std = participants.loc[:, ['age', 'mean_fd']].std()
-z_score = (participants.loc[:, ['age', 'mean_fd']] - mean) / std
-z_score.columns = ['z_age', 'z_mean_fd']
-full = pd.concat([participants, z_score], axis=1)
+# concatenate cds and the rest
+regressors = pd.concat([regressors, cds], axis=1, join="inner")
+
+# create t test var
+for c in ["control", "patient"]:
+    regressors[c] = 0
+    regressors[c][regressors.group == c] = 1
+regressors.group = 1
+
+# z score
+z_convert = ["age", "mean_fd", "CDS_State"]
+regressors[z_convert] -= regressors[z_convert].mean()
+regressors[z_convert] /= regressors[z_convert] .std(ddof=0)
 
 # save file
-out_file = p / "results" / "group_confounds.tsv"
+out_file = p / "results" / "mri_regressors.tsv"
 full.to_csv(out_file, sep='\t', index=False, float_format='%.5f')
