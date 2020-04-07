@@ -25,8 +25,10 @@ def main():
                         type=str, nargs="*", required=True)
     parser.add_argument("-i", help="BIDS like derivative - first level feat dir",
                         dest="input", type=str, required=True)
-    parser.add_argument("-r", help="noise regressors and group membership",
+    parser.add_argument("-r", help="regressors",
                         dest="regressors", type=str, required=True)
+    parser.add_argument("-c", help="contrast",
+                        dest="contrast", type=str, required=True)
     parser.add_argument("-o", help="Output dir",
                         dest="output", type=str , required=True)
     parser.add_argument("-m", help="ROI mask (default: full brain)",
