@@ -13,6 +13,7 @@ def run_group_randomised(args):
                                   output_dir=args.output,
                                   subject_list=args.subject_list,
                                   regressors_path=args.regressors,
+                                  contrast_path=args.contrast,
                                   roi=args.roi
                                  )
     workflow.write_graph()
