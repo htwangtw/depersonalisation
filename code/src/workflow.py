@@ -182,6 +182,7 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
                           name='designs')
         designs.inputs.subject_list = subject_list
         designs.inputs.regressors_path = regressors_path
+        designs.inputs.contrast_path = contrast_path
 
         model = pe.Node(fsl.MultipleRegressDesign(), name=f'model')
 
