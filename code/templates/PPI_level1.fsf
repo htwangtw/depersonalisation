@@ -302,13 +302,13 @@ set fmri(shape1) 2
 # 5 : Sine basis functions
 # 6 : FIR basis functions
 # 8 : Alternate Double-Gamma
-set fmri(convolve1) 3
+set fmri(convolve1) 0
 
 # Convolve phase (EV 1)
 set fmri(convolve_phase1) 0
 
 # Apply temporal filtering (EV 1)
-set fmri(tempfilt_yn1) 1
+set fmri(tempfilt_yn1) 0
 
 # Add temporal derivative (EV 1)
 set fmri(deriv_yn1) 0
