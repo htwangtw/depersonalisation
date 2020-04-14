@@ -42,7 +42,7 @@ else:
     tr = data['RepetitionTime']
 
     # resample the mask to MNI
-    seed_masker = input_data.NiftiMasker(mask, t_r=tr, detrend=True, standardize=True)
+    seed_masker = input_data.NiftiMasker(mask, t_r=tr)
     seed_time_series = seed_masker.fit_transform(func_filename, confounds=str(confounds_path))
     seed_time_series = seed_time_series.mean(axis=1)
     seed_time_series -= seed_time_series.mean()  # mean centre

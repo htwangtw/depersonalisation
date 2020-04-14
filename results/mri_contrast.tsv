@@ -1,6 +1,3 @@
-	control	patient	age	mean_fd	CDS_State
-group	1	1	0	0	1
-control	1	0	0	0	1
-patient	0	1	0	0	1
-patient_wrt_control	-1	1	0	0	1
-control_wrt_patient	1	-1	0	0	1
+	control	patient	CDS_control	CDS_patient	age	mean_fd
+patient_wrt_control	0	0	-1	1	0	0
+control_wrt_patient	0	0	1	-1	0	0
