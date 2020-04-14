@@ -41,5 +41,5 @@ regressors = regressors.sort_index()
 regressors = regressors.sort_values(by=["patient"])
 
 # save file
-out_file = p / "results" / "mri_regressors.tsv"
+out_file = p / "code" / "group_design" / "mri_regressors.tsv"
 regressors.to_csv(out_file, sep="\t", float_format="%.5f")
