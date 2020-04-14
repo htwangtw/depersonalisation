@@ -5,9 +5,9 @@
 #$-t 1-49 
 #$-tc 5
 
-. ~/.bash_profile
+. ${HOME}/.bash_profile
 
-cd ~/projects/critchley_depersonalisation/code
+cd ${HOME}/projects/critchley_depersonalisation/code
 
 SUBJ_LIST=($( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
              participants.tsv ))
