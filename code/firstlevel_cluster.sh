@@ -5,7 +5,7 @@
 
 . ${HOME}/.bash_profile
 
-ls ${HOME}
+ls ${HOME}/projects/
 cd ${HOME}/projects/critchley_depersonalisation/code
 
 SUBJ_LIST=($( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
@@ -14,7 +14,7 @@ SEED_DIR=${HOME}/projects/critchley_depersonalisation/code/ppi_seeds
 
 # i=$(expr $SGE_TASK_ID - 1)
 # subj=${SUBJ_LIST[$i]}
-for sub in $SUBJ_LIST; do
+for subj in $SUBJ_LIST; do
 echo sub-$subj
 
 # generate nuisance and task regressors
