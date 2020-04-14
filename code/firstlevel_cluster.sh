@@ -5,7 +5,7 @@
 
 . ${HOME}/.bash_profile
 
-echo ${HOME}
+ls ${HOME}
 cd ${HOME}/projects/critchley_depersonalisation/code
 
 SUBJ_LIST=($( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
