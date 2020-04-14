@@ -8,8 +8,8 @@
 ls ${HOME}/projects/
 cd ${HOME}/projects/critchley_depersonalisation/code
 
-SUBJ_LIST=($( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
-             participants.tsv ))
+SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
+             participants.tsv )
 SEED_DIR=${HOME}/projects/critchley_depersonalisation/code/ppi_seeds
 
 # i=$(expr $SGE_TASK_ID - 1)
