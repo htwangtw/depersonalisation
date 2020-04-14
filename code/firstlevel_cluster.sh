@@ -3,7 +3,7 @@
 #$ -o /home/$USER/logs
 #$ -j y
 #$-t 1-49 
-#$-tc 10
+#$-tc 5
 
 . ~/.bash_profile
 
