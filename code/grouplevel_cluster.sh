@@ -6,7 +6,7 @@
 #$-tc 6
 
 . ~/.bash_profile
-SEED_DIR=${HOME}/projects/critchley_depersonalisation/references/insular_masks
+SEED_DIR=${HOME}/projects/critchley_depersonalisation/code/ppi_seed
 SEED_LIST=($(ls ${SEED_DIR}/probmap-gm-*-insula*))
 i=$(expr $SGE_TASK_ID - 1)
 seed=${SEED_LIST[$i]}
