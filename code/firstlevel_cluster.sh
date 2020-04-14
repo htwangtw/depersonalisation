@@ -6,11 +6,11 @@
 . ${HOME}/.bash_profile
 
 echo ${HOME}
-cd /research/cisc2/projects/critchley_depersonalisation/code
+cd ${HOME}/projects/critchley_depersonalisation/code
 
 SUBJ_LIST=($( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
              participants.tsv ))
-SEED_DIR=/research/cisc2/projects/critchley_depersonalisation/code/ppi_seeds
+SEED_DIR=${HOME}/projects/critchley_depersonalisation/code/ppi_seeds
 
 # i=$(expr $SGE_TASK_ID - 1)
 # subj=${SUBJ_LIST[$i]}
