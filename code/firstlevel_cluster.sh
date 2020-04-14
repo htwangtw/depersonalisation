@@ -27,8 +27,8 @@ echo sub-$subj
 # ./registration.sh FSL_task ${subj}
 
 #PPI
-SEED_DIR=${HOME}/projects/critchley_depersonalisation/references/insular_masks
-for seed in $(ls ${SEED_DIR}/probmap-gm-*-insula*); do
+SEED_DIR=${HOME}/projects/critchley_depersonalisation/code/ppi_seeds
+for seed in $(ls ${SEED_DIR}/*); do
   SEED_NAME=$(echo $(basename $seed) | cut -d - -f4 | cut -d . -f1)
   echo sub-${subj}_${SEED_NAME}
   bash ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-${SEED_NAME} ${subj} ${seed}  
