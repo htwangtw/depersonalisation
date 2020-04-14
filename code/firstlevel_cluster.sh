@@ -2,17 +2,19 @@
 #$ -N fsl_lvl1
 #$ -o /home/$USER/logs
 #$ -j y
-#$-t 1-49 
-#$-tc 5
 
 . ${HOME}/.bash_profile
 
-cd ${HOME}/projects/critchley_depersonalisation/code
+echo ${HOME}
+cd /research/cisc2/projects/critchley_depersonalisation/code
 
 SUBJ_LIST=($( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
              participants.tsv ))
-i=$(expr $SGE_TASK_ID - 1)
-subj=${SUBJ_LIST[$i]}
+SEED_DIR=/research/cisc2/projects/critchley_depersonalisation/code/ppi_seeds
+
+# i=$(expr $SGE_TASK_ID - 1)
+# subj=${SUBJ_LIST[$i]}
+for sub in $SUBJ_LIST; do
 echo sub-$subj
 
 # generate nuisance and task regressors
@@ -27,9 +29,10 @@ echo sub-$subj
 # ./registration.sh FSL_task ${subj}
 
 #PPI
-SEED_DIR=${HOME}/projects/critchley_depersonalisation/code/ppi_seeds
 for seed in $(ls ${SEED_DIR}/*); do
   SEED_NAME=$(echo $(basename $seed) | cut -d - -f4 | cut -d . -f1)
   echo sub-${subj}_${SEED_NAME}
   bash ./first_level_PPI.sh PPI_level1.fsf FSL_PPI-${SEED_NAME} ${subj} ${seed}  
+done
+
 done

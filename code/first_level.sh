@@ -39,7 +39,7 @@ else
   echo "sub-${SUBJ}: create .fsf"
   mkdir -p ${OUTPUT}/sub-${SUBJ}
   
-  path=~/projects/critchley_depersonalisation/data/derivatives/func_smooth-6mm/sub-${SUBJ}/func/*.gz
+  path=${HOME}/projects/critchley_depersonalisation/data/derivatives/func_smooth-6mm/sub-${SUBJ}/func/*.gz
   N_VOL=$(fslinfo $path | grep ^dim4 | awk '{print $2}')
   TR=$(fslinfo $path | grep pixdim4 | awk '{print $2}')
   echo $N_VOL
