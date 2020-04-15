@@ -6,7 +6,7 @@
 #$-tc 1
 
 . ${HOME}/.bash_profile
-SEED_DIR=${HOME}/projects/critchley_depersonalisation/code/ppi_seed
+SEED_DIR=${HOME}/projects/critchley_depersonalisation/code/ppi_seeds
 SEED_LIST=($(ls ${SEED_DIR}/*))
 i=$(expr $SGE_TASK_ID - 1)
 seed=${SEED_LIST[$i]}
