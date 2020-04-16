@@ -16,7 +16,7 @@ def run_group_randomised(args):
                                   contrast_path=args.contrast,
                                   selected_cope=args.cope_list,
                                   roi=args.roi,
-                                  analysis_name="oneSampleT_PPI"
+                                  analysis_name="CDS_PPI"
                                  )
     workflow.write_graph()
     workflow.run()
