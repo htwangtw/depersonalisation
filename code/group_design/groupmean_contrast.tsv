@@ -1,0 +1,5 @@
+	control	patient	age	mean_fd
+control	1	0	0	0
+patient	0	1	0	0
+patient_wrt_control	-1	1	0	0
+control_wrt_patient	1	-1	0	0

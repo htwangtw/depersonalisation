@@ -7,11 +7,11 @@ else
 fi  
 
 SEED_NAME=${1}
+PATH_REGRESSORS=$(readlink -f ${2})
+PATH_CONTRAST=$(readlink -f ${3})
 
 PATH_ANALYSIS=$(readlink -f "${HOME}/projects/critchley_depersonalisation/scratch/FSL_PPI-$SEED_NAME")
 PATH_OUTPUT=$(readlink -f "${HOME}/projects/critchley_depersonalisation/results/FSL_PPI-$SEED_NAME")
-PATH_REGRESSORS=$(readlink -f $HOME/projects/critchley_depersonalisation/code/group_design/mri_regressors.tsv)
-PATH_CONTRAST="${HOME}/projects/critchley_depersonalisation/code/group_design/mri_contrast.tsv"
 
 cd ~/projects/critchley_depersonalisation/code
 
