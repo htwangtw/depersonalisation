@@ -9,11 +9,13 @@ import nipype.interfaces.utility as niu
 
 
 # get first level copes
-def cope_names(input_dir):
+def cope_names(input_dir, selected_cope=None):
     """
     input_dir:
         BIDS derivative - FSL feat first level outputs
         all feat directories should be derived from the same design
+    selected_cope:
+        A list of cope of interest, names matching the first level design
     """
     first_level = Path(input_dir)
     feat_dir = first_level.glob("sub-*/sub-*[0-9].feat/")
@@ -22,7 +24,21 @@ def cope_names(input_dir):
     with open(con) as f:
         contrast_names = [line.split()[-1]
                           for line in f.readlines() if "ContrastName" in line]
-    return contrast_names
+
+    selected_contrasts = []
+    for i, cn in enumerate(contrast_names):
+        cope_idx = i + 1
+        if type(selected_cope) is list:
+            # check if names matches
+            new_list = []
+            for sc in selected_cope:
+                if sc == cn:
+                    selected_contrasts.append((cope_idx, cn))
+                else:
+                    print(f"selected contract doen't exist: {sc}") 
+        else:
+            selected_contrasts.append((cope_idx, cn))
+    return selected_contrasts
 
 
 def smooth_concat(cope_file, mm, output_dir):
@@ -143,7 +159,8 @@ def groupmean_contrast(subject_list, regressors_path, contrast_path):
 
 
 def group_randomise_wf(input_dir, output_dir, subject_list, 
-                       regressors_path, contrast_path,roi=None):
+                       regressors_path, contrast_path,selected_cope=None, 
+                       roi=None, analysis_name="oneSampleT_PPI"):
     """
     input_dir:
         BIDS derivative
@@ -203,13 +220,13 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
         ])
         return prep_files
 
-    analysis_name = "FSL_randomise"
+    
     meta_workflow = pe.Workflow(name=analysis_name)
     meta_workflow.base_dir = input_dir + os.sep + "group_level"
     prep_files = wf_prep_files()
     # now run randomise...
-    contrast_names = cope_names(input_dir)
-    for cope_id, contrast in enumerate(contrast_names):
+    contrast_names = cope_names(input_dir, selected_cope)
+    for cope_id, contrast in contrast_names:
         wk = pe.Workflow(name=f"contrast_{contrast}")
         template = {"cope_file":
                     "sub-{subject}/sub-{subject}.feat/stats/cope{cope}.nii.gz"}
@@ -217,7 +234,7 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
                                               base_directory=input_dir),
                                   iterfield="subject",
                                   name="file_grabber")
-        file_grabber.inputs.cope = cope_id + 1
+        file_grabber.inputs.cope = cope_id
         file_grabber.inputs.subject = subject_list
 
         concat_copes = pe.Node(Function(function=smooth_concat,
@@ -236,21 +253,9 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
         randomise.inputs.tfce = True
         # randomise.inputs.demean = True
 
-        # onesampleT_randomise = pe.Node(fsl.Randomise(),
-        #                                name="onesampleT_randomise")
-        # onesampleT_randomise.inputs.num_perm = 1000
-        # onesampleT_randomise.inputs.vox_p_values = True
-        # onesampleT_randomise.inputs.tfce = True
-        # # onesampleT_randomise.inputs.demean = True
-        # onesampleT_randomise.inputs.one_sample_group_mean = True
-        # Create DataSink object
-        # gsinker = pe.Node(DataSink(), name=f'sinker_{contrast}_group')
-        # gsinker.inputs.base_directory = output_dir
-        # gsinker.inputs.substitutions = [('tstat1', 'tstat'),
-        #                                 ('randomise', 'fullsample')]
         # Create DataSink object
         sinker = pe.Node(DataSink(), name=f'sinker_{contrast}')
-        sinker.inputs.base_directory = output_dir
+        sinker.inputs.base_directory = output_dir + os.sep + analysis_name
         sinker.inputs.substitutions = [
             ('randomise_tfce_corrp_tstat1',
              'fullsample_tfce_corrp_tstat'),
@@ -272,6 +277,7 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
              'patient_wrt_control_tstat'),
             ('randomise_tstat5',
              'control_wrt_patients_tstat')]
+
         wk.connect([
             (file_grabber, concat_copes, [("cope_file", "cope_file")]),
             (concat_copes, randomise, [("output_dir", "in_file")]),
@@ -283,13 +289,6 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
                  f'contrast_{contrast}.@tstat_files'),
                 ('t_corrected_p_files',
                  f'contrast_{contrast}.@t_corrected_p_files')]),
-            # (concat_copes, onesampleT_randomise, [("output_dir", "in_file")]),
-            # (prep_files, onesampleT_randomise, [("outputnode.mask", "mask")]),
-            # (onesampleT_randomise, gsinker, [
-            #     ('tstat_files',
-            #      f'contrast_{contrast}.@group_tstat_files'),
-            #     ('t_corrected_p_files',
-            #      f'contrast_{contrast}.@group_t_corrected_p_files')]),
             ])
         meta_workflow.add_nodes([wk])
     return meta_workflow

@@ -23,6 +23,6 @@ if [[ ! -f $PATH_REGRESSORS ]]
   python ./fsl_group_regressors.py
 fi
 
-
 python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -o $PATH_OUTPUT \
-                              -r $PATH_REGRESSORS -c $PATH_CONTRAST
+                              -r $PATH_REGRESSORS -c $PATH_CONTRAST \
+                              -l seed_int_heart_wrt_note seed_int_note_wrt_heart
