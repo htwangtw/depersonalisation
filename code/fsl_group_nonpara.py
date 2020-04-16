@@ -33,7 +33,7 @@ def main():
     parser.add_argument("-c", help="contrast",
                         dest="contrast", type=str, required=True)
     parser.add_argument("-l", help="list of cope names",
-                        dest="cope_list", type=str, required=True)
+                        dest="cope_list", type=str, nargs="*", required=True)
     parser.add_argument("-o", help="Output dir",
                         dest="output", type=str , required=True)
     parser.add_argument("-m", help="ROI mask (default: full brain)",
