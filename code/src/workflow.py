@@ -143,7 +143,8 @@ def groupmean_contrast(subject_list, regressors_path, contrast_path):
 
 
 def group_randomise_wf(input_dir, output_dir, subject_list, 
-                       regressors_path, contrast_path,roi=None):
+                       regressors_path, contrast_path,roi=None, 
+                       analysis_name="oneSampleT_PPI"):
     """
     input_dir:
         BIDS derivative
@@ -203,7 +204,7 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
         ])
         return prep_files
 
-    analysis_name = "FSL_randomise"
+    
     meta_workflow = pe.Workflow(name=analysis_name)
     meta_workflow.base_dir = input_dir + os.sep + "group_level"
     prep_files = wf_prep_files()

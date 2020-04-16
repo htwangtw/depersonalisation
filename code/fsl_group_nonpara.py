@@ -14,7 +14,8 @@ def run_group_randomised(args):
                                   subject_list=args.subject_list,
                                   regressors_path=args.regressors,
                                   contrast_path=args.contrast,
-                                  roi=args.roi
+                                  roi=args.roi,
+                                  analysis_name="oneSampleT_PPI"
                                  )
     workflow.write_graph()
     workflow.run()
@@ -34,6 +35,8 @@ def main():
                         dest="output", type=str , required=True)
     parser.add_argument("-m", help="ROI mask (default: full brain)",
                         dest="roi", required=False)
+    parser.add_argument("-n", help="analysis name",
+                        dest="analysis_name", required=False)
 
     parser.set_defaults(func=run_group_randomised)
     args=parser.parse_args()
