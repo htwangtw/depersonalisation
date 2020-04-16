@@ -8,7 +8,7 @@ import argparse
 
 def run_group_randomised(args):
     from src.workflow import group_randomise_wf
-    print(type(args.cope_list))
+    print(args.cope_list)
     workflow = group_randomise_wf(input_dir=args.input,
                                   output_dir=args.output,
                                   subject_list=args.subject_list,
@@ -25,7 +25,7 @@ def run_group_randomised(args):
 def main():
     parser=argparse.ArgumentParser(description="group level analysis with FSL `randomise`")
     parser.add_argument("-s", help="a list of subject ID", dest="subject_list",
-                        type=str, nargs="*", required=True)
+                        type=str, nargs="+", required=True)
     parser.add_argument("-i", help="BIDS like derivative - first level feat dir",
                         dest="input", type=str, required=True)
     parser.add_argument("-r", help="regressors",
