@@ -24,17 +24,19 @@ def cope_names(input_dir, selected_cope=None):
     with open(con) as f:
         contrast_names = [line.split()[-1]
                           for line in f.readlines() if "ContrastName" in line]
-    if type(selected_cope) is list:
-        # check if names matches
-        new_list = []
-        for sc in selected_cope:
-            if sc in contrast_names:
-                new_list.append(sc)
-            else:
-                print(f"selected contract doen't exist: {sc}") 
-        selected_contrasts = new_list
-    else:
-        selected_contrasts = contrast_names
+
+    selected_contrasts = []
+    for i, cn in enumerate(contrast_names):
+        if type(selected_cope) is list:
+            # check if names matches
+            new_list = []
+            for sc in selected_cope:
+                if sc == cn:
+                    selected_contrasts.append((i, cn))
+                else:
+                    print(f"selected contract doen't exist: {sc}") 
+        else:
+            selected_contrasts.append((i, cn))
     return selected_contrasts
 
 
@@ -223,7 +225,7 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
     prep_files = wf_prep_files()
     # now run randomise...
     contrast_names = cope_names(input_dir, selected_cope)
-    for cope_id, contrast in enumerate(contrast_names):
+    for cope_id, contrast in contrast_names:
         wk = pe.Workflow(name=f"contrast_{contrast}")
         template = {"cope_file":
                     "sub-{subject}/sub-{subject}.feat/stats/cope{cope}.nii.gz"}
