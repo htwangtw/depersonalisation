@@ -8,7 +8,7 @@ import argparse
 
 def run_group_randomised(args):
     from src.workflow import group_randomise_wf
-    print(type(args.subject_list))
+    print(type(args.cope_list))
     workflow = group_randomise_wf(input_dir=args.input,
                                   output_dir=args.output,
                                   subject_list=args.subject_list,
