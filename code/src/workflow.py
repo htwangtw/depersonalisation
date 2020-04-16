@@ -27,16 +27,17 @@ def cope_names(input_dir, selected_cope=None):
 
     selected_contrasts = []
     for i, cn in enumerate(contrast_names):
+        cope_idx = i + 1
         if type(selected_cope) is list:
             # check if names matches
             new_list = []
             for sc in selected_cope:
                 if sc == cn:
-                    selected_contrasts.append((i, cn))
+                    selected_contrasts.append((cope_idx, cn))
                 else:
                     print(f"selected contract doen't exist: {sc}") 
         else:
-            selected_contrasts.append((i, cn))
+            selected_contrasts.append((cope_idx, cn))
     return selected_contrasts
 
 
@@ -233,7 +234,7 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
                                               base_directory=input_dir),
                                   iterfield="subject",
                                   name="file_grabber")
-        file_grabber.inputs.cope = cope_id + 1
+        file_grabber.inputs.cope = cope_id
         file_grabber.inputs.subject = subject_list
 
         concat_copes = pe.Node(Function(function=smooth_concat,
