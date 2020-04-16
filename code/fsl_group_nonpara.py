@@ -14,6 +14,7 @@ def run_group_randomised(args):
                                   subject_list=args.subject_list,
                                   regressors_path=args.regressors,
                                   contrast_path=args.contrast,
+                                  selected_cope=args.cope_list,
                                   roi=args.roi,
                                   analysis_name="oneSampleT_PPI"
                                  )
@@ -31,6 +32,8 @@ def main():
                         dest="regressors", type=str, required=True)
     parser.add_argument("-c", help="contrast",
                         dest="contrast", type=str, required=True)
+    parser.add_argument("-l", help="list of cope names",
+                        dest="cope_list", type=str, required=True)
     parser.add_argument("-o", help="Output dir",
                         dest="output", type=str , required=True)
     parser.add_argument("-m", help="ROI mask (default: full brain)",

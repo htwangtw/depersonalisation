@@ -9,11 +9,13 @@ import nipype.interfaces.utility as niu
 
 
 # get first level copes
-def cope_names(input_dir):
+def cope_names(input_dir, selected_cope=None):
     """
     input_dir:
         BIDS derivative - FSL feat first level outputs
         all feat directories should be derived from the same design
+    selected_cope:
+        A list of cope of interest, names matching the first level design
     """
     first_level = Path(input_dir)
     feat_dir = first_level.glob("sub-*/sub-*[0-9].feat/")
@@ -22,7 +24,18 @@ def cope_names(input_dir):
     with open(con) as f:
         contrast_names = [line.split()[-1]
                           for line in f.readlines() if "ContrastName" in line]
-    return contrast_names
+    if type(selected_cope) is list:
+        # check if names matches
+        new_list = []
+        for sc in selected_cope:
+            if sc in contrast_names:
+                new_list.append(sc)
+            else:
+                print(f"selected contract doen't exist: {sc}") 
+        selected_contrasts = new_list
+    else:
+        selected_contrasts = contrast_names
+    return selected_contrasts
 
 
 def smooth_concat(cope_file, mm, output_dir):
@@ -143,8 +156,8 @@ def groupmean_contrast(subject_list, regressors_path, contrast_path):
 
 
 def group_randomise_wf(input_dir, output_dir, subject_list, 
-                       regressors_path, contrast_path,roi=None, 
-                       analysis_name="oneSampleT_PPI"):
+                       regressors_path, contrast_path,selected_cope=None, 
+                       roi=None, analysis_name="oneSampleT_PPI"):
     """
     input_dir:
         BIDS derivative
@@ -209,7 +222,7 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
     meta_workflow.base_dir = input_dir + os.sep + "group_level"
     prep_files = wf_prep_files()
     # now run randomise...
-    contrast_names = cope_names(input_dir)
+    contrast_names = cope_names(input_dir, selected_cope)
     for cope_id, contrast in enumerate(contrast_names):
         wk = pe.Workflow(name=f"contrast_{contrast}")
         template = {"cope_file":
