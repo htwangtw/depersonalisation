@@ -277,16 +277,16 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
                                      ("outputnode.regressors", "design_mat")]),
             (randomise, sinker, [
                 ('tstat_files',
-                 f'contrast_{contrast}.@tstat_files'),
+                 f'{analysis_name}.@contrast_{contrast}.@tstat_files'),
                 ('t_corrected_p_files',
-                 f'contrast_{contrast}.@t_corrected_p_files')]),
+                 f'{analysis_name}.@contrast_{contrast}.@t_corrected_p_files')]),
             (concat_copes, onesampleT_randomise, [("output_dir", "in_file")]),
             (prep_files, onesampleT_randomise, [("outputnode.mask", "mask")]),
             (onesampleT_randomise, gsinker, [
                 ('tstat_files',
-                 f'contrast_{contrast}.@group_tstat_files'),
+                 f'{analysis_name}.@contrast_{contrast}.@group_tstat_files'),
                 ('t_corrected_p_files',
-                 f'contrast_{contrast}.@group_t_corrected_p_files')]),
+                 f'{analysis_name}.@contrast_{contrast}.@group_t_corrected_p_files')]),
             ])
         meta_workflow.add_nodes([wk])
     return meta_workflow
