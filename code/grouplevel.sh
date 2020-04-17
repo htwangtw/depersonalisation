@@ -25,4 +25,4 @@ fi
 
 python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -o $PATH_OUTPUT \
                               -r $PATH_REGRESSORS -c $PATH_CONTRAST \
-                              -l heart_wrt_note
+                              -l "Heart>Notes"
