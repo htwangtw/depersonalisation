@@ -30,12 +30,14 @@ def cope_names(input_dir, selected_cope=None):
         cope_idx = i + 1
         if type(selected_cope) is list:
             # check if names matches
-            new_list = []
             for sc in selected_cope:
-                if sc == cn:
-                    selected_contrasts.append((cope_idx, cn))
+                if sc in contrast_names:
+                    if sc == cn:
+                        selected_contrasts.append((cope_idx, cn))
+                    else:
+                        pass
                 else:
-                    print(f"selected contract doen't exist: {sc}") 
+                    print(f"selected contrast {sc} doesn't exisit. Typo?")
         else:
             selected_contrasts.append((cope_idx, cn))
     return selected_contrasts
