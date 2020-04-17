@@ -38,7 +38,7 @@ else:
 
     tr = data['RepetitionTime']
 
-    # resample the mask to MNI
+    # extract signal
     seed_masker = input_data.NiftiMasker(mask, detrend=True, t_r=tr)
     seed_time_series = seed_masker.fit_transform(func_filename, confounds=str(confounds_path))
     seed_time_series = seed_time_series.mean(axis=1)

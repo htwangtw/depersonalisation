@@ -1,8 +1,10 @@
-from nilearn import image
 import os
 import sys
+import re
 from pathlib import Path
+
 import nibabel as nb
+from nilearn import image
 
 home = str(Path.home())
 p = Path(home + "/projects/critchley_depersonalisation/references/insular_masks")
@@ -17,4 +19,6 @@ for seed_number in [86, 87, 88, 89, 92, 93]:
     bin_nii = nb.Nifti1Image((data > 0).astype(int),
                              header=thresh.header,
                              affine=thresh.affine)
-    bin_nii.to_filename(source.name)
+    file_name = str(Path(home + "/projects/critchley_depersonalisation/code/ppi_seeds"))
+    file_name = file_name + os.sep + re.sub("probmap-gm-r[0-9]+-", "hammersmith_", source.name)
+    bin_nii.to_filename(file_name)
