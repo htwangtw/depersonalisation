@@ -227,7 +227,8 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
     # now run randomise...
     contrast_names = cope_names(input_dir, selected_cope)
     for cope_id, contrast in contrast_names:
-        wk = pe.Workflow(name=f"contrast_{contrast}")
+        node_name = contrast.replace(">", "_wrt_")
+        wk = pe.Workflow(name=f"contrast_{node_name}")
         template = {"cope_file":
                     "sub-{subject}/sub-{subject}.feat/stats/cope{cope}.nii.gz"}
         file_grabber = pe.MapNode(SelectFiles(template,
@@ -244,7 +245,7 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
                                name="concat_copes")
         concat_copes.inputs.mm = 6
         concat_copes.inputs.output_dir = (input_dir + os.sep + "group_level" +
-                                          os.sep + f"cope_{contrast}.nii.gz")
+                                          os.sep + f"cope_{node_name}.nii.gz")
         prep_files = wf_prep_files()
         # generate design matri
         randomise = pe.Node(fsl.Randomise(), name="unpairedT_randomise")
@@ -261,12 +262,12 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
         # onesampleT_randomise.inputs.demean = True
         onesampleT_randomise.inputs.one_sample_group_mean = True
         # Create DataSink object
-        gsinker = pe.Node(DataSink(), name=f'sinker_{contrast}_group')
+        gsinker = pe.Node(DataSink(), name=f'sinker_{node_name}_group')
         gsinker.inputs.base_directory = output_dir + os.sep + analysis_name
         gsinker.inputs.substitutions = [('tstat1', 'tstat'),
                                         ('randomise', 'fullsample')]
         # Create DataSink object
-        sinker = pe.Node(DataSink(), name=f'sinker_{contrast}')
+        sinker = pe.Node(DataSink(), name=f'sinker_{node_name}')
         sinker.inputs.base_directory = output_dir + os.sep + analysis_name
         sinker.inputs.substitutions = [
             ('randomise_tfce_corrp_tstat1',
@@ -294,16 +295,16 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
                                      ("outputnode.regressors", "design_mat")]),
             (randomise, sinker, [
                 ('tstat_files',
-                 f'contrast_{contrast}.@tstat_files'),
+                 f'contrast_{node_name}.@tstat_files'),
                 ('t_corrected_p_files',
-                 f'contrast_{contrast}.@t_corrected_p_files')]),
+                 f'contrast_{node_name}.@t_corrected_p_files')]),
             (concat_copes, onesampleT_randomise, [("output_dir", "in_file")]),
             (prep_files, onesampleT_randomise, [("outputnode.mask", "mask")]),
             (onesampleT_randomise, gsinker, [
                 ('tstat_files',
-                 f'contrast_{contrast}.@group_tstat_files'),
+                 f'contrast_{node_name}.@group_tstat_files'),
                 ('t_corrected_p_files',
-                 f'contrast_{contrast}.@group_t_corrected_p_files')]),
+                 f'contrast_{node_name}.@group_t_corrected_p_files')]),
             ])
         meta_workflow.add_nodes([wk])
     return meta_workflow
