@@ -16,7 +16,8 @@ def run_group_randomised(args):
                                   contrast_path=args.contrast,
                                   selected_cope=args.cope_list,
                                   roi=args.roi,
-                                  analysis_name="oneSampleT_PPI"
+                                  analysis_name=args.analysis_name,
+                                  oneSampleT=args.one_sample_T
                                  )
     workflow.write_graph()
     workflow.run()
@@ -40,7 +41,9 @@ def main():
                         dest="roi", required=False)
     parser.add_argument("-n", help="analysis name",
                         dest="analysis_name", required=False)
-
+    parser.add_argument("--oneSampleT", help="run one sample t test on the whole group",
+                        dest="one_sample_T", type=str2bool, nargs='?',
+                        const=True, default=False, required=False)
     parser.set_defaults(func=run_group_randomised)
     args=parser.parse_args()
     args.func(args)

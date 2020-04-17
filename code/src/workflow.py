@@ -250,7 +250,7 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
 
         # generate design matri
         randomise = pe.Node(fsl.Randomise(), 
-                            name="unpairedT_randomise")
+                            name="stats_randomise")
         randomise.inputs.num_perm = 1000
         randomise.inputs.vox_p_values = True
         randomise.inputs.tfce = True
