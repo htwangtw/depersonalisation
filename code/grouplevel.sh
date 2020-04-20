@@ -26,6 +26,6 @@ fi
 
 python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -o $PATH_OUTPUT \
                               -r $PATH_REGRESSORS -c $PATH_CONTRAST \
-                              -l "Heart>Notes" \
-                              -n $SEED_NAME \
+                              -l "heart_wrt_note" "note_wrt_heart" \
+                              -n task \
                               --oneSampleT
