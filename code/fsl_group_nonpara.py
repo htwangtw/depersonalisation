@@ -41,9 +41,6 @@ def main():
                         dest="roi", required=False)
     parser.add_argument("-n", help="analysis name",
                         dest="analysis_name", required=False)
-    parser.add_argument("--oneSampleT", help="run one sample t test on the whole group",
-                        dest="one_sample_T", type=str2bool, nargs='?',
-                        const=True, default=False, required=False)
     parser.add_argument('--oneSampleT', dest='one_sample_T', action='store_true')
     parser.add_argument('--no-oneSampleT', dest='one_sample_T', action='store_false')
     parser.set_defaults(one_sample_T=False)
