@@ -14,6 +14,6 @@ SEED_NAME=$(echo $(basename $seed) | cut -d - -f4 | cut -d . -f1)
 PATH_CONTRAST=${HOME}/projects/critchley_depersonalisation/code/group_design/groupmean_contrast.tsv
 PATH_REGRESSORS=${HOME}/projects/critchley_depersonalisation/code/group_design/groupmean_regressors.tsv
 
-
 cd ${HOME}/projects/critchley_depersonalisation/code
 bash ./grouplevel.sh $SEED_NAME $PATH_REGRESSORS $PATH_CONTRAST
+bash ./grouplevel.sh task-condition-contrasts $PATH_REGRESSORS $PATH_CONTRAST

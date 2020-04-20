@@ -17,6 +17,7 @@ cd ${HOME}/projects/critchley_depersonalisation/code
 
 SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
              participants.tsv )
+             
 # group level nuisance regressors
 if [[ ! -f $PATH_REGRESSORS ]]
   then

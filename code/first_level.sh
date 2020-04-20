@@ -63,6 +63,3 @@ then
 else
   echo "Feat directory exist"
 fi
-
-# fake reg
-./registration.sh FSL_task ${subj}
