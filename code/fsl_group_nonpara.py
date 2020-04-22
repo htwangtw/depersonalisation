@@ -16,7 +16,8 @@ def run_group_randomised(args):
                                   contrast_path=args.contrast,
                                   selected_cope=args.cope_list,
                                   roi=args.roi,
-                                  analysis_name="CDS_PPI"
+                                  analysis_name=args.analysis_name,
+                                  oneSampleT=args.one_sample_T
                                  )
     workflow.write_graph()
     workflow.run()
@@ -40,6 +41,9 @@ def main():
                         dest="roi", required=False)
     parser.add_argument("-n", help="analysis name",
                         dest="analysis_name", required=False)
+    parser.add_argument('--oneSampleT', dest='one_sample_T', action='store_true')
+    parser.add_argument('--no-oneSampleT', dest='one_sample_T', action='store_false')
+    parser.set_defaults(one_sample_T=False)
 
     parser.set_defaults(func=run_group_randomised)
     args=parser.parse_args()

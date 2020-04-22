@@ -9,25 +9,13 @@ fi
 
 TEMPLATE=$(readlink -f ${HOME}/projects/critchley_depersonalisation/code/templates/${1})
 OUTPUT=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/${2})
+BASEDIR=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch)
 SUBJ=${3}
 
 cd ${HOME}/projects/critchley_depersonalisation/code
 
-# generate regressors if not exist
-if [[ ! -d "$OUTPUT/physio_measures/sub-${SUBJ}" ]]
-then
-  python ./process_hrv.py sub-${SUBJ}
-else
-fi
-
-if [[ ! -d "$OUTPUT/regressors/sub-${SUBJ}" ]]
-then
-  python ./fsl_level1_regressors.py sub-${SUBJ}
-else
-fi
-
 # make output dir
-mkdir -p ${OUTPUT}/logs
+mkdir -p ${BASEDIR}/logs
 cd $OUTPUT
 
 # create fsf template
@@ -63,6 +51,3 @@ then
 else
   echo "Feat directory exist"
 fi
-
-# fake reg
-./registration.sh FSL_task ${subj}

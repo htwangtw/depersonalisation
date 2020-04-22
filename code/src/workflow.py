@@ -162,7 +162,7 @@ def groupmean_contrast(subject_list, regressors_path, contrast_path):
 
 def group_randomise_wf(input_dir, output_dir, subject_list, 
                        regressors_path, contrast_path,selected_cope=None, 
-                       roi=None, analysis_name="oneSampleT_PPI"):
+                       roi=None, oneSampleT=False, analysis_name="oneSampleT_PPI"):
     """
     input_dir:
         BIDS derivative
@@ -229,7 +229,8 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
     # now run randomise...
     contrast_names = cope_names(input_dir, selected_cope)
     for cope_id, contrast in contrast_names:
-        wk = pe.Workflow(name=f"contrast_{contrast}")
+        node_name = contrast.replace(">", "_wrt_")
+        wk = pe.Workflow(name=f"contrast_{node_name}")
         template = {"cope_file":
                     "sub-{subject}/sub-{subject}.feat/stats/cope{cope}.nii.gz"}
         file_grabber = pe.MapNode(SelectFiles(template,
@@ -246,40 +247,30 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
                                name="concat_copes")
         concat_copes.inputs.mm = 6
         concat_copes.inputs.output_dir = (input_dir + os.sep + "group_level" +
-                                          os.sep + f"cope_{contrast}.nii.gz")
+                                          os.sep + f"cope_{node_name}.nii.gz")
         prep_files = wf_prep_files()
+
         # generate design matri
-        randomise = pe.Node(fsl.Randomise(), name="unpairedT_randomise")
+        randomise = pe.Node(fsl.Randomise(), 
+                            name="stats_randomise")
         randomise.inputs.num_perm = 1000
         randomise.inputs.vox_p_values = True
         randomise.inputs.tfce = True
-        # randomise.inputs.demean = True
 
+        import pandas as pd
+        group_contrast_names = pd.read_csv(contrast_path, sep="\t", index_col=0).index
+        group_contrast_names = group_contrast_names.tolist()
+        
         # Create DataSink object
-        sinker = pe.Node(DataSink(), name=f'sinker_{contrast}')
+        sinker = pe.Node(DataSink(), name=f'sinker_{node_name}')
         sinker.inputs.base_directory = output_dir + os.sep + analysis_name
-        sinker.inputs.substitutions = [
-            ('randomise_tfce_corrp_tstat1',
-             'fullsample_tfce_corrp_tstat'),
-            ('randomise_tfce_corrp_tstat2',
-             'control_tfce_corrp_tstat'),
-            ('randomise_tfce_corrp_tstat3',
-             'patient_tfce_corrp_tstat'),
-            ('randomise_tfce_corrp_tstat4',
-             'patient_wrt_control_tfce_corrp_tstat'),
-            ('randomise_tfce_corrp_tstat5',
-             'control_wrt_patients_tfce_corrp_tstat'),
-            ('randomise_tstat1',
-             'fullsample_tstat'),
-            ('randomise_tstat2',
-             'control_tstat'),
-            ('randomise_tstat3',
-             'patient_tstat'),
-            ('randomise_tstat4',
-             'patient_wrt_control_tstat'),
-            ('randomise_tstat5',
-             'control_wrt_patients_tstat')]
-
+        t_test_new_name, p_new_name = [], []
+        for i, name in enumerate(group_contrast_names):
+            t_test_new_name.append((f'randomise_tstat{i + 1}', f'{name}_tstat'))
+            p_new_name.append((f'randomise_tfce_corrp_tstat{i + 1}', f'{name}_tfce_corrp_tstat'))
+        sinker.inputs.substitutions = t_test_new_name + p_new_name
+        
+        # connect the nodes
         wk.connect([
             (file_grabber, concat_copes, [("cope_file", "cope_file")]),
             (concat_copes, randomise, [("output_dir", "in_file")]),
@@ -288,9 +279,33 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
                                      ("outputnode.regressors", "design_mat")]),
             (randomise, sinker, [
                 ('tstat_files',
-                 f'contrast_{contrast}.@tstat_files'),
+                 f'contrast_{node_name}.@tstat_files'),
                 ('t_corrected_p_files',
-                 f'contrast_{contrast}.@t_corrected_p_files')]),
+                 f'contrast_{node_name}.@t_corrected_p_files')]),
             ])
+
+        if oneSampleT:
+            # one sample T test
+            onesampleT_randomise = pe.Node(fsl.Randomise(),
+                                        name="onesampleT_randomise")
+            onesampleT_randomise.inputs.num_perm = 1000
+            onesampleT_randomise.inputs.vox_p_values = True
+            onesampleT_randomise.inputs.tfce = True
+            onesampleT_randomise.inputs.one_sample_group_mean = True
+
+            # Create DataSink object
+            gsinker = pe.Node(DataSink(), name=f'sinker_{node_name}_group')
+            gsinker.inputs.base_directory = output_dir + os.sep + analysis_name
+            gsinker.inputs.substitutions = [('tstat1', 'tstat'),
+                                            ('randomise', 'fullsample')]
+            wk.connect([
+                (concat_copes, onesampleT_randomise, [("output_dir", "in_file")]),
+                (prep_files, onesampleT_randomise, [("outputnode.mask", "mask")]),
+                (onesampleT_randomise, gsinker, [
+                    ('tstat_files',
+                    f'contrast_{node_name}.@group_tstat_files'),
+                    ('t_corrected_p_files',
+                    f'contrast_{node_name}.@group_t_corrected_p_files')])])
+
         meta_workflow.add_nodes([wk])
     return meta_workflow

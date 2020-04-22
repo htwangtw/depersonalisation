@@ -11,10 +11,7 @@ from nilearn import input_data
 
 subject = sys.argv[1]
 mask = Path(sys.argv[2])
-# load file
-# File created through spike export to spreadsheet function
-# resample to frequecny = 100 hz
-# method: linear
+
 home = str(Path.home())
 p = Path(home + "/projects/critchley_depersonalisation")
 vol_path = (p / "data" / subject / "func" /
@@ -41,10 +38,11 @@ else:
 
     tr = data['RepetitionTime']
 
-    # resample the mask to MNI
-    seed_masker = input_data.NiftiMasker(mask, t_r=tr)
+    # extract signal
+    seed_masker = input_data.NiftiMasker(mask, detrend=True, t_r=tr)
     seed_time_series = seed_masker.fit_transform(func_filename, confounds=str(confounds_path))
     seed_time_series = seed_time_series.mean(axis=1)
-    seed_time_series -= seed_time_series.mean()  # mean centre
+    mean_seed = seed_time_series.mean()
+    seed_time_series -= mean_seed  # mean centre
     np.savetxt(str(out_file), seed_time_series, fmt='%10.5f')
     print(str(out_file))
