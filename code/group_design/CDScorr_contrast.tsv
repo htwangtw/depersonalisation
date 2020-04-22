@@ -1,2 +1,3 @@
-	CDS	age	mean_fd
-mean	1	0	0
+	groupmean	CDS	age	mean_fd
+fullsample	1	0	0	0
+cds	0	1	0	0
