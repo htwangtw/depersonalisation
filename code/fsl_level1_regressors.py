@@ -72,7 +72,7 @@ new_time = np.arange(0, n_vol, 1) * tr
 hrv_tr_match = f(new_time)
 for i, name in enumerate(hrv.columns):
     power = hrv_tr_match[i, 5:]  # trim off the first five volumes
-    power = zscore(np.log10(power))  # take log and normalise
+    power = zscore(power)  # normalise
     out_file = target_path / f"{subject}_task-heartbeat_run-1_desc-{name}_regressors.tsv"
     np.savetxt(str(out_file), power, fmt='%10.5f')
 
