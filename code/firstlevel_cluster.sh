@@ -20,12 +20,12 @@ echo sub-$subj
 bash ./create_regressors.sh ${subj}
 
 # hrv
-./first_level.sh hrv_level1.fsf FSL_hrv ${subj}
-./registration.sh ../scratch/FSL_hrv ${subj}
+# ./first_level.sh hrv_level1.fsf FSL_hrv ${subj}
+# ./registration.sh ../scratch/FSL_hrv ${subj}
 
 # task only
-# ./first_level.sh heart_wrt_note_level_1.fsf FSL_task ${subj}
-# ./registration.sh ../scratch/FSL_task ${subj}
+./first_level.sh heart_wrt_note_level_1.fsf FSL_task_new ${subj}
+./registration.sh ../scratch/FSL_task_new ${subj}
 
 #PPI
 # for seed in $(ls ${SEED_DIR}/*); do
