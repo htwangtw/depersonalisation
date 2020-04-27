@@ -263,7 +263,7 @@ set fmri(regstandard_nonlinear_yn) 0
 set fmri(regstandard_nonlinear_warpres) 10
 
 # High pass filter cutoff
-set fmri(paradigm_hp) 128
+set fmri(paradigm_hp) 0
 
 # Total voxels
 set fmri(totalVoxels) 123598475
@@ -273,13 +273,13 @@ set fmri(totalVoxels) 123598475
 set fmri(ncopeinputs) 0
 
 # 4D AVW data or FEAT directory (1)
-set feat_files(1) "/home/hw1012/projects/critchley_depersonalisation/data/derivatives/func_smooth-6mm/sub-SUBJECT/func/sub-SUBJECT_task-heartbeat_run-1_space-MNI152NLin2009cAsym_desc-preproc-fwhm6mm_bold"
+set feat_files(1) "HOME/projects/critchley_depersonalisation/data/derivatives/func_smooth-6mm/sub-SUBJECT/func/sub-SUBJECT_task-heartbeat_run-1_space-MNI152NLin2009cAsym_desc-preproc-fwhm6mm_bold"
 
 # Add confound EVs text file
 set fmri(confoundevs) 1
 
 # Confound EVs text file for analysis 1
-set confoundev_files(1) "/home/hw1012/projects/critchley_depersonalisation/scratch/fsl_regressors/sub-SUBJECT/sub-SUBJECT_task-heartbeat_run-1_desc-FSLconfounds_regressors.tsv"
+set confoundev_files(1) "HOME/projects/critchley_depersonalisation/scratch/regressors/sub-SUBJECT/sub-SUBJECT_task-heartbeat_run-1_desc-FSLconfounds_regressors.tsv"
 
 # EV 1 title
 set fmri(evtitle1) "LF_HRV"
@@ -314,7 +314,7 @@ set fmri(tempfilt_yn1) 1
 set fmri(deriv_yn1) 0
 
 # Custom EV file (EV 1)
-set fmri(custom1) "/home/hw1012/projects/critchley_depersonalisation/scratch/fsl_regressors/sub-SUBJECT/sub-SUBJECT_task-heartbeat_run-1_desc-lf_HRV_regressors.tsv"
+set fmri(custom1) "HOME/projects/critchley_depersonalisation/scratch/regressors/sub-SUBJECT/sub-SUBJECT_task-heartbeat_run-1_desc-lf_HRV_regressors.tsv"
 
 # Orthogonalise EV 1 wrt EV 0
 set fmri(ortho1.0) 1
@@ -361,7 +361,7 @@ set fmri(tempfilt_yn2) 1
 set fmri(deriv_yn2) 0
 
 # Custom EV file (EV 2)
-set fmri(custom2) "/home/hw1012/projects/critchley_depersonalisation/scratch/fsl_regressors/sub-SUBJECT/sub-SUBJECT_task-heartbeat_run-1_desc-hf_HRV_regressors.tsv"
+set fmri(custom2) "HOME/projects/critchley_depersonalisation/scratch/regressors/sub-SUBJECT/sub-SUBJECT_task-heartbeat_run-1_desc-hf_HRV_regressors.tsv"
 
 # Orthogonalise EV 2 wrt EV 0
 set fmri(ortho2.0) 1
@@ -408,7 +408,7 @@ set fmri(tempfilt_yn3) 1
 set fmri(deriv_yn3) 0
 
 # Custom EV file (EV 3)
-set fmri(custom3) "/home/hw1012/projects/critchley_depersonalisation/scratch/fsl_regressors/sub-SUBJECT/sub-SUBJECT_task-heartbeat_run-1_desc-bpm_regressors.tsv"
+set fmri(custom3) "HOME/projects/critchley_depersonalisation/scratch/regressors/sub-SUBJECT/sub-SUBJECT_task-heartbeat_run-1_desc-bpm_regressors.tsv"
 
 # Orthogonalise EV 3 wrt EV 0
 set fmri(ortho3.0) 0

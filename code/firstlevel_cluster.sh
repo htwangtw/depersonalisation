@@ -17,11 +17,15 @@ for subj in $SUBJ_LIST; do
 echo sub-$subj
 
 # generate nuisance and task regressors
-# bash ./create_regressors.sh ${subj}
+bash ./create_regressors.sh ${subj}
+
+# hrv
+./first_level.sh hrv_level1.fsf FSL_hrv ${subj}
+./registration.sh ../scratch/FSL_hrv ${subj}
 
 # task only
-./first_level.sh heart_wrt_note_level_1.fsf FSL_task ${subj}
-# ./registration.sh FSL_task ${subj}
+# ./first_level.sh heart_wrt_note_level_1.fsf FSL_task ${subj}
+# ./registration.sh ../scratch/FSL_task ${subj}
 
 #PPI
 # for seed in $(ls ${SEED_DIR}/*); do
