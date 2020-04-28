@@ -1,0 +1,9 @@
+Insular Cortex:1.8757
+Superior Temporal Gyrus, posterior division:1.4083
+Middle Temporal Gyrus, temporooccipital part:0.0118
+Supramarginal Gyrus, anterior division:0.0118
+Supramarginal Gyrus, posterior division:2.5799
+Central Opercular Cortex:0.9822
+Parietal Operculum Cortex:22.7456
+Heschl's Gyrus (includes H1 and H2):3.7811
+Planum Temporale:27.6035

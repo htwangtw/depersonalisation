@@ -1,0 +1,14 @@
+Insular Cortex:4.6129
+Inferior Frontal Gyrus, pars triangularis:0.4596
+Inferior Frontal Gyrus, pars opercularis:9.2449
+Precentral Gyrus:11.0862
+Temporal Pole:3.8222
+Superior Temporal Gyrus, anterior division:0.7141
+Superior Temporal Gyrus, posterior division:0.0068
+Postcentral Gyrus:0.3051
+Frontal Orbital Cortex:0.3174
+Frontal Operculum Cortex:5.0616
+Central Opercular Cortex:22.7031
+Planum Polare:3.9959
+Heschl's Gyrus (includes H1 and H2):0.4159
+Planum Temporale:0.1190

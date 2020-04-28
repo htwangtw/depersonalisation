@@ -1,0 +1,6 @@
+Superior Temporal Gyrus, posterior division:2.4032
+Central Opercular Cortex:0.9194
+Parietal Operculum Cortex:2.3871
+Planum Polare:0.0806
+Heschl's Gyrus (includes H1 and H2):29.8226
+Planum Temporale:31.3710

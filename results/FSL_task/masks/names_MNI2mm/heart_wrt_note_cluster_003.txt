@@ -1,0 +1,4 @@
+Frontal Pole:59.4976
+Superior Frontal Gyrus:0.0495
+Middle Frontal Gyrus:6.3632
+Inferior Frontal Gyrus, pars triangularis:1.5920

@@ -1,0 +1,28 @@
+Insular Cortex:0.0059
+Temporal Pole:0.1773
+Middle Temporal Gyrus, temporooccipital part:0.0624
+Inferior Temporal Gyrus, posterior division:0.0682
+Inferior Temporal Gyrus, temporooccipital part:0.7979
+Postcentral Gyrus:0.0006
+Superior Parietal Lobule:0.7909
+Supramarginal Gyrus, posterior division:0.0076
+Angular Gyrus:0.1295
+Lateral Occipital Cortex, superior division:15.4543
+Lateral Occipital Cortex, inferior division:10.0331
+Intracalcarine Cortex:0.9151
+Frontal Medial Cortex:0.0551
+Subcallosal Cortex:1.2041
+Paracingulate Gyrus:0.0186
+Cingulate Gyrus, anterior division:0.0093
+Cingulate Gyrus, posterior division:0.2288
+Precuneous Cortex:1.9430
+Cuneal Cortex:2.2010
+Frontal Orbital Cortex:0.2637
+Parahippocampal Gyrus, anterior division:0.5526
+Parahippocampal Gyrus, posterior division:0.7274
+Lingual Gyrus:1.9236
+Temporal Fusiform Cortex, posterior division:0.9720
+Temporal Occipital Fusiform Cortex:3.2415
+Occipital Fusiform Gyrus:2.6804
+Supracalcarine Cortex:0.9432
+Occipital Pole:6.5007

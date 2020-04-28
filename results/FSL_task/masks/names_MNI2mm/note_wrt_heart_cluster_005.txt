@@ -1,0 +1,5 @@
+Frontal Pole:4.2368
+Superior Frontal Gyrus:0.1957
+Frontal Medial Cortex:12.5205
+Paracingulate Gyrus:43.4462
+Cingulate Gyrus, anterior division:22.5558

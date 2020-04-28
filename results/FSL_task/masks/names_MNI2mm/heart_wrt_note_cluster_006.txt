@@ -1,0 +1,10 @@
+Superior Temporal Gyrus, posterior division:0.2620
+Postcentral Gyrus:0.5293
+Superior Parietal Lobule:0.2323
+Supramarginal Gyrus, anterior division:11.6565
+Supramarginal Gyrus, posterior division:19.6801
+Angular Gyrus:18.1622
+Lateral Occipital Cortex, superior division:4.2468
+Central Opercular Cortex:0.0236
+Parietal Operculum Cortex:6.6093
+Planum Temporale:1.9901

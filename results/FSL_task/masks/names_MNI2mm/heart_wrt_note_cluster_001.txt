@@ -1,0 +1,8 @@
+Middle Temporal Gyrus, posterior division:0.9659
+Middle Temporal Gyrus, temporooccipital part:52.5114
+Inferior Temporal Gyrus, posterior division:0.0909
+Inferior Temporal Gyrus, temporooccipital part:2.3636
+Supramarginal Gyrus, posterior division:0.3977
+Angular Gyrus:0.2614
+Lateral Occipital Cortex, superior division:0.1250
+Lateral Occipital Cortex, inferior division:17.5455
