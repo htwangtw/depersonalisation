@@ -27,4 +27,4 @@ fi
 python ./fsl_group_nonpara.py -s $SUBJ_LIST -i $PATH_ANALYSIS -o $PATH_OUTPUT \
                               -r $PATH_REGRESSORS -c $PATH_CONTRAST \
                               -l "heart_wrt_note" "note_wrt_heart" \
-                              -n task_corr_CDS
+                              -n task --oneSampleT
