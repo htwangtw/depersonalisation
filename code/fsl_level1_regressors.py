@@ -66,6 +66,7 @@ except KeyError:
 hrv = pd.read_csv(hrv_path, sep='\t', index_col=0)
 x = hrv.index.to_numpy()
 y = hrv.values.T
+
 # interpolate to TR
 f = interpolate.interp1d(x, y, kind='slinear', fill_value='extrapolate')
 new_time = np.arange(0, n_vol, 1) * tr
