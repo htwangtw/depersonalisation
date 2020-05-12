@@ -20,5 +20,5 @@ for seed_number in [86, 87, 88, 89, 92, 93]:
                              header=thresh.header,
                              affine=thresh.affine)
     file_name = str(Path(home + "/projects/critchley_depersonalisation/code/ppi_seeds"))
-    file_name = file_name + os.sep + re.sub("probmap-gm-r[0-9]+-", "hammersmith_", source.name)
+    file_name = file_name + os.sep + source.name
     bin_nii.to_filename(file_name)
