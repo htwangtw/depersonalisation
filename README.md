@@ -29,6 +29,12 @@ Last update: 16 March 2020
 └── README.md
 ```
 
+## Important note on dependecy
+We used a patched version of `tftb`. The pip image hasn't been updated yet.
+```
+pip install git+https://github.com/htwangtw/tftb.git@spwv_fix
+```
+
 ## `data`
 
 This is a BIDS directory containing the raw data (`sourcedata`), BIDS compiled Nifti, and minimally preprocessed dataset for statistical modeling (`derivatives`).
