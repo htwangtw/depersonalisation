@@ -21,12 +21,19 @@ Last update: 16 March 2020
 │   ├── task-heartbeat_bold.json
 │   └── task-rest_bold.json
 ├── code
-│   ├── tests
-│   └── src
 ├── references
 ├── results
 ├── scratch
 └── README.md
+```
+
+## create `virtualenv`
+```
+cd /path/to/project/
+virturalenv env
+env/bin/activate
+pip install -r requirements.txt
+pip install git+https://github.com/htwangtw/tftb.git@spwv_fix
 ```
 
 ## Important note on dependecy
