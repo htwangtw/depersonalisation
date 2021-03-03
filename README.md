@@ -30,10 +30,8 @@ Last update: 16 March 2020
 ## create `virtualenv`
 ```
 cd /path/to/project/
-virturalenv env
-env/bin/activate
-pip install -r requirements.txt
-pip install git+https://github.com/htwangtw/tftb.git@spwv_fix
+make install
+source env/bin/activate
 ```
 
 ## Important note on dependecy
@@ -41,6 +39,7 @@ We used a patched version of `tftb`. The pip image hasn't been updated yet.
 ```
 pip install git+https://github.com/htwangtw/tftb.git@spwv_fix
 ```
+This step is not needed if you use the `Makefile` to create the environment
 
 ## `data`
 
