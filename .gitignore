@@ -9,8 +9,10 @@ scratch
 code/bak/
 */bak/
 manuscript/
+results/v4*
+results/*.tar.gz
 
-#various editors
+# various editors
 .vscode/
 
 # Byte-compiled / optimized / DLL files
