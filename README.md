@@ -4,11 +4,11 @@ Depersonalisation projects links to manuscript WIP by Sarah Garfinkel.
 Data originally collected and analysed by Geoff Davies, Charlotte Rae, and Cassandra Gould van Praag.  
 The current version in this folder is curated and analysed by Hao-Ting Wang.  
 
-Last update: 16 March 2020
+Last update: 3 March 2021
 
 ```
 ./
-├── data
+├── data/
 │   ├── code
 │   ├── derivatives
 │   ├── sourcedata
@@ -20,10 +20,12 @@ Last update: 16 March 2020
 │   ├── README.md
 │   ├── task-heartbeat_bold.json
 │   └── task-rest_bold.json
-├── code
-├── references
-├── results
-├── scratch
+├── references/
+├── results/
+├── scratch/
+├── scripts/
+├── Makefile
+├── requirements.txt
 └── README.md
 ```
 
@@ -45,7 +47,7 @@ This step is not needed if you use the `Makefile` to create the environment
 
 This is a BIDS directory containing the raw data (`sourcedata`), BIDS compiled Nifti, and minimally preprocessed dataset for statistical modeling (`derivatives`).
 
-## `code`
+## `scripts`
 
 Analysis and visualisation code, including FSL design files
 
@@ -54,7 +56,7 @@ Analysis and visualisation code, including FSL design files
 Code from referenced study, MNI space seed/gray matter masks
 
 ## `results`
-Outputs from `code`, includes figures, important interim data, manuscripts.
+Outputs from `scripts`, includes figures, important interim data, manuscripts.
 Includes copy of metadata to produce the final figures.
 
 ## `scratch`
