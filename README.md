@@ -4,6 +4,8 @@ Depersonalisation projects links to manuscript WIP lead by Sarah Garfinkel.
 Data originally collected and analysed by Geoff Davies, Charlotte Rae, and Cassandra Gould van Praag.
 The current version in this folder is curated and analysed by Hao-Ting Wang.
 
+[See results on Jupyter Notebook](https://nbviewer.jupyter.org/github/htwangtw/depersonalisation/blob/0.1.0/results/stats_results_figures.ipynb)
+
 ## Repository overview
 <details>
   <summary>Expand to see the tree</summary>
