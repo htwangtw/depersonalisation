@@ -36,14 +36,18 @@ The current version in this folder is curated and analysed by Hao-Ting Wang.
 ## Using the material in this repo:
 <details>
   <summary>create `virtualenv`</summary>
+
+    Recommanded steps:
+
     ```
     cd /path/to/project/
     make install
     source env/bin/activate
     ```
 
-    ### Important note on dependecy
+    ## Important note on dependecy
     We used a patched version of `tftb`. The pip image hasn't been updated yet.
+
     ```
     pip install git+https://github.com/htwangtw/tftb.git@spwv_fix
     ```
@@ -69,11 +73,13 @@ The current version in this folder is curated and analysed by Hao-Ting Wang.
 
 <details>
   <summary>references</summary>
+
     Code from referenced study, MNI space seed/gray matter masks
 </details>
 
 <details>
   <summary>results</summary>
+
     Outputs from `scripts`, includes figures, important interim data, manuscripts.
     Includes copy of metadata to produce the final figures.
 
@@ -86,6 +92,7 @@ The current version in this folder is curated and analysed by Hao-Ting Wang.
 
 <details>
   <summary>Misc</summary>
+
     ### scratch
     Scratch folder. Delete after a project is complete.
 </details>
@@ -93,7 +100,8 @@ The current version in this folder is curated and analysed by Hao-Ting Wang.
 
 <details>
   <summary>Notes on preprocessing</summary>
-    ### Framewise displacement threshold for quality assessments
+
+    Framewise displacement threshold for quality assessments
 
     The motion detection threshold is 0.5 mm for quality assessment and outlier frame cut-off in the heartbeat detection task. (c.f. 0.2 mm for resting state.)
     I set the cut off at 20% of the volumes and then visually inspect the spiking
