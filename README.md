@@ -1,4 +1,4 @@
-# Heightened dissociation in patients with first episode psychosis linked to interoceptive disturbanceP
+# Heightened dissociation in patients with first episode psychosis linked to interoceptive disturbance
 
 Depersonalisation projects links to manuscript WIP lead by Sarah Garfinkel.
 Data originally collected and analysed by Geoff Davies, Charlotte Rae, and Cassandra Gould van Praag.
