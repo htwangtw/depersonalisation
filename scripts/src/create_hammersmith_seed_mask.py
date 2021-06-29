@@ -1,6 +1,4 @@
 import os
-import sys
-import re
 from pathlib import Path
 
 import nibabel as nb
@@ -19,6 +17,6 @@ for seed_number in [86, 87, 88, 89, 92, 93]:
     bin_nii = nb.Nifti1Image((data > 0).astype(int),
                              header=thresh.header,
                              affine=thresh.affine)
-    file_name = str(Path(home + "/projects/critchley_depersonalisation/code/ppi_seeds"))
+    file_name = str(Path(home + "/projects/critchley_depersonalisation/references/ppi_seeds"))
     file_name = file_name + os.sep + source.name
     bin_nii.to_filename(file_name)

@@ -2,12 +2,10 @@
 Group level FSL using `randomised` in nypipe
 """
 
-import os
-import sys
 import argparse
 
 def run_group_randomised(args):
-    from src.workflow import group_randomise_wf
+    from .workflow import group_randomise_wf
     print(args.cope_list)
     workflow = group_randomise_wf(input_dir=args.input,
                                   output_dir=args.output,

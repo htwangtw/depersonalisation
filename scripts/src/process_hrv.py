@@ -1,6 +1,6 @@
 """
 usage:
-    python physio_qa.py $subject
+    python process_hrv.py $subject
 
 Convert list of peaks into
 1. inter beat interval
@@ -15,9 +15,9 @@ from pathlib import Path
 
 import pandas as pd
 import numpy as np
-import nibabel as nb
 
-from src.hrv import ContinuousHRV
+from .hrv import ContinuousHRV
+
 
 # load subject
 subject = sys.argv[1]

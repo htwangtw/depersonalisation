@@ -9,11 +9,11 @@ import json
 
 import pandas as pd
 import numpy as np
-from scipy import signal, interpolate
+from scipy import interpolate
 from scipy.stats import zscore
 
 import nibabel as nb
-from nilearn import input_data
+
 
 print("create regressors")
 subject = sys.argv[1]
@@ -35,13 +35,13 @@ hrv_path = (p / "scratch" / "physio_measures" / subject /
 ibi_path = (p / "scratch" / "physio_measures" / subject /
             f"{subject}_task-heartbeat_run-1_desc-ibi_physio.tsv")
 target_path = (p / "scratch" / "regressors" / subject)
-func_filename = str(p / "data" / "derivatives" / 
+func_filename = str(p / "data" / "derivatives" /
                  "func_smooth-6mm" / subject / "func" /
                  f"{subject}_task-heartbeat_run-1_space-MNI152NLin2009cAsym_desc-preproc-fwhm6mm_bold.nii.gz")
-                 
+
 # predefined var
 n_dummy = 5
-confound_vars = (p / "code" / "confound_regressors.txt")
+confound_vars = (p / "code/src" / "confound_regressors.txt")
 confound_vars = [line.rstrip('\n') for line in open(confound_vars)]
 
 # create dir

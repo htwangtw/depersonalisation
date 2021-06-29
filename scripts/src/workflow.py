@@ -8,14 +8,22 @@ from nipype.interfaces.io import DataSink
 import nipype.interfaces.utility as niu
 
 
-# get first level copes
-def cope_names(input_dir, selected_cope=None):
-    """
+def _cope_names(input_dir, selected_cope=None):
+    """Get COPE names from the first level analysis
+
+    Parameters
+    ----------
     input_dir:
         BIDS derivative - FSL feat first level outputs
         all feat directories should be derived from the same design
     selected_cope:
         A list of cope of interest, names matching the first level design
+
+
+    Return
+    ------
+    selected_contrasts: List of tuple
+        cope index and cope name
     """
     first_level = Path(input_dir)
     feat_dir = first_level.glob("sub-*/sub-*[0-9].feat/")
@@ -43,18 +51,19 @@ def cope_names(input_dir, selected_cope=None):
     return selected_contrasts
 
 
-def smooth_concat(cope_file, mm, output_dir):
-    from nilearn.image import concat_imgs, smooth_img
+def _concat_copes(cope_file, output_dir):
+    """Concatenate COPE images and save as a file"""
+    from nilearn.image import concat_imgs
     copes = []
     for i in cope_file:
-        # i = smooth_img(i, mm)
         copes.append(i)
     copes_concat = concat_imgs(copes, auto_resample=True)
     copes_concat.to_filename(output_dir)
     return output_dir
 
 
-def create_group_mask(brain_masks, base_dir):
+def _create_group_mask(brain_masks, base_dir):
+    """Create mask fo the current sample."""
     from nilearn.image import mean_img, math_img
     from nilearn.plotting import plot_stat_map, plot_roi
     import os
@@ -77,67 +86,7 @@ def create_group_mask(brain_masks, base_dir):
     return groupmask_path
 
 
-def create_sphere_mask(seed, group_mask, radius):
-    """
-    seed: tuple
-    """
-    import numpy as np
-    from sklearn import neighbors
-    from nilearn.image.resampling import coord_transform
-    import nibabel as nb
-
-    mask = group_mask.get_date()
-    affine = group_mask.affine
-    mask_coords = list(zip(*np.where(mask != 0)))
-    # For each seed, get coordinates of nearest voxel
-    for sx, sy, sz in seed:
-        nearests = np.round(coord_transform(sx, sy, sz,
-                                            np.linalg.inv(affine)))
-        nearests = nearests.astype(int)
-        nearests = (nearests[0], nearests[1], nearests[2])
-
-    mask_coords = np.asarray(list(zip(*mask_coords)))
-    mask_coords = coord_transform(mask_coords[0], mask_coords[1],
-                                  mask_coords[2], affine)
-    mask_coords = np.asarray(mask_coords).T
-    clf = neighbors.NearestNeighbors(radius=radius)
-    A = clf.fit(mask_coords).radius_neighbors_graph(seed)
-    A = A.tolil()
-    for i, nearest in enumerate(nearests):
-        if nearest is None:
-            continue
-        A[i, nearest] = True
-
-    # save shpere mask
-    roi_nii = nb.Nifti1Image(A, affine=affine, header=group_mask.header)
-    return roi_nii
-
-
-def roi_mask(roi, group_mask, base_dir):
-    # if customised mask used, overlap it with
-    # the group whole brain mask
-    # check what type of ROI
-    import os
-    import nibabel as nb
-    from nilearn.image import resample_to_img
-    if "nii.gz" in roi:
-        mask = resample_to_img(roi, group_mask, interpolation='nearest')
-        fn = roi.split(os.sep)[-1]
-    elif type(roi) is tuple:
-        print(f"creating 8mm radius sphere around {roi}")
-        mask = create_sphere_mask(seed=roi, group_mask=group_mask, radius=8)
-        fn = roi.join('_') + ".nii.gz"
-    else:
-        mask = nb.load(group_mask)
-        fn = "group_mask.nii.gz"
-
-    mask_path = base_dir + fn
-    if not os.path.exists(mask_path):
-        mask.to_filename(mask_path)
-    return mask_path
-
-
-def groupmean_contrast(subject_list, regressors_path, contrast_path):
+def _groupmean_contrast(subject_list, regressors_path, contrast_path):
     import pandas as pd
     import numpy as np
 
@@ -160,10 +109,13 @@ def groupmean_contrast(subject_list, regressors_path, contrast_path):
     return group, regressors.to_dict('list'), (contrasts)
 
 
-def group_randomise_wf(input_dir, output_dir, subject_list, 
-                       regressors_path, contrast_path,selected_cope=None, 
+def group_randomise_wf(input_dir, output_dir, subject_list,
+                       regressors_path, contrast_path,selected_cope=None,
                        roi=None, oneSampleT=False, analysis_name="oneSampleT_PPI"):
-    """
+    """ Group level non parametric test work flow
+
+    Parameters
+    ----------
     input_dir:
         BIDS derivative
     subject_list:
@@ -183,7 +135,7 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
         whole_brain_mask.inputs.base_directory = input_dir
         whole_brain_mask.inputs.subject = subject_list
 
-        gen_groupmask = pe.Node(Function(function=create_group_mask,
+        gen_groupmask = pe.Node(Function(function=_create_group_mask,
                                          input_names=["brain_masks",
                                                       "base_dir"],
                                          output_names=["groupmask_path"]),
@@ -191,9 +143,9 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
         gen_groupmask.inputs.base_dir = (input_dir + os.sep
                                          + "group_level" + os.sep)
 
-        designs = pe.Node(Function(function=groupmean_contrast,
+        designs = pe.Node(Function(function=_groupmean_contrast,
                                    input_names=["subject_list",
-                                                "regressors_path", 
+                                                "regressors_path",
                                                 "contrast_path"],
                                    output_names=["groups",
                                                  "regressors",
@@ -222,12 +174,12 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
         ])
         return prep_files
 
-    
+
     meta_workflow = pe.Workflow(name=analysis_name)
     meta_workflow.base_dir = input_dir + os.sep + "group_level"
     prep_files = wf_prep_files()
     # now run randomise...
-    contrast_names = cope_names(input_dir, selected_cope)
+    contrast_names = _cope_names(input_dir, selected_cope)
     for cope_id, contrast in contrast_names:
         node_name = contrast.replace(">", "_wrt_")
         wk = pe.Workflow(name=f"contrast_{node_name}")
@@ -240,7 +192,7 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
         file_grabber.inputs.cope = cope_id
         file_grabber.inputs.subject = subject_list
 
-        concat_copes = pe.Node(Function(function=smooth_concat,
+        concat_copes = pe.Node(Function(function=_concat_copes,
                                         input_names=["cope_file", "mm",
                                                      "output_dir"],
                                         output_names=["output_dir"]),
@@ -250,8 +202,8 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
                                           os.sep + f"cope_{node_name}.nii.gz")
         prep_files = wf_prep_files()
 
-        # generate design matri
-        randomise = pe.Node(fsl.Randomise(), 
+        # generate design matrix
+        randomise = pe.Node(fsl.Randomise(),
                             name="stats_randomise")
         randomise.inputs.num_perm = 1000
         randomise.inputs.vox_p_values = True
@@ -260,7 +212,7 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
         import pandas as pd
         group_contrast_names = pd.read_csv(contrast_path, sep="\t", index_col=0).index
         group_contrast_names = group_contrast_names.tolist()
-        
+
         # Create DataSink object
         sinker = pe.Node(DataSink(), name=f'sinker_{node_name}')
         sinker.inputs.base_directory = output_dir + os.sep + analysis_name
@@ -269,7 +221,7 @@ def group_randomise_wf(input_dir, output_dir, subject_list,
             t_test_new_name.append((f'randomise_tstat{i + 1}', f'{name}_tstat'))
             p_new_name.append((f'randomise_tfce_corrp_tstat{i + 1}', f'{name}_tfce_corrp_tstat'))
         sinker.inputs.substitutions = t_test_new_name + p_new_name
-        
+
         # connect the nodes
         wk.connect([
             (file_grabber, concat_copes, [("cope_file", "cope_file")]),
