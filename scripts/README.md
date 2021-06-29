@@ -8,5 +8,11 @@
 5. extract values from contast maps for stats
 
 
-participants.tsv
+`participants.tsv`
     Details of subjects included for the analysis
+
+`firstlevel.sh`
+    First level fMRI analysis
+
+`grouplevel.sh`
+    Group level fMRI analysis

@@ -1,3 +1,0 @@
-	control	patient	CDS_control	CDS_patient	age	mean_fd
-patient_wrt_control	0	0	-1	1	0	0
-control_wrt_patient	0	0	1	-1	0	0
