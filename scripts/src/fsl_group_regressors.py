@@ -6,16 +6,20 @@ import numpy as np
 
 home = str(Path.home())
 p = Path(home + "/projects/critchley_depersonalisation")
-participants = pd.read_csv(p / "code" /"participants.tsv", sep='\t', index_col=0)
+participants = pd.read_csv(p / "code" / "participants.tsv", sep="\t", index_col=0)
 regressors = participants.iloc[:, :2]
 regressors["mean_fd"] = np.nan
 
 for idx, row in regressors.iterrows():
     subject = idx
     print(subject)
-    path = list(p.glob(f"data/derivatives/fmriprep-1.5.1rc2/{subject}/func/{subject}_task-heartbeat_run-1_desc-confounds_regressors.tsv"))
+    path = list(
+        p.glob(
+            f"data/derivatives/fmriprep-1.5.1rc2/{subject}/func/{subject}_task-heartbeat_run-1_desc-confounds_regressors.tsv"
+        )
+    )
     confounds_path = path[0]
-    confounds = pd.read_csv(confounds_path, sep='\t')
+    confounds = pd.read_csv(confounds_path, sep="\t")
     mean_fd = confounds.loc[5:, "framewise_displacement"].mean()
     regressors.loc[idx, "mean_fd"] = mean_fd
 
@@ -34,7 +38,7 @@ regressors.group = 1
 # z score
 z_convert = ["age", "mean_fd", "CDS_State"]
 regressors[z_convert] -= regressors[z_convert].mean()
-regressors[z_convert] /= regressors[z_convert] .std(ddof=0)
+regressors[z_convert] /= regressors[z_convert].std(ddof=0)
 
 # sort by group
 regressors = regressors.sort_index()
