@@ -5,7 +5,12 @@
 
 . ${HOME}/.bash_profile
 
-cd ${HOME}/projects/critchley_depersonalisation/code
+
+cd ${HOME}/projects/critchley_depersonalisation/
+
+source env/bin/activate
+
+cd code
 
 SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
              participants.tsv )
