@@ -10,11 +10,11 @@ cd ${HOME}/projects/critchley_depersonalisation/
 
 source env/bin/activate
 
-cd code
+cd scripts
 
 SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
              participants.tsv )
-SEED_DIR=${HOME}/projects/critchley_depersonalisation/code/ppi_seeds
+SEED_DIR=${HOME}/projects/critchley_depersonalisation/references/ppi_seeds
 
 for subj in $SUBJ_LIST; do
     echo sub-$subj
@@ -27,7 +27,7 @@ for subj in $SUBJ_LIST; do
     ./src/registration.sh ../scratch/FSL_hrv ${subj}
 
     # task only
-    ./src/first_level_model.sh heart_wrt_note_level_1.fsf FSL_task_new ${subj}
-    ./src/registration.sh ../scratch/FSL_task_new ${subj}
+    ./src/first_level_model.sh heart_wrt_note_level_1.fsf FSL_task ${subj}
+    ./src/registration.sh ../scratch/FSL_task ${subj}
 
 done
