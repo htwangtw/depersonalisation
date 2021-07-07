@@ -65,14 +65,15 @@ The current version in this folder is curated and analysed by Hao-Ting Wang.
 <details>
   <summary>scripts</summary>
 
-  Analysis and visualisation code, including FSL design files
+  Analysis and visualisation code, including FSL design files.
+  `firstlevel.sh` and `grouplevel.sh` are SGE cluster submission scripts.
 </details>
 
 
 <details>
   <summary>references</summary>
 
-  Code from referenced study, MNI space seed/gray matter masks
+  Code from referenced study, MNI space seed/gray matter masks.
 </details>
 
 <details>
@@ -92,13 +93,12 @@ The current version in this folder is curated and analysed by Hao-Ting Wang.
   <summary>Misc</summary>
 
   ### scratch
+
   Scratch folder. Delete after a project is complete.
 </details>
 
+## Notes on fMRI data quality accessment
 
-## Notes on preprocessing
-
-Framewise displacement threshold for quality assessments
-
+Framewise displacement threshold was used for for quality assessments.
 The motion detection threshold is 0.5 mm for quality assessment and outlier frame cut-off in the heartbeat detection task. (c.f. 0.2 mm for resting state.)
-I set the cut off at 20% of the volumes and then visually inspect the spiking
+I set the cut off at 20% of the volumes and then visually inspect the spiking.
