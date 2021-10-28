@@ -63,7 +63,7 @@ func_filename = str(
 
 # predefined var
 n_dummy = 5
-confound_vars = p / "code/src" / "confound_regressors.txt"
+confound_vars = p / "scripts/src" / "confound_regressors.txt"
 confound_vars = [line.rstrip("\n") for line in open(confound_vars)]
 
 # create dir
