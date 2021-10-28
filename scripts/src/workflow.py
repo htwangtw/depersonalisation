@@ -222,12 +222,11 @@ def group_randomise_wf(
         concat_copes = pe.Node(
             Function(
                 function=_concat_copes,
-                input_names=["cope_file", "mm", "output_dir"],
+                input_names=["cope_file", "output_dir"],
                 output_names=["output_dir"],
             ),
             name="concat_copes",
         )
-        concat_copes.inputs.mm = 6
         concat_copes.inputs.output_dir = (
             input_dir + os.sep + "group_level" + os.sep + f"cope_{node_name}.nii.gz"
         )
