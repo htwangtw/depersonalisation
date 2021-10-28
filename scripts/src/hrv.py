@@ -115,7 +115,7 @@ class ContinuousHRV(ProcessIBI):
             fwin_sample = 128
         else:
             # smoothing window size in the number of samples
-            delta_freq = np.diff(freq)[0]
+            delta_freq = np.diff(self.freq)[0]
             twin_sample = int(self.resample_fs * tres)
             fwin_sample = int(fres / delta_freq)
 
