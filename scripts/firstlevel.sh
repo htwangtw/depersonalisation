@@ -21,7 +21,7 @@ SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
 SEED_DIR=${HOME}/projects/critchley_depersonalisation/references/ppi_seeds
 
 
-subj=${SUBJLIST[${i}]}
+subj=${SUBJ_LIST[${i}]}
 echo sub-$subj
 
 bash ./src/create_regressors.sh ${subj}
