@@ -5,6 +5,6 @@ else
   . ~/.bash_profile
 fi
 SUBJ=${1}
-cd ${HOME}/projects/critchley_depersonalisation/code
+cd ${HOME}/projects/critchley_depersonalisation/scripts
 python ./src/process_hrv.py sub-${SUBJ}
 python ./src/fsl_level1_regressors.py sub-${SUBJ}
