@@ -7,12 +7,12 @@ else
 fi
 
 
-TEMPLATE=$(readlink -f ${HOME}/projects/critchley_depersonalisation/code/templates/${1})
+TEMPLATE=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scripts/templates/${1})
 OUTPUT=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch/${2})
 BASEDIR=$(readlink -f ${HOME}/projects/critchley_depersonalisation/scratch)
 SUBJ=${3}
 
-cd ${HOME}/projects/critchley_depersonalisation/code
+cd ${HOME}/projects/critchley_depersonalisation/scripts
 
 # make output dir
 mkdir -p ${BASEDIR}/logs
