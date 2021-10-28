@@ -16,8 +16,8 @@ source env/bin/activate
 
 cd scripts
 
-SUBJ_LIST=$( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
-             participants.tsv )
+SUBJ_LIST=($( sed -n -E "s/sub-(\S*)\>.*/\1/gp" \
+             participants.tsv ))
 SEED_DIR=${HOME}/projects/critchley_depersonalisation/references/ppi_seeds
 
 
