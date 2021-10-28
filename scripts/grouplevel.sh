@@ -1,4 +1,7 @@
 #!/bin/bash
+#$ -N fsl_lvl2
+#$ -o /home/$USER/logs
+#$ -j y
 
 if [[ "x$SGE_ROOT" = "x" ]] ; then
   echo "not on the cluster"

@@ -6,7 +6,7 @@ import argparse
 
 
 def run_group_randomised(args):
-    from .workflow import group_randomise_wf
+    from workflow import group_randomise_wf
 
     print(args.cope_list)
     workflow = group_randomise_wf(
