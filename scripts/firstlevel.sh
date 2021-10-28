@@ -2,7 +2,7 @@
 #$ -N fsl_lvl1
 #$ -o /home/$USER/logs
 #$ -j y
-#$ -t 1-62
+#$ -t 1-49
 #$ -tc 10
 
 . ${HOME}/.bash_profile
