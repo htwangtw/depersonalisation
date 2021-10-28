@@ -111,13 +111,15 @@ class ContinuousHRV(ProcessIBI):
         if all(r is None for r in [tres, fres]):
             print("default")
             # from this paper https://doi.org/10.1016/S1566-0702(00)00211-3
-            twin_sample = 16
-            fwin_sample = 128
+            tres, fres = 4, 7
+            twin_sample = 2 ** tres
+            fwin_sample = 2 ** fres
         else:
             # smoothing window size in the number of samples
             delta_freq = np.diff(self.freq)[0]
             twin_sample = int(self.resample_fs * tres)
             fwin_sample = int(fres / delta_freq)
+            print(f"time smoothing window {twin_sample}, frequency smoothing window {fwin_sample}")
 
         # must be odd number
         self.twin_sample = round_up_to_odd(twin_sample)
