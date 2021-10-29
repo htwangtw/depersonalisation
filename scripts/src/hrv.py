@@ -119,8 +119,10 @@ class ContinuousHRV(ProcessIBI):
             # smoothing window size in the number of samples
             delta_freq = np.diff(self.freq)[0]
             delta_time = np.diff(self.resample_time)[0]
+            print(delta_freq)
+            print(delta_time)
             twin_sample = int(tres / delta_time)
-            fwin_sample = int(fres / delta_freq)
+            fwin_sample = int(fres * delta_freq)
             print(f"time smoothing window {twin_sample}, frequency smoothing window {fwin_sample}")
 
         # must be odd number
