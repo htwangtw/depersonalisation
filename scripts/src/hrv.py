@@ -122,7 +122,7 @@ class ContinuousHRV(ProcessIBI):
             print(delta_freq)
             print(delta_time)
             twin_sample = int(tres / delta_time)
-            fwin_sample = int(fres * delta_freq)
+            fwin_sample = int(fres / delta_freq)
             print(f"time smoothing window {twin_sample}, frequency smoothing window {fwin_sample}")
 
         # must be odd number
