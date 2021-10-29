@@ -104,6 +104,7 @@ class ContinuousHRV(ProcessIBI):
         l = len(self.ibi_resampled)
         nfft = 2 ** _nextpower2(l)  # Next power of 2 from length of signal
         nfreqbin = int(nfft / 4)  # number of frequency bins
+        print(nfreqbin)
         self.freq = (self.resample_fs / 2) * np.linspace(
             0, 1, nfreqbin
         )  # normalised frequency 1 is fs / 2
@@ -117,7 +118,8 @@ class ContinuousHRV(ProcessIBI):
         else:
             # smoothing window size in the number of samples
             delta_freq = np.diff(self.freq)[0]
-            twin_sample = int(self.resample_fs * tres)
+            delta_time = np.diff(self.resample_time)[0]
+            twin_sample = int(tres / delta_time)
             fwin_sample = int(fres / delta_freq)
             print(f"time smoothing window {twin_sample}, frequency smoothing window {fwin_sample}")
 

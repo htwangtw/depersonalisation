@@ -61,7 +61,7 @@ if sum(calculate_hrv.ibi > 1.5) + sum(calculate_hrv.ibi < 0.3) > 0:
     calculate_hrv.outlier_ibi(sd=2.5, n=2)  # run again
 fig_ibi = calculate_hrv.plot_ibi()
 calculate_hrv.resample()
-calculate_hrv.spwvd_power(tres=2.5, fres=0.01)
+calculate_hrv.spwvd_power(tres=18, fres=0.2)
 fig_psd = calculate_hrv.plot_spectrum()
 calculate_hrv.power_ampt()
 fig_hrv = calculate_hrv.plot_HRV()
